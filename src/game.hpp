@@ -1,63 +1,41 @@
 #include <iostream>
+#include <fstream>
 #include <stdlib.h>
+#include <vector>
+#include <string>
+#include "structs.hpp"
 
 /*
-Tiles: ###
-0## = Items 
-1## = Walls
-2## = Moving
-
 Items: ##
-000 = red
-001 = blue
-002 = green
-003 = pink
-004 = purple
+1 = red
+2 = blue
+3 = green
+4 = pink
+5 = purple
+6 = cyan
+7 = brown
+8 = orange
+9 = yellow
+
 */
 
-enum platform_plane {
-    HORIZONTAL,
-    VERTICAL
-};
-
-enum platform_direction {
-    POSITIVE = 1,
-    NEGATIVE = -1
-};
-
-struct items{
-    int red = 0;
-    int blue = 0;
-    int green = 0;;
-    int pink = 0;
-    int purple = 0;
-    int yellow = 0;
-    int cyan = 0;
-    int orange = 0;
-};
-
-struct tiles {
-    int wall = 0;
-    int item = 0;
-    int platform = 0;
-};
-
-struct platform {
-    enum platform_plane plane = HORIZONTAL;
-    enum platform_direction direction = POSITIVE;
-    int x;
-    int y;
-};
+const int BOARD_SIZE = 20;
 
 class Game {
     int height;
     int width;
-    tiles[] board;
+    items items_remaining;
+    items items_destroyed;
+    std::vector<platform> platforms;
+    tiles board[BOARD_SIZE][BOARD_SIZE];
 
 
 
 
     public:
-        std::string[] get_board();
+        Game(std::string level);
+        ~Game();
+        tiles get_board();
+        tiles copy_board();
 
 };
