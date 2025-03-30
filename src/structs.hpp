@@ -34,22 +34,32 @@ struct items{
     int total = 0;
 };
 
-struct item {
-    enum item_colour colour;
+struct position {
     int x;
     int y;
+};
+
+struct item {
+    enum item_colour colour;
+    position pos;
 };
 
 struct tiles {
     int wall = 0;
     int item = 0;
     int platform = 0;
+    int empty = 0;
+};
+
+struct board {
+    int height;
+    int width;
+    tiles board[20][20];
 };
 
 struct platform {
     enum platform_plane plane = HORIZONTAL;
     enum platform_direction direction = POSITIVE;
-    int x;
-    int y;
+    position pos;
     std::vector<item> items; 
 };
