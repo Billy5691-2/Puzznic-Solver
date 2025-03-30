@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <stdlib.h>
 #include <vector>
 #include <string>
@@ -22,12 +23,10 @@ Items: ##
 const int BOARD_SIZE = 20;
 
 class Game {
-    int height;
-    int width;
+    board game_board;
     items items_remaining;
     items items_destroyed;
     std::vector<platform> platforms;
-    tiles board[BOARD_SIZE][BOARD_SIZE];
 
 
 
@@ -35,7 +34,8 @@ class Game {
     public:
         Game(std::string level);
         ~Game();
-        tiles get_board();
-        tiles copy_board();
+        board get_board();
+        board copy_board();
+        void print_board();
 
 };

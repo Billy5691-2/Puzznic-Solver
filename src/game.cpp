@@ -1,26 +1,25 @@
-#include <stdlib.h>
+//#include <stdlib.h>
 //#include <math.h>
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
+//#include <iostream>
+//#include <fstream>
+//#include <sstream>
 #include "game.hpp"
 
 Game::Game(std::string level) {
+    
     std::string data;
 
     std::fstream levelData(level);
 
-    std::getline (levelData, data);
+    std::getline (levelData, data);   
     game_board.height = std::stoi(data);
     std::getline (levelData, data);
     game_board.width = std::stoi(data);
     
     int x = 0;
-    while (std::getline (levelData, data)) {
-        if (x >= BOARD_SIZE){
-            std::cout << "x out of bounds in read file";
-        }
+    while (std::getline (levelData, data) && x < BOARD_SIZE) {
+
         int y = 0;
         std::stringstream ss(data);
         std::string cell;
@@ -28,6 +27,7 @@ Game::Game(std::string level) {
             if (y >= BOARD_SIZE){
                 std::cout << "y out of bounds in read file";
             }
+
             int tile = std::stoi(cell);
             tiles temp; 
             switch (tile) {
@@ -103,13 +103,15 @@ Game::Game(std::string level) {
         x++;
 
     }
-    levelData.close();
+    levelData.close();/**/
+
+    //print_board();
 
 
 }
 
 Game::~Game() {
-
+    std::cout << "Close Game 2\n";
 }
 
 board Game::get_board(){
@@ -127,7 +129,7 @@ board Game::copy_board(){
 void Game::print_board() {
     for (int i = 0; i < game_board.height; i++) {
         for (int j = 0; j < game_board.width; j++) {
-            std::cout << "A " <<game_board.board[i][j].empty << " I "<<game_board.board[i][j].item << " W "<<game_board.board[i][j].wall << " P " << game_board.board[i][j].platform;
+            std::cout << "A" <<game_board.board[i][j].empty << " I"<<game_board.board[i][j].item << " W"<<game_board.board[i][j].wall << " P" << game_board.board[i][j].platform << " ";
         }
     std::cout << "\n";
     } 
