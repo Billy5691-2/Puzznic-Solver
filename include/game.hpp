@@ -21,21 +21,22 @@ Items: ##
 */
 
 const int BOARD_SIZE = 20;
-
-class Game {
-    board game_board;
-    items items_remaining;
-    items items_destroyed;
-    std::vector<platform> platforms;
-
-
+namespace Puzznic {
+    class Game {
+        board game_board;
+        items items_remaining;
+        items items_destroyed;
+        std::vector<platform> platforms;
 
 
-    public:
-        Game(std::string level);
-        ~Game();
-        board get_board();
-        board copy_board();
-        void print_board();
 
-};
+
+        public:
+            Game(std::string level);
+            ~Game();
+            board get_board();
+            board copy_board();
+            void print_board();
+
+    };
+}

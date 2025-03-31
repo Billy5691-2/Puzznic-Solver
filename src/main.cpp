@@ -1,5 +1,5 @@
 #include "../include/game.hpp"
-#include "../include/gui.hpp"
+#include "../include/window.hpp"
 std::string filename = "../levels/level_1_1_cpp.csv";
 
 inline void init() {
@@ -13,14 +13,18 @@ inline void close() {
 }
 
 int main(){
-    Game initial_game(filename);
+    Puzznic::Game Game(filename);
     init();
-    Gui base_gui("Puzznic");
+    board board_data = Game.get_board();
+    position board_size;
+    board_size.x = board_data.width;
+    board_size.y = board_data.height;
+    GUI::Window GUI("Puzznic", board_size);
 
-    while (base_gui.isRunning()){
-        base_gui.pollEvent();
-        base_gui.update();
-        base_gui.render();
+    while (GUI.isRunning()){
+        GUI.pollEvent();
+        GUI.update();
+        GUI.render();
     }
 
     close();

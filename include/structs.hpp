@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 
 enum platform_plane {
