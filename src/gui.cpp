@@ -44,7 +44,7 @@ void Gui::update() {
 }
 
 void Gui::render() {
-    SDL_SetRenderDrawColor(m_Renderer, 255, 255, 0, 255);
+    SDL_SetRenderDrawColor(m_Renderer, 128, 128, 20, 128);
     SDL_RenderClear(m_Renderer);
     SDL_RenderPresent(m_Renderer);
 }
