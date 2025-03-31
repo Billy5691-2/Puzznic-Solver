@@ -1,10 +1,4 @@
-//#include <stdlib.h>
-//#include <math.h>
-
-//#include <iostream>
-//#include <fstream>
-//#include <sstream>
-#include "game.hpp"
+#include "../include/game.hpp"
 
 Game::Game(std::string level) {
     
