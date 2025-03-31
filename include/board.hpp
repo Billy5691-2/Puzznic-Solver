@@ -4,16 +4,16 @@
 #include <SDL2/SDL_render.h>
 #include <iostream>
 #include "structs.hpp"
+#include "constants.hpp"
 
 namespace GUI {
     class Board{
         SDL_Renderer* m_Renderer;
-        int m_height;
-        int m_width;
         int tile_size = 75;
+        int m_board_size;
 
         public:
-            Board(position board_data, SDL_Renderer* p_Renderer);
+            Board(int board_size, SDL_Renderer* p_Renderer);
             void drawBoard();
         
     };

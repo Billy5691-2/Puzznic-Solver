@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "structs.hpp"
+#include "constants.hpp"
 
 /*
 Items: ##
@@ -20,7 +21,6 @@ Items: ##
 
 */
 
-const int BOARD_SIZE = 20;
 namespace Puzznic {
     class Game {
         board game_board;

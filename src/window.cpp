@@ -1,14 +1,11 @@
 #include "../include/window.hpp"
 namespace GUI {
-    Window::Window(const char* title, position board_data) {
+    Window::Window(const char* title, int board_size) {
         init();
-        SDL_Window* m_Window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, 
-        SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
-        SDL_Renderer* m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_PRESENTVSYNC);
-        if (m_Renderer == NULL){
-            std::cout << "Error";
-        }
-        m_Board = new Board(board_data, m_Renderer);
+        m_Window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, 
+            SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+        m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_PRESENTVSYNC);
+        m_Board = new Board(board_size, m_Renderer);
 
     }
 
@@ -49,7 +46,7 @@ namespace GUI {
     }
 
     void Window::render() {
-        SDL_SetRenderDrawColor(m_Renderer, 128, 128, 20, 255);
+        SDL_SetRenderDrawColor(m_Renderer, 128, 0, 255, 255);
         SDL_RenderClear(m_Renderer);
         m_Board->drawBoard();
         //SDL_RenderCopy(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Rect *srcrect, const SDL_Rect *dstrect);

@@ -4,7 +4,7 @@ std::string filename = "../levels/level_1_1_cpp.csv";
 
 inline void init() {
     SDL_Init(SDL_INIT_VIDEO);
-    IMG_Init(IMG_INIT_PNG);
+    IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 }
 
 inline void close() {
@@ -14,11 +14,10 @@ inline void close() {
 
 int main(){
     Puzznic::Game Game(filename);
+    
     init();
     board board_data = Game.get_board();
-    position board_size;
-    board_size.x = board_data.width;
-    board_size.y = board_data.height;
+    int board_size = board_data.size;
     GUI::Window GUI("Puzznic", board_size);
 
     while (GUI.isRunning()){

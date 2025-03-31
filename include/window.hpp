@@ -7,9 +7,7 @@
 #include "board.hpp"
 //#include <stdlib.h>
 #include "structs.hpp"
-
-const int WINDOW_WIDTH = 1200;
-const int WINDOW_HEIGHT = 900;
+#include "constants.hpp"
 
 namespace GUI {
     class Window {
@@ -22,7 +20,7 @@ namespace GUI {
         void init();
 
         public:
-            Window(const char* title, position board_data);
+            Window(const char* title, int board_size);
             ~Window();
 
             bool isRunning() const;

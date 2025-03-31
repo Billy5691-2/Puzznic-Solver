@@ -53,8 +53,7 @@ struct tiles {
 };
 
 struct board {
-    int height;
-    int width;
+    int size;
     tiles board[20][20];
 };
 

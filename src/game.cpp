@@ -7,9 +7,9 @@ namespace Puzznic {
         std::fstream levelData(level);
 
         std::getline (levelData, data);   
-        game_board.height = std::stoi(data);
+        game_board.size = std::stoi(data);
         std::getline (levelData, data);
-        game_board.width = std::stoi(data);
+        //game_board.width = std::stoi(data);
         
         int x = 0;
         while (std::getline (levelData, data) && x < BOARD_SIZE) {
@@ -114,15 +114,16 @@ namespace Puzznic {
 
     board Game::copy_board(){
         board new_board;
-        new_board.height = game_board.height;
-        new_board.width = game_board.width;
+        new_board.size = game_board.size;
+        //new_board.height = game_board.height;
+        //new_board.width = game_board.width;
         std::copy(&game_board.board[0][0], &game_board.board[0][0]+BOARD_SIZE*BOARD_SIZE, &new_board.board[0][0]);
         return new_board;
     }
 
     void Game::print_board() {
-        for (int i = 0; i < game_board.height; i++) {
-            for (int j = 0; j < game_board.width; j++) {
+        for (int i = 0; i < game_board.size; i++) {
+            for (int j = 0; j < game_board.size; j++) {
                 std::cout << "A" <<game_board.board[i][j].empty << " I"<<game_board.board[i][j].item << " W"<<game_board.board[i][j].wall << " P" << game_board.board[i][j].platform << " ";
             }
         std::cout << "\n";
