@@ -17,11 +17,10 @@ namespace GUI {
                 _block.x = (i* tile_size) + WINDOW_LEFT;
                 _block.y = j* tile_size;
                 _block.w = _block.h = tile_size;
-                SDL_SetRenderDrawColor(m_Renderer, 255,255,0,255);
+                SDL_SetRenderDrawColor(m_Renderer, 0, 20, 45, 30);
                 SDL_RenderFillRect(m_Renderer, &_block);
                 
                 SDL_SetRenderDrawColor(m_Renderer, 0,0,0,255);
-
                 SDL_RenderDrawRect(m_Renderer, &_block);
             }
         }
