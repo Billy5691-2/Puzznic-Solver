@@ -22,9 +22,9 @@ namespace Puzznic {
                     std::cout << "y out of bounds in read file";
                 }
 
-                int tile = std::stoi(cell);
-                tiles temp; 
-                switch (tile) {
+                int tile_value = std::stoi(cell);
+                tile temp; 
+                switch (tile_value) {
                     case 1: //Red
                         temp.item = 1;
                         break;

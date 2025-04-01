@@ -45,7 +45,7 @@ struct item {
     position pos;
 };
 
-struct tiles {
+struct tile {
     int wall = 0;
     int item = 0;
     int platform = 0;
@@ -54,7 +54,7 @@ struct tiles {
 
 struct board {
     int size;
-    tiles board[20][20];
+    tile board[20][20];
 };
 
 struct platform {
