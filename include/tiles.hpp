@@ -6,6 +6,10 @@
 #define PLATFORM_PATH "../assets/platforms/"
 #define WALL_PATH "../assets/walls/"
 
+#define RED_ITEM "1_Red_Item.png"
+
+#define RED_ITEM_PATH ITEMS_PATH RED_ITEM
+
 namespace  GUI {
     class Tiles {
         SDL_Renderer* m_Renderer;

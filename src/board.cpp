@@ -25,4 +25,8 @@ namespace GUI {
             }
         }
     }
+
+    int Board::getTileSize(){
+        return tile_size;
+    }
 }

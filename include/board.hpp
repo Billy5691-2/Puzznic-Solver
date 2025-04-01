@@ -15,6 +15,7 @@ namespace GUI {
         public:
             Board(int board_size, SDL_Renderer* p_Renderer);
             void drawBoard();
+            int getTileSize();
         
     };
 } 
