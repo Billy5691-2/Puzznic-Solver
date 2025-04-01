@@ -1,4 +1,9 @@
 #include "../include/window.hpp"
+
+//https://github.com/Candyris/Chess_SDL2-linux/blob/main/%2303-DrawPieces/src/Game.cpp
+//https://www.youtube.com/watch?v=39hWcYu-0vY&list=PLtrnQ655KFotSI7VrzFUdMwZN-3IBf3EM&index=3
+//https://lazyfoo.net/tutorials/SDL/index.php
+
 namespace GUI {
     Window::Window(const char* title, int board_size) {
         init();
