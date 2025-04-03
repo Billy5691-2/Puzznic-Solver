@@ -12,7 +12,7 @@ namespace GUI {
         m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_PRESENTVSYNC);
         m_Board = new Board(board_size, m_Renderer);
         int tile_size = m_Board->getTileSize();
-        m_Tile = new Tiles(m_Renderer, RED_ITEM_PATH, tile_size);
+        m_Tile = new Tiles(m_Renderer, RED_ITEM, tile_size);
 
         std::cout << "Constructor succes";
         m_Tile->setPosition(100, 100);
