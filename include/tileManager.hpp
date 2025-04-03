@@ -5,3 +5,6 @@
 #include "structs.hpp"
 #include <array>
 
+namespace GUI {
+    
+}
