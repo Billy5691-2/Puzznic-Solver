@@ -104,6 +104,7 @@ namespace Puzznic {
 
     }
 
+    //Game Destructor
     Game::~Game() {
         std::cout << "Close Game 2\n";
     }

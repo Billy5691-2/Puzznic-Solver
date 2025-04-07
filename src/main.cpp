@@ -22,6 +22,7 @@ int main(){
 
     while (GUI.isRunning()){
         GUI.pollEvent();
+        board_data = Game.get_board();
         GUI.update();
         GUI.render();
     }
