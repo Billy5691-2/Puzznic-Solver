@@ -4,8 +4,9 @@
 #include <stdlib.h>
 #include <vector>
 #include <string>
-#include "structs.hpp"
-#include "constants.hpp"
+#include <map>
+#include "../include/structs.hpp"
+#include "../include/constants.hpp"
 
 /*
 Items: ##
@@ -26,6 +27,8 @@ namespace Puzznic {
         board game_board;
         items items_remaining;
         items items_destroyed;
+        std::map<int, item_pos> items_list;
+        std::map<int, platform> platform_list;
         std::vector<platform> platforms;
 
 
@@ -35,6 +38,8 @@ namespace Puzznic {
             Game(std::string level);
             ~Game();
             board get_board();
+            std::map<int, item_pos>* get_item_list();
+            std::map<int, platform>* get_platform_list();
             board copy_board();
             void print_board();
 

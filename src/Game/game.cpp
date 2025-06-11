@@ -1,4 +1,4 @@
-#include "../include/game.hpp"
+#include "../include/Game/game.hpp"
 namespace Puzznic {
     Game::Game(std::string level) {
         
@@ -111,6 +111,10 @@ namespace Puzznic {
 
     board Game::get_board(){
         return game_board;
+    }
+
+    std::map<int, item_pos>* Game::get_item_list(){
+        
     }
 
     board Game::copy_board(){

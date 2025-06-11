@@ -40,8 +40,9 @@ struct position {
     int y;
 };
 
-struct item {
+struct item_pos {
     enum item_colour colour;
+    bool destroyed;
     position pos;
 };
 
@@ -61,5 +62,5 @@ struct platform {
     enum platform_plane plane = HORIZONTAL;
     enum platform_direction direction = POSITIVE;
     position pos;
-    std::vector<item> items; 
+    std::vector<item_pos> items; 
 };

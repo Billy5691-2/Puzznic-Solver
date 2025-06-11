@@ -1,5 +1,5 @@
-#include "../include/game.hpp"
-#include "../include/window.hpp"
+#include "../include/Game/game.hpp"
+#include "../include/GUI/window.hpp"
 std::string filename = "../levels/level_1_1_cpp.csv";
 
 inline void init() {

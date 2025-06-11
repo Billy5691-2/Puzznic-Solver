@@ -3,8 +3,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_render.h>
 #include <iostream>
-#include "structs.hpp"
-#include "constants.hpp"
+#include "../include/structs.hpp"
+#include "../include/constants.hpp"
 
 namespace GUI {
     class Board{

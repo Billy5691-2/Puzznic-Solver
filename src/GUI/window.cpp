@@ -1,4 +1,4 @@
-#include "../include/window.hpp"
+#include "../include/GUI/window.hpp"
 
 
 //SDL 2 Guides

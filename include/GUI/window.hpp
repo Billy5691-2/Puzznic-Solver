@@ -4,11 +4,15 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
+
+#include <map>
+
+#include "tiles.hpp"
 #include "board.hpp"
 //#include <stdlib.h>
-#include "structs.hpp"
-#include "constants.hpp"
-#include "tiles.hpp"
+#include "../include/structs.hpp"
+#include "../include/constants.hpp"
+
 
 namespace GUI {
     class Window {
@@ -22,8 +26,14 @@ namespace GUI {
         Board* m_Board;
         Tiles* m_Tile;
 
+        std::map<int, item_pos>* item_list; 
+
+        std::map<int, Tiles*> item_textures;
+        std::map<int, Tiles*> platform_textures;
+
         void init();
         void drawBoard();
+        void updateItemList(std::map<int, item_pos>* new_item_list);
 
         public:
             Window(const char* title, int board_size);
