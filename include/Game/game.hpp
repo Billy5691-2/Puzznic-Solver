@@ -35,6 +35,8 @@ namespace Puzznic {
 
             std::array<int, COLOURS> get_item_count();
             board get_board();
+            std::map<position, int> get_item_list();
+            std::vector<platform> get_platform_list();
 
     };
 }

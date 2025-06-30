@@ -13,7 +13,7 @@ namespace GUI {
         int m_board_size;
 
         public:
-            Board(int board_size, SDL_Renderer* p_Renderer);
+            Board(SDL_Renderer* p_Renderer);
             void drawBoard();
             int getTileSize();
         

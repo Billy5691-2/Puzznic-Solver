@@ -26,6 +26,8 @@ namespace GUI {
         Board* m_Board;
         Tiles* m_Tile;
 
+        std::vector<Tiles*> base_tiles;
+
         std::map<position, int>* item_list; 
 
         std::map<int, Tiles*> item_textures;
@@ -33,16 +35,19 @@ namespace GUI {
 
         void init();
         void drawBoard();
-        void updateItemList(std::map<position, int>* new_item_list);
 
         public:
-            Window(const char* title, int board_size);
+            Window(const char* title, board board_data);
             ~Window();
 
             bool isRunning() const;
             void pollEvent();
             void update();
-            void render();
+            void render_start();
+            void render_board();
+            void render_platforms(std::vector<platform> platform_list);
+            void render_items(std::map<position, int> item_list);
+            void render_finish();
 
     };
 }

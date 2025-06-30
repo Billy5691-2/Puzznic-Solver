@@ -1,9 +1,9 @@
 #include "../../include/GUI/board.hpp"
 namespace GUI {
-    Board::Board(int board_size, SDL_Renderer* p_Renderer){
+    Board::Board(SDL_Renderer* p_Renderer){
         m_Renderer = p_Renderer;
-        m_board_size = board_size;
-        tile_size = WINDOW_HEIGHT / board_size;
+        m_board_size = BOARD_SIZE;
+        tile_size = WINDOW_HEIGHT / m_board_size;
 
 
     }

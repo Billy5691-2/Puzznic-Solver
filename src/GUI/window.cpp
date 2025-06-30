@@ -13,12 +13,12 @@ namespace GUI {
     /*
     Constructor for Window class
     */
-    Window::Window(const char* title, int board_size) {
+    Window::Window(const char* title, board board_data) {
         init();
         m_Window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, 
             SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
         m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_PRESENTVSYNC);
-        m_Board = new Board(board_size, m_Renderer);
+        m_Board = new Board(m_Renderer);
         int tile_size = m_Board->getTileSize();        
 
         //Testing variables
@@ -89,19 +89,32 @@ namespace GUI {
 
     }
 
-    void Window::render() {
+    void Window::render_start() {
         SDL_SetRenderDrawColor(m_Renderer, 128, 0, 255, 255);
         SDL_RenderClear(m_Renderer);
         m_Board->drawBoard();
-        m_Tile->draw();
-        //SDL_RenderCopy(SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Rect *srcrect, const SDL_Rect *dstrect);
+    }
 
+    void Window::render_board() {
+        
+    }
+
+    void render_platforms(std::vector<platform> platform_list){
+
+    }
+
+    void render_items(std::map<position, int> item_list){
+
+    }
+
+    void Window::render_finish() {
         SDL_RenderPresent(m_Renderer);
     }
 
 
-    void updateItemList(std::map<int, item_pos>* new_item_list){
-        std::map<int, item_pos>* item_list = new_item_list;
-    }
+
+
+
+
 
 }

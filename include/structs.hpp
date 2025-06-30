@@ -27,6 +27,14 @@ enum item_colour {
 struct position {
     int x;
     int y;
+
+    bool operator==(const position& rhs) const {
+        return (x == rhs.x and y == rhs.y);
+    }
+
+    bool operator<(const position& rhs) const {
+        return (x < rhs.x or y < rhs.y);
+    }
 };
 
 struct tile {

@@ -2,10 +2,10 @@
 
 namespace Puzznic {
     BoardState::BoardState(std::string level){
-        std::array<int, COLOURS> item_count; 
+        //std::array<int, COLOURS> item_count; 
         item_count.fill(0);
 
-        std::map<position, int> item_list;
+        //std::map<position, int> item_list;
 
         std::string data;
 
@@ -17,7 +17,6 @@ namespace Puzznic {
         //game_board.width = std::stoi(data);
         
         int x = 0;
-        int platform_id = 0;
         while (std::getline (levelData, data) && x < BOARD_SIZE) {
 
             int y = 0;
@@ -104,29 +103,25 @@ namespace Puzznic {
                         temp.platform = 1;
                         temp_plat.direction = NEGATIVE;
                         temp_plat.plane = VERTICAL;
-                        platform_list[platform_id] = temp_plat;
-                        platform_id++;
+                        platform_list.push_back(temp_plat);
                         break;
                     case 202: //Down
                         temp.platform = 2;
                         temp_plat.direction = POSITIVE;
                         temp_plat.plane = VERTICAL;
-                        platform_list[platform_id] = temp_plat;
-                        platform_id++;
+                        platform_list.push_back(temp_plat);
                         break;
                     case 203: //Right
                         temp.platform = 3;
                         temp_plat.direction = POSITIVE;
                         temp_plat.plane = HORIZONTAL;
-                        platform_list[platform_id] = temp_plat;
-                        platform_id++;
+                        platform_list.push_back(temp_plat);
                         break;
                     case 204: //Left
                         temp.platform = 4;
                         temp_plat.direction = NEGATIVE;
                         temp_plat.plane = HORIZONTAL;
-                        platform_list[platform_id] = temp_plat;
-                        platform_id++;
+                        platform_list.push_back(temp_plat);
                         break;
 
                     case 999: //Empty
@@ -151,7 +146,7 @@ namespace Puzznic {
 
     }
     BoardState::BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, std::map<position, int> temp_item_list, 
-                std::map<int, platform> temp_platform_list){
+                std::vector<platform> temp_platform_list){
                     game_board = temp_game_board;
                     item_count = temp_item_count;
                     item_list = temp_item_list;
@@ -177,7 +172,7 @@ namespace Puzznic {
     std::array<int, COLOURS> BoardState::get_item_count(){ return item_count; }
     board BoardState::get_board(){ return game_board; }
     std::map<position, int> BoardState::get_item_list(){ return item_list; }
-    std::map<int, platform> BoardState::get_platform_list(){ return platform_list; }
+    std::vector<platform> BoardState::get_platform_list(){ return platform_list; }
 
     void BoardState::print_board() {
         for (int i = 0; i < game_board.size; i++) {
