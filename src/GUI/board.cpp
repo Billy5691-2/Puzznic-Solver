@@ -1,4 +1,4 @@
-#include "../include/GUI/board.hpp"
+#include "../../include/GUI/board.hpp"
 namespace GUI {
     Board::Board(int board_size, SDL_Renderer* p_Renderer){
         m_Renderer = p_Renderer;

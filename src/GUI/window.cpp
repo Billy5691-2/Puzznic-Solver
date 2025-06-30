@@ -1,4 +1,4 @@
-#include "../include/GUI/window.hpp"
+#include "../../include/GUI/window.hpp"
 
 
 //SDL 2 Guides
@@ -98,4 +98,10 @@ namespace GUI {
 
         SDL_RenderPresent(m_Renderer);
     }
+
+
+    void updateItemList(std::map<int, item_pos>* new_item_list){
+        std::map<int, item_pos>* item_list = new_item_list;
+    }
+
 }

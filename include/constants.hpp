@@ -2,6 +2,8 @@
 
 const int BOARD_SIZE = 20;
 
+const int COLOURS = 8;
+
 const int WINDOW_HEIGHT = 900;
 const int WINDOW_WIDTH = WINDOW_HEIGHT * 1.6;
 const int WINDOW_LEFT = (WINDOW_WIDTH - WINDOW_HEIGHT) * 0.4; // Righthand edge of window leftside

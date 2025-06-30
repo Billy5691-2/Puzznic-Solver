@@ -17,6 +17,7 @@ int main(){
     
     init();
     board board_data = Game.get_board();
+    std::array<int, COLOURS> item_count = Game.get_item_count();
     int board_size = board_data.size;
     GUI::Window GUI("Puzznic", board_size);
 

@@ -16,34 +16,17 @@ enum item_colour {
     BLUE,
     GREEN,
     PINK,
-    PUPRLE,
-    YELLOW,
+    PURPLE,
     CYAN,
-    ORANGE
+    BROWN,
+    ORANGE,
+    YELLOW,
     
-};
-
-struct items{
-    int red = 0;
-    int blue = 0;
-    int green = 0;
-    int pink = 0;
-    int purple = 0;
-    int yellow = 0;
-    int cyan = 0;
-    int orange = 0;
-    int total = 0;
 };
 
 struct position {
     int x;
     int y;
-};
-
-struct item_pos {
-    enum item_colour colour;
-    bool destroyed;
-    position pos;
 };
 
 struct tile {
@@ -62,5 +45,4 @@ struct platform {
     enum platform_plane plane = HORIZONTAL;
     enum platform_direction direction = POSITIVE;
     position pos;
-    std::vector<item_pos> items; 
 };
