@@ -13,24 +13,27 @@ namespace GUI {
     /*
     Constructor for Window class
     */
-    Window::Window(const char* title, board board_data) {
+    Window::Window(const char* title, board board_data, std::vector<platform> platform_list) {
         init();
         m_Window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, 
             SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
         m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_PRESENTVSYNC);
         m_Board = new Board(m_Renderer);
-        int tile_size = m_Board->getTileSize();        
+        tile_size = m_Board->getTileSize();        
+        
+        reset_board(board_data);
+        reset_platform(platform_list);
 
         //Testing variables
         m_Tile = new Tiles(m_Renderer, RED_ITEM, tile_size);
         std::cout << "Constructor success";
         m_Tile->setPosition(100, 100);
 
-
-
     }
 
     Window::~Window() {
+        delete_board();
+        delete_platforms();
         delete m_Event;
         delete m_Board;
         delete m_Tile;
@@ -52,6 +55,146 @@ namespace GUI {
 
     bool Window::isRunning() const {
         return m_Running;
+    }
+
+    void Window::reset_board(board board_data){
+        for(int x = 0; x < BOARD_SIZE; x++) {
+            for(int y = 0; y < BOARD_SIZE; y++) {
+                tile tile_type = board_data.board[x][y];
+                char* file_path;
+
+                if (tile_type.wall){
+
+                    switch (tile_type.wall)
+                        {
+                    case 1:
+                        file_path = EXTERIOR_WALL;
+                        break;
+                    
+                    case 2:
+                        file_path = FLOOR_WALL;
+                        break;
+
+                    case 3:
+                        file_path = LEDGE_WALL;
+                        break;
+                    
+                    case 4:
+                        file_path = INTERIOR_WALL;
+                        break;
+
+                    default:
+                        std::cout << "Error with wall type assignment\n";
+                        break;
+                    }
+                    Tiles* temp = new Tiles(m_Renderer, file_path, tile_size);
+                    temp->setPosition(x, y);
+                    base_tiles.push_back(temp);
+                }
+                
+            }
+        }
+    }
+    void Window::reset_platform(std::vector<platform> platform_list){
+        for (int i=0; i<platform_list.size(); i++){
+            char* file_path;
+
+            switch (platform_list[i].plane){
+                case HORIZONTAL:
+                    file_path = RIGHT_PLATFORM;
+                    break;
+
+                case VERTICAL:
+                    file_path = UP_PLATFORM;
+                    break;
+                
+                default:
+                    std::cout << "Platform display error\n";
+                    break;
+            }
+
+            Tiles* temp = new Tiles(m_Renderer, file_path, tile_size);
+            temp->setPosition(platform_list[i].pos.x, platform_list[i].pos.y);
+            platform_tiles.push_back(temp);
+        }
+    }
+    void Window::reset_items(std::map<position, int> item_list){
+        std::map<position, int>::iterator it;
+        for (it = item_list.begin(); it != item_list.end(); it++){
+            char* file_path;
+            switch (it->second) {
+                case RED:
+                    file_path = RED_ITEM;
+                    break;
+                
+                case BLUE:
+                    file_path = BLUE_ITEM;
+                    break;
+                
+                case GREEN:
+                    file_path = GREEN_ITEM;
+                    break;
+                
+                case PINK:
+                    file_path = PINK_ITEM;
+                    break;
+
+                case PURPLE:
+                    file_path = PURPLE_ITEM;
+                    break;
+                
+                case CYAN:
+                    file_path = CYAN_ITEM;
+                    break;
+                
+                case BROWN:
+                    file_path = BROWN_ITEM;
+                    break;
+                
+                case ORANGE:
+                    file_path = ORANGE_ITEM;
+                    break;
+                
+                case YELLOW:
+                    file_path = YELLOW_ITEM;
+                    break;
+                
+                default:
+                    std::cout << "Error in item texture assignment";
+                    break;
+            }
+            Tiles* temp = new Tiles(m_Renderer, file_path, tile_size);
+            temp->setPosition(it->first.x, it->first.y);
+            item_tiles.push_back(temp);
+        }
+
+    }
+
+    void Window::delete_board(){
+        for (int i = base_tiles.size()-1; i >= 0; i--){
+            delete base_tiles[i];
+        }
+        base_tiles.clear();
+    }
+    void Window::delete_platforms(){
+        for (int i = platform_tiles.size()-1; i >= 0; i--){
+            delete platform_tiles[i];
+        }
+        platform_tiles.clear();
+    }
+    void Window::delete_items(){
+        for (int i = item_tiles.size(); i >= 0; i--){
+            delete item_tiles[i];
+        }
+        item_tiles.clear();
+    }
+
+    void Window::reset(board board_data, std::vector<platform> platform_list){
+        delete_board();
+        delete_platforms();
+
+        reset_board(board_data);
+        reset_platform(platform_list);
     }
 
     void Window::pollEvent() {
@@ -89,27 +232,41 @@ namespace GUI {
 
     }
 
-    void Window::render_start() {
+    void Window::render(std::map<position, int> item_list) {
         SDL_SetRenderDrawColor(m_Renderer, 128, 0, 255, 255);
         SDL_RenderClear(m_Renderer);
         m_Board->drawBoard();
+
+        render_board();
+        render_platforms();
+        
+        render_items(item_list);
+
+        SDL_RenderPresent(m_Renderer);
+        delete_items();
     }
 
     void Window::render_board() {
-        
+        for (int i=0; i<base_tiles.size(); i++){
+            base_tiles[i]->draw();
+        }
     }
 
-    void render_platforms(std::vector<platform> platform_list){
+    void Window::render_platforms(){
+        for (int i=0; i<platform_tiles.size(); i++){
+            platform_tiles[i]->draw();
+        }
+    }
+
+    void Window::render_items(std::map<position, int> item_list){
+        reset_items(item_list);
+        for (int i=0; i<platform_tiles.size(); i++){
+            platform_tiles[i]->draw();
+        }
 
     }
 
-    void render_items(std::map<position, int> item_list){
 
-    }
-
-    void Window::render_finish() {
-        SDL_RenderPresent(m_Renderer);
-    }
 
 
 

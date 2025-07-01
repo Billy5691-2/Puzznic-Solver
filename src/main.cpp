@@ -20,17 +20,14 @@ int main(){
     std::array<int, COLOURS> item_count = Game.get_item_count();
     std::map<position, int> item_list = Game.get_item_list();
     std::vector<platform> platform_list = Game.get_platform_list();
-    GUI::Window GUI("Puzznic", board_data);
+    GUI::Window GUI("Puzznic", board_data, platform_list);
 
     while (GUI.isRunning()){
         GUI.pollEvent();
         board_data = Game.get_board();
         GUI.update();
-        GUI.render_start();
-        GUI.render_board();
-        GUI.render_platforms(platform_list);
-        GUI.render_items(item_list);
-        GUI.render_finish();
+        item_list = Game.get_item_list();
+        GUI.render(item_list);
     }
 
     close();

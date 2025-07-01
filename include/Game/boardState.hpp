@@ -36,19 +36,19 @@ namespace Puzznic{
             BoardState();
             BoardState(std::string level);
             BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, std::map<position, int> temp_item_list, 
-                std::vector<platform> temp_platform_list); //done
+                std::vector<platform> temp_platform_list); 
             ~BoardState();
             //BoardState copy_state();
             //std::map<position, int> copy_item_list();
             //std::map<int, platform> copy_platform_list();
             //board copy_board();
 
-            tile get_board_pos(position pos); //done
-            std::map<position, int> get_item_list(); //done
-            std::vector<platform> get_platform_list(); //done
-            std::array<int, COLOURS> get_item_count(); //done
-            int get_board_size(); //done
-            board get_board(); // done
+            tile get_board_pos(position pos); 
+            std::map<position, int> get_item_list(); 
+            std::vector<platform> get_platform_list(); 
+            std::array<int, COLOURS> get_item_count(); 
+            int get_board_size(); 
+            board get_board(); 
 
             //void update_item_list(position item, position new_pos);
             //void remove_item_list(position item);

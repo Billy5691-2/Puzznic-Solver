@@ -31,7 +31,7 @@ namespace Puzznic {
             Game(std::string level);
             Game(BoardState new_board_state);
             ~Game();
-            board copy_board();
+            //board copy_board();
 
             std::array<int, COLOURS> get_item_count();
             board get_board();

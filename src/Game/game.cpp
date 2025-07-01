@@ -12,15 +12,16 @@ namespace Puzznic {
 
     
 
-    board Game::copy_board(){
-        /*
+    /*board Game::copy_board(){
+        std::cout << "TBD\n";
+        
         board new_board;
         new_board.size = game_board.size;
         //new_board.height = game_board.height;
         //new_board.width = game_board.width;
         std::copy(&game_board.board[0][0], &game_board.board[0][0]+BOARD_SIZE*BOARD_SIZE, &new_board.board[0][0]);
-        return new_board;*/
-    }
+        return new_board;
+    }*/
 
     board Game::get_board(){ return active_board.get_board(); }
     std::array<int, COLOURS> Game::get_item_count(){ return active_board.get_item_count(); }

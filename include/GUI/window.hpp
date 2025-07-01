@@ -20,6 +20,8 @@ namespace GUI {
         SDL_Renderer* m_Renderer;
         SDL_Window* m_Window;
 
+        int tile_size;
+
         bool m_Running = false;
         bool m_Is_Selected = false;
 
@@ -27,27 +29,33 @@ namespace GUI {
         Tiles* m_Tile;
 
         std::vector<Tiles*> base_tiles;
-
-        std::map<position, int>* item_list; 
-
-        std::map<int, Tiles*> item_textures;
-        std::map<int, Tiles*> platform_textures;
+        std::vector<Tiles*> platform_tiles;
+        std::vector<Tiles*> item_tiles;
 
         void init();
         void drawBoard();
+        void reset_board(board board_data);
+        void reset_platform(std::vector<platform> platform_list);
+        void reset_items(std::map<position, int> item_list);
+
+        void delete_platforms();
+        void delete_board();
+        void delete_items();
+
+        void render_board();
+        void render_platforms();
+        void render_items(std::map<position, int> item_list);
 
         public:
-            Window(const char* title, board board_data);
+            Window(const char* title, board board_data, std::vector<platform> platform_list);
             ~Window();
 
             bool isRunning() const;
             void pollEvent();
             void update();
-            void render_start();
-            void render_board();
-            void render_platforms(std::vector<platform> platform_list);
-            void render_items(std::map<position, int> item_list);
-            void render_finish();
+            void render(std::map<position, int> item_list);
+
+            void reset(board board_data, std::vector<platform> platform_list);
 
     };
 }
