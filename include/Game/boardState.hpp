@@ -32,8 +32,11 @@ namespace Puzznic{
         //void update_platform_positions();
         void update_item_count(int colour);
 
+        void print_board();
+        void print_item_list();
+
         public:
-            BoardState();
+            BoardState() : BoardState("../../levels/level_1_1_cpp.csv"){}
             BoardState(std::string level);
             BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, std::map<position, int> temp_item_list, 
                 std::vector<platform> temp_platform_list); 
@@ -52,7 +55,5 @@ namespace Puzznic{
 
             //void update_item_list(position item, position new_pos);
             //void remove_item_list(position item);
-
-            void print_board();
     };
 }

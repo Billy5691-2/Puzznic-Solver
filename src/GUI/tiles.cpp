@@ -31,6 +31,10 @@ namespace GUI{
         m_TileProperty->y = p_Y;
     }
 
+    void Tiles::setPosition(position pos){
+        setPosition(pos.x, pos.y);
+    }
+
     //Renders a tile's texture on the board
     void Tiles::draw(){
         TextureManager::Render(m_Renderer, m_TileTexture, m_TileProperty);

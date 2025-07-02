@@ -5,6 +5,10 @@ namespace Puzznic {
         //active_board(level);
     }
 
+    Game::Game(BoardState new_board_state) {
+        std::cout << "TBD\n";
+    }
+
     //Game Destructor
     Game::~Game() {
         std::cout << "Close Game 2\n";

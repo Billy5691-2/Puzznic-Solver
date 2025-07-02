@@ -8,6 +8,41 @@
 //https://lazyfoo.net/tutorials/SDL/index.php
 
 
+const char* RED_ITEM_PATH = RED_ITEM;
+const char* BLUE_ITEM_PATH = BLUE_ITEM;
+const char* GREEN_ITEM_PATH = GREEN_ITEM;
+const char* PINK_ITEM_PATH = PINK_ITEM;
+const char* PURPLE_ITEM_PATH = PURPLE_ITEM;
+const char* CYAN_ITEM_PATH = CYAN_ITEM;
+const char* BROWN_ITEM_PATH = BROWN_ITEM;
+const char* ORANGE_ITEM_PATH = ORANGE_ITEM;
+const char* YELLOW_ITEM_PATH = YELLOW_ITEM;
+
+const char* EXTERIOR_WALL_PATH = EXTERIOR_WALL;
+const char* FLOOR_WALL_PATH = FLOOR_WALL;
+const char* LEDGE_WALL_PATH = LEDGE_WALL;
+const char* INTERIOR_WALL_PATH = INTERIOR_WALL;
+const char* GREEN_WALL_PATH = GREEN_WALL;
+
+
+const char* UP_PLATFORM_PATH = UP_PLATFORM;
+const char* DOWN_PLATFORM_PATH = DOWN_PLATFORM;
+const char* RIGHT_PLATFORM_PATH = RIGHT_PLATFORM;
+const char* LEFT_PLATFORM_PATH = LEFT_PLATFORM;
+
+std::array<const char*, COLOURS> item_paths_array = {
+    RED_ITEM_PATH, 
+    BLUE_ITEM_PATH, 
+    GREEN_ITEM_PATH,
+    PINK_ITEM_PATH,
+    PURPLE_ITEM_PATH,
+    CYAN_ITEM_PATH,
+    BROWN_ITEM_PATH,
+    ORANGE_ITEM_PATH,
+    YELLOW_ITEM_PATH
+};
+
+
 namespace GUI {
 
     /*
@@ -19,15 +54,18 @@ namespace GUI {
             SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
         m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_PRESENTVSYNC);
         m_Board = new Board(m_Renderer);
-        tile_size = m_Board->getTileSize();        
+        tile_size = m_Board->getTileSize();
+        m_Count = new ItemCounter(m_Renderer, tile_size, item_paths_array);        
         
         reset_board(board_data);
         reset_platform(platform_list);
 
         //Testing variables
-        m_Tile = new Tiles(m_Renderer, RED_ITEM, tile_size);
-        std::cout << "Constructor success";
+        m_Tile = new Tiles(m_Renderer, RED_ITEM_PATH, tile_size);
+        std::cout << "Constructor success\n";
         m_Tile->setPosition(100, 100);
+
+
 
     }
 
@@ -61,26 +99,26 @@ namespace GUI {
         for(int x = 0; x < BOARD_SIZE; x++) {
             for(int y = 0; y < BOARD_SIZE; y++) {
                 tile tile_type = board_data.board[x][y];
-                char* file_path;
+                const char* file_path;
 
                 if (tile_type.wall){
 
                     switch (tile_type.wall)
                         {
                     case 1:
-                        file_path = EXTERIOR_WALL;
+                        file_path = EXTERIOR_WALL_PATH;
                         break;
                     
                     case 2:
-                        file_path = FLOOR_WALL;
+                        file_path = FLOOR_WALL_PATH;
                         break;
 
                     case 3:
-                        file_path = LEDGE_WALL;
+                        file_path = LEDGE_WALL_PATH;
                         break;
                     
                     case 4:
-                        file_path = INTERIOR_WALL;
+                        file_path = INTERIOR_WALL_PATH;
                         break;
 
                     default:
@@ -88,7 +126,7 @@ namespace GUI {
                         break;
                     }
                     Tiles* temp = new Tiles(m_Renderer, file_path, tile_size);
-                    temp->setPosition(x, y);
+                    temp->setPosition(grid_to_pixel(x, y));
                     base_tiles.push_back(temp);
                 }
                 
@@ -97,15 +135,15 @@ namespace GUI {
     }
     void Window::reset_platform(std::vector<platform> platform_list){
         for (int i=0; i<platform_list.size(); i++){
-            char* file_path;
+            const char* file_path;
 
             switch (platform_list[i].plane){
                 case HORIZONTAL:
-                    file_path = RIGHT_PLATFORM;
+                    file_path = RIGHT_PLATFORM_PATH;
                     break;
 
                 case VERTICAL:
-                    file_path = UP_PLATFORM;
+                    file_path = UP_PLATFORM_PATH;
                     break;
                 
                 default:
@@ -114,49 +152,50 @@ namespace GUI {
             }
 
             Tiles* temp = new Tiles(m_Renderer, file_path, tile_size);
-            temp->setPosition(platform_list[i].pos.x, platform_list[i].pos.y);
+            temp->setPosition(grid_to_pixel(platform_list[i].pos));
+            //temp->setPosition(platform_list[i].pos.x, platform_list[i].pos.y);
             platform_tiles.push_back(temp);
         }
     }
     void Window::reset_items(std::map<position, int> item_list){
         std::map<position, int>::iterator it;
         for (it = item_list.begin(); it != item_list.end(); it++){
-            char* file_path;
+            const char* file_path;
             switch (it->second) {
                 case RED:
-                    file_path = RED_ITEM;
+                    file_path = RED_ITEM_PATH;
                     break;
                 
                 case BLUE:
-                    file_path = BLUE_ITEM;
+                    file_path = BLUE_ITEM_PATH;
                     break;
                 
                 case GREEN:
-                    file_path = GREEN_ITEM;
+                    file_path = GREEN_ITEM_PATH;
                     break;
                 
                 case PINK:
-                    file_path = PINK_ITEM;
+                    file_path = PINK_ITEM_PATH;
                     break;
 
                 case PURPLE:
-                    file_path = PURPLE_ITEM;
+                    file_path = PURPLE_ITEM_PATH;
                     break;
                 
                 case CYAN:
-                    file_path = CYAN_ITEM;
+                    file_path = CYAN_ITEM_PATH;
                     break;
                 
                 case BROWN:
-                    file_path = BROWN_ITEM;
+                    file_path = BROWN_ITEM_PATH;
                     break;
                 
                 case ORANGE:
-                    file_path = ORANGE_ITEM;
+                    file_path = ORANGE_ITEM_PATH;
                     break;
                 
                 case YELLOW:
-                    file_path = YELLOW_ITEM;
+                    file_path = YELLOW_ITEM_PATH;
                     break;
                 
                 default:
@@ -164,7 +203,8 @@ namespace GUI {
                     break;
             }
             Tiles* temp = new Tiles(m_Renderer, file_path, tile_size);
-            temp->setPosition(it->first.x, it->first.y);
+            temp->setPosition(grid_to_pixel(it->first));
+            //temp->setPosition(it->first.x, it->first.y);
             item_tiles.push_back(temp);
         }
 
@@ -183,7 +223,7 @@ namespace GUI {
         platform_tiles.clear();
     }
     void Window::delete_items(){
-        for (int i = item_tiles.size(); i >= 0; i--){
+        for (int i = item_tiles.size()-1; i >= 0; i--){
             delete item_tiles[i];
         }
         item_tiles.clear();
@@ -232,18 +272,21 @@ namespace GUI {
 
     }
 
-    void Window::render(std::map<position, int> item_list) {
+    void Window::render(std::map<position, int> item_list, std::vector<platform> platform_list, 
+        std::array<int, COLOURS> item_count) {
         SDL_SetRenderDrawColor(m_Renderer, 128, 0, 255, 255);
         SDL_RenderClear(m_Renderer);
         m_Board->drawBoard();
+        m_Count->draw_tiles();
+        m_Count->draw_text(item_count);
 
         render_board();
-        render_platforms();
-        
+        render_platforms(platform_list);
         render_items(item_list);
 
         SDL_RenderPresent(m_Renderer);
         delete_items();
+        m_Count->free_text();
     }
 
     void Window::render_board() {
@@ -252,25 +295,31 @@ namespace GUI {
         }
     }
 
-    void Window::render_platforms(){
+    void Window::render_platforms(std::vector<platform> platform_list) {
         for (int i=0; i<platform_tiles.size(); i++){
+            platform_tiles[i]->setPosition(grid_to_pixel(platform_list[i].pos));
             platform_tiles[i]->draw();
         }
     }
 
     void Window::render_items(std::map<position, int> item_list){
         reset_items(item_list);
-        for (int i=0; i<platform_tiles.size(); i++){
-            platform_tiles[i]->draw();
+        for (int i=0; i<item_tiles.size(); i++){
+            item_tiles[i]->draw();
         }
 
     }
 
+    position Window::grid_to_pixel(position pos) {
+        return grid_to_pixel(pos.x, pos.y);
+    }
 
-
-
-
-
+    position Window::grid_to_pixel(int x, int y) {
+        position pixel_pos;
+        pixel_pos.x = WINDOW_LEFT + (x * tile_size);
+        pixel_pos.y = y * tile_size;
+        return pixel_pos;
+    }
 
 
 

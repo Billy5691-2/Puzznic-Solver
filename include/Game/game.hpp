@@ -28,6 +28,7 @@ namespace Puzznic {
         BoardState active_board;
 
         public:
+            Game() : Game("../../levels/level_1_1_cpp.csv") {}
             Game(std::string level);
             Game(BoardState new_board_state);
             ~Game();

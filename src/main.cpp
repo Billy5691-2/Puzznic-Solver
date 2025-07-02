@@ -1,6 +1,6 @@
 #include "../include/Game/game.hpp"
 #include "../include/GUI/window.hpp"
-std::string filename = "../levels/level_1_1_cpp.csv";
+std::string filename = "../../levels/level_1_1_cpp.csv";
 
 inline void init() {
     SDL_Init(SDL_INIT_VIDEO);
@@ -26,8 +26,11 @@ int main(){
         GUI.pollEvent();
         board_data = Game.get_board();
         GUI.update();
+
+        item_count = Game.get_item_count();
+        platform_list = Game.get_platform_list();
         item_list = Game.get_item_list();
-        GUI.render(item_list);
+        GUI.render(item_list, platform_list, item_count);
     }
 
     close();

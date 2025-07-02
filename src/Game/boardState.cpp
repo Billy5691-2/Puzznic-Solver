@@ -11,8 +11,14 @@ namespace Puzznic {
 
         std::fstream levelData(level);
 
-        std::getline (levelData, data);   
+        std::getline (levelData, data);
+
+        std::cout << "File read start\n";
+
+        //There is an inconsistent error occuring the the file read here
         game_board.size = std::stoi(data);
+        std::cout << "File read complete\n";
+
         std::getline (levelData, data);
         //game_board.width = std::stoi(data);
         
@@ -142,9 +148,11 @@ namespace Puzznic {
         levelData.close();/**/
 
         //print_board();
+        //print_item_list();
 
 
     }
+
     BoardState::BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, std::map<position, int> temp_item_list, 
                 std::vector<platform> temp_platform_list){
                     game_board = temp_game_board;
@@ -181,6 +189,14 @@ namespace Puzznic {
             }
         std::cout << "\n";
         } 
+    }
+
+    void BoardState::print_item_list(){
+        std::map<position, int>::iterator it;
+        for (it = item_list.begin(); it!=item_list.end(); it++){
+            std::cout << "X: " << it->first.x << " Y: " << it->first.y << " Col: " << it->second << "\n";
+        }
+
     }
 
 

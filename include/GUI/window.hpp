@@ -9,10 +9,14 @@
 
 #include "tiles.hpp"
 #include "board.hpp"
+#include "itemCounter.hpp"
 //#include <stdlib.h>
 #include "../structs.hpp"
 #include "../constants.hpp"
+#include "../texture_paths.hpp"
 
+
+// Platform output is untested
 
 namespace GUI {
     class Window {
@@ -25,12 +29,15 @@ namespace GUI {
         bool m_Running = false;
         bool m_Is_Selected = false;
 
+        ItemCounter* m_Count;
         Board* m_Board;
         Tiles* m_Tile;
 
         std::vector<Tiles*> base_tiles;
         std::vector<Tiles*> platform_tiles;
         std::vector<Tiles*> item_tiles;
+
+        std::vector<Tiles*> item_count_tiles;
 
         void init();
         void drawBoard();
@@ -43,8 +50,11 @@ namespace GUI {
         void delete_items();
 
         void render_board();
-        void render_platforms();
+        void render_platforms(std::vector<platform> platform_list);
         void render_items(std::map<position, int> item_list);
+
+        position grid_to_pixel(position pos);
+        position grid_to_pixel(int x, int y);
 
         public:
             Window(const char* title, board board_data, std::vector<platform> platform_list);
@@ -53,7 +63,8 @@ namespace GUI {
             bool isRunning() const;
             void pollEvent();
             void update();
-            void render(std::map<position, int> item_list);
+            void render(std::map<position, int> item_list, std::vector<platform> platform_list, 
+                std::array<int, COLOURS> item_count);
 
             void reset(board board_data, std::vector<platform> platform_list);
 
