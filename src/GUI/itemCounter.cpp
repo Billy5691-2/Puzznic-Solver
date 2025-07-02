@@ -3,16 +3,15 @@
 namespace GUI {
     ItemCounter::ItemCounter(SDL_Renderer* p_Renderer, int tile_size, std::array<const char*, COLOURS> item_paths) {
         std::cout << "Opening font!\n";
-        //TTF_Init();
+        TTF_Init();
         m_Renderer = p_Renderer;
-        std::cout << "Opening font!\n";
+        std::cout << "Opening font 2!\n";
 
-        //Sans = TTF_OpenFont("../../assets/fonts/OpenSans-Regular.ttf", 24);
-        Sans = TTF_OpenFont("Sans.ttf", 24);
+        Sans = TTF_OpenFont("../assets/fonts/OpenSans-Regular.ttf", 24);
+        //Sans = TTF_OpenFont("Sans.ttf", 24);
 
         if (Sans == NULL) { 
             std::cout << "Opening font failed!\n";
-
         }
 
         White = {255, 255, 255};

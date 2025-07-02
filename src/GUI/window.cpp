@@ -58,7 +58,7 @@ namespace GUI {
         std::cout << "3\n";
         m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_PRESENTVSYNC);
         
-        std::cout << "1\n";
+        std::cout << "4\n";
 
         m_Board = new Board(m_Renderer);
         tile_size = m_Board->getTileSize();
