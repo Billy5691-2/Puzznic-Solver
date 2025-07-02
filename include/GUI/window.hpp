@@ -9,7 +9,7 @@
 
 #include "tiles.hpp"
 #include "board.hpp"
-#include "itemCounter.hpp"
+//#include "itemCounter.hpp"
 //#include <stdlib.h>
 #include "../structs.hpp"
 #include "../constants.hpp"
@@ -29,7 +29,7 @@ namespace GUI {
         bool m_Running = false;
         bool m_Is_Selected = false;
 
-        ItemCounter* m_Count;
+        //ItemCounter* m_Count;
         Board* m_Board;
         Tiles* m_Tile;
 

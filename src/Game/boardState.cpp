@@ -2,22 +2,19 @@
 
 namespace Puzznic {
     BoardState::BoardState(std::string level){
-        //std::array<int, COLOURS> item_count; 
         item_count.fill(0);
-
-        //std::map<position, int> item_list;
 
         std::string data;
 
         std::fstream levelData(level);
+        if (!levelData.is_open()){
+            std::cout << "Failed to open file.\n";
+        } else {
+            std::cout << "File open succeeded. \n";
+        }
 
         std::getline (levelData, data);
-
-        std::cout << "File read start\n";
-
-        //There is an inconsistent error occuring the the file read here
         game_board.size = std::stoi(data);
-        std::cout << "File read complete\n";
 
         std::getline (levelData, data);
         //game_board.width = std::stoi(data);

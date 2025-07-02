@@ -36,7 +36,7 @@ namespace Puzznic{
         void print_item_list();
 
         public:
-            BoardState() : BoardState("../../levels/level_1_1_cpp.csv"){}
+            BoardState() : BoardState("../levels/level_1_1_cpp.csv"){}
             BoardState(std::string level);
             BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, std::map<position, int> temp_item_list, 
                 std::vector<platform> temp_platform_list); 

@@ -16,7 +16,8 @@
             //"${fileDirname}/${fileBasenameNoExtension}.exe",
         ],
             "options": {
-                "cwd": "${fileDirname}"
+                //"cwd": "${fileDirname}/bin"
+                "cwd": "${workspaceFolder}/bin/"
             },
             "problemMatcher": [
                 "$gcc"

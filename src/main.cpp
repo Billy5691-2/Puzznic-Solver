@@ -1,6 +1,7 @@
 #include "../include/Game/game.hpp"
 #include "../include/GUI/window.hpp"
-std::string filename = "../../levels/level_1_1_cpp.csv";
+std::string filename = "../levels/level_1_1_cpp.csv";
+
 
 inline void init() {
     SDL_Init(SDL_INIT_VIDEO);
@@ -20,6 +21,8 @@ int main(){
     std::array<int, COLOURS> item_count = Game.get_item_count();
     std::map<position, int> item_list = Game.get_item_list();
     std::vector<platform> platform_list = Game.get_platform_list();
+
+    std::cout << "1\n";
     GUI::Window GUI("Puzznic", board_data, platform_list);
 
     while (GUI.isRunning()){

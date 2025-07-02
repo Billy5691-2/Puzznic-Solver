@@ -50,12 +50,20 @@ namespace GUI {
     */
     Window::Window(const char* title, board board_data, std::vector<platform> platform_list) {
         init();
+
+        std::cout << "2\n";
+
         m_Window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, 
             SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+        std::cout << "3\n";
         m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_PRESENTVSYNC);
+        
+        std::cout << "1\n";
+
         m_Board = new Board(m_Renderer);
         tile_size = m_Board->getTileSize();
-        m_Count = new ItemCounter(m_Renderer, tile_size, item_paths_array);        
+
+        //m_Count = new ItemCounter(m_Renderer, tile_size, item_paths_array);        
         
         reset_board(board_data);
         reset_platform(platform_list);
@@ -74,6 +82,7 @@ namespace GUI {
         delete_platforms();
         delete m_Event;
         delete m_Board;
+        //delete m_Count;
         delete m_Tile;
         SDL_DestroyRenderer(m_Renderer);
         SDL_DestroyWindow(m_Window);
@@ -87,12 +96,94 @@ namespace GUI {
         m_Renderer = NULL;
         m_Running = true;
         m_Is_Selected = false;
-
     }
-
 
     bool Window::isRunning() const {
         return m_Running;
+    }
+
+    void Window::pollEvent() {
+        while (SDL_PollEvent(m_Event)) {
+            switch (m_Event->type) {
+
+                //SDL window is closed
+                case SDL_QUIT:
+                    m_Running = false;
+                    break;
+                
+                // A mouse button is pressed
+                case SDL_MOUSEBUTTONDOWN:
+                    switch (m_Event->button.button) {
+                        case SDL_BUTTON_LEFT:
+                            m_Is_Selected = true;
+                            int x, y;
+                            SDL_GetMouseState(&x, &y);
+                            m_Tile->setPosition(x, y);
+                    }
+
+
+            }
+        }
+    }
+
+    void Window::update() {
+        if (m_Is_Selected) {
+            int x, y;
+            SDL_GetMouseState(&x, &y);
+            x -= 35;
+            y -= 35;
+            m_Tile->setPosition(x, y);
+        }
+
+    }
+
+    void Window::render(std::map<position, int> item_list, std::vector<platform> platform_list, 
+        std::array<int, COLOURS> item_count) {
+        SDL_SetRenderDrawColor(m_Renderer, 128, 0, 255, 255);
+        SDL_RenderClear(m_Renderer);
+        m_Board->drawBoard();
+        //m_Count->draw_tiles();
+        //m_Count->draw_text(item_count);
+
+        render_board();
+        render_platforms(platform_list);
+        render_items(item_list);
+
+        SDL_RenderPresent(m_Renderer);
+        delete_items();
+        //m_Count->free_text();
+    }
+
+    void Window::render_board() {
+        for (int i=0; i<base_tiles.size(); i++){
+            base_tiles[i]->draw();
+        }
+    }
+
+    void Window::render_platforms(std::vector<platform> platform_list) {
+        for (int i=0; i<platform_tiles.size(); i++){
+            platform_tiles[i]->setPosition(grid_to_pixel(platform_list[i].pos));
+            platform_tiles[i]->draw();
+        }
+    }
+
+    void Window::render_items(std::map<position, int> item_list){
+        reset_items(item_list);
+        for (int i=0; i<item_tiles.size(); i++){
+            item_tiles[i]->draw();
+        }
+
+    }
+
+    position Window::grid_to_pixel(position pos) {
+        return grid_to_pixel(pos.x, pos.y);
+    }
+
+    position Window::grid_to_pixel(int x, int y) {
+        position pixel_pos;
+        pixel_pos.x = WINDOW_LEFT + (x * tile_size);
+        pixel_pos.y = y * tile_size;
+        return pixel_pos;
     }
 
     void Window::reset_board(board board_data){
@@ -210,6 +301,14 @@ namespace GUI {
 
     }
 
+    void Window::reset(board board_data, std::vector<platform> platform_list){
+        delete_board();
+        delete_platforms();
+
+        reset_board(board_data);
+        reset_platform(platform_list);
+    }
+
     void Window::delete_board(){
         for (int i = base_tiles.size()-1; i >= 0; i--){
             delete base_tiles[i];
@@ -227,98 +326,6 @@ namespace GUI {
             delete item_tiles[i];
         }
         item_tiles.clear();
-    }
-
-    void Window::reset(board board_data, std::vector<platform> platform_list){
-        delete_board();
-        delete_platforms();
-
-        reset_board(board_data);
-        reset_platform(platform_list);
-    }
-
-    void Window::pollEvent() {
-        while (SDL_PollEvent(m_Event)) {
-            switch (m_Event->type) {
-
-                //SDL window is closed
-                case SDL_QUIT:
-                    m_Running = false;
-                    break;
-                
-                // A mouse button is pressed
-                case SDL_MOUSEBUTTONDOWN:
-                    switch (m_Event->button.button) {
-                        case SDL_BUTTON_LEFT:
-                            m_Is_Selected = true;
-                            int x, y;
-                            SDL_GetMouseState(&x, &y);
-                            m_Tile->setPosition(x, y);
-                    }
-
-
-            }
-        }
-    }
-
-    void Window::update() {
-        if (m_Is_Selected) {
-            int x, y;
-            SDL_GetMouseState(&x, &y);
-            x -= 35;
-            y -= 35;
-            m_Tile->setPosition(x, y);
-        }
-
-    }
-
-    void Window::render(std::map<position, int> item_list, std::vector<platform> platform_list, 
-        std::array<int, COLOURS> item_count) {
-        SDL_SetRenderDrawColor(m_Renderer, 128, 0, 255, 255);
-        SDL_RenderClear(m_Renderer);
-        m_Board->drawBoard();
-        m_Count->draw_tiles();
-        m_Count->draw_text(item_count);
-
-        render_board();
-        render_platforms(platform_list);
-        render_items(item_list);
-
-        SDL_RenderPresent(m_Renderer);
-        delete_items();
-        m_Count->free_text();
-    }
-
-    void Window::render_board() {
-        for (int i=0; i<base_tiles.size(); i++){
-            base_tiles[i]->draw();
-        }
-    }
-
-    void Window::render_platforms(std::vector<platform> platform_list) {
-        for (int i=0; i<platform_tiles.size(); i++){
-            platform_tiles[i]->setPosition(grid_to_pixel(platform_list[i].pos));
-            platform_tiles[i]->draw();
-        }
-    }
-
-    void Window::render_items(std::map<position, int> item_list){
-        reset_items(item_list);
-        for (int i=0; i<item_tiles.size(); i++){
-            item_tiles[i]->draw();
-        }
-
-    }
-
-    position Window::grid_to_pixel(position pos) {
-        return grid_to_pixel(pos.x, pos.y);
-    }
-
-    position Window::grid_to_pixel(int x, int y) {
-        position pixel_pos;
-        pixel_pos.x = WINDOW_LEFT + (x * tile_size);
-        pixel_pos.y = y * tile_size;
-        return pixel_pos;
     }
 
 

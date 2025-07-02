@@ -10,5 +10,4 @@ const int WINDOW_LEFT = (WINDOW_WIDTH - WINDOW_HEIGHT) * 0.4; // Righthand edge 
 const int WINDOW_RIGHT_OFFSET = WINDOW_HEIGHT + WINDOW_LEFT; //Lefthand side of window rightside
 const int WINDOW_RIGHT_SIZE = (WINDOW_WIDTH - WINDOW_HEIGHT) * 0.6; //Lefthand side of window rightside
 
-
 //const int WINDOW_WIDTH = 1200;
