@@ -1,8 +1,8 @@
 #pragma once
 
-#define ITEMS_PATH "../../assets/items/"
-#define PLATFORM_PATH "../../assets/platforms/"
-#define WALL_PATH "../../assets/walls/"
+#define ITEMS_PATH "../assets/items/"
+#define PLATFORM_PATH "../assets/platforms/"
+#define WALL_PATH "../assets/walls/"
 
 #define ITEM "_Item.png"
 #define WALL "_Wall.png"
