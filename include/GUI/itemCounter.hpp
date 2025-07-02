@@ -3,8 +3,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
-#include <iostream>>
-#include <map>
+#include <iostream>
+#include <array>
 
 #include "tiles.hpp"
 #include "../structs.hpp"
@@ -18,8 +18,8 @@ namespace GUI{
         std::array<SDL_Surface*, COLOURS> surfaces;
         std::array<SDL_Texture*, COLOURS> messages;
 
-        TTF_Font* Sans = TTF_OpenFont("Sans.ttf", 24);
-        SDL_Colour White = {255, 255, 255};
+        TTF_Font* Sans;
+        SDL_Colour White;
 
         public:
             ItemCounter(SDL_Renderer* p_Renderer, int tile_size, std::array<const char*, COLOURS> item_paths);
