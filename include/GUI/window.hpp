@@ -10,6 +10,7 @@
 #include "tiles.hpp"
 #include "board.hpp"
 #include "itemCounter.hpp"
+#include "controls.hpp"
 //#include <stdlib.h>
 #include "../structs.hpp"
 #include "../constants.hpp"
@@ -32,6 +33,7 @@ namespace GUI {
         ItemCounter* m_Count;
         Board* m_Board;
         Tiles* m_Tile;
+        Controls* m_Controls;
 
         std::vector<Tiles*> base_tiles;
         std::vector<Tiles*> platform_tiles;

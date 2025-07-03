@@ -17,7 +17,7 @@ namespace GUI {
     }
 
     ItemCounter::~ItemCounter(){
-        std::cout << "Item Counter Closed";
+        std::cout << "Item Counter Closed\n";
     }
 
     void ItemCounter::draw_tiles(){

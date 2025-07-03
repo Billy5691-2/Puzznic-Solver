@@ -24,7 +24,6 @@ const char* LEDGE_WALL_PATH = LEDGE_WALL;
 const char* INTERIOR_WALL_PATH = INTERIOR_WALL;
 const char* GREEN_WALL_PATH = GREEN_WALL;
 
-
 const char* UP_PLATFORM_PATH = UP_PLATFORM;
 const char* DOWN_PLATFORM_PATH = DOWN_PLATFORM;
 const char* RIGHT_PLATFORM_PATH = RIGHT_PLATFORM;
@@ -68,7 +67,9 @@ namespace GUI {
         tile_size = m_Board->getTileSize();
 
         m_Count = new ItemCounter(m_Renderer, m_Font, m_Txt_Colour,
-            tile_size, item_paths_array);        
+            tile_size, item_paths_array);
+            
+        m_Controls = new Controls(m_Renderer, m_Font, m_Txt_Colour, tile_size);
         
         reset_board(board_data);
         reset_platform(platform_list);
@@ -88,7 +89,8 @@ namespace GUI {
         delete m_Event;
         delete m_Board;
         delete m_Count;
-        delete m_Tile;
+        delete m_Controls;
+        delete m_Tile; //
         SDL_DestroyRenderer(m_Renderer);
         SDL_DestroyWindow(m_Window);
 
@@ -124,9 +126,14 @@ namespace GUI {
                 case SDL_MOUSEBUTTONDOWN:
                     switch (m_Event->button.button) {
                         case SDL_BUTTON_LEFT:
-                            m_Is_Selected = true;
                             int x, y;
                             SDL_GetMouseState(&x, &y);
+                            if (x > WINDOW_LEFT && x < WINDOW_RIGHT_OFFSET) {
+
+                            } else if (x > WINDOW_RIGHT_OFFSET) {
+
+                            }
+                            m_Is_Selected = true;
                             m_Tile->setPosition(x, y);
                     }
 
@@ -151,8 +158,11 @@ namespace GUI {
         SDL_SetRenderDrawColor(m_Renderer, 128, 0, 255, 255);
         SDL_RenderClear(m_Renderer);
         m_Board->drawBoard();
+
         m_Count->draw_tiles();
         m_Count->draw_text(item_count);
+
+        m_Controls->render();
 
         render_board();
         render_platforms(platform_list);
@@ -161,6 +171,7 @@ namespace GUI {
         SDL_RenderPresent(m_Renderer);
         delete_items();
         m_Count->free_text();
+        m_Controls->free();
     }
 
     void Window::render_board() {
@@ -168,14 +179,12 @@ namespace GUI {
             base_tiles[i]->draw();
         }
     }
-
     void Window::render_platforms(std::vector<platform> platform_list) {
         for (int i=0; i<platform_tiles.size(); i++){
             platform_tiles[i]->setPosition(grid_to_pixel(platform_list[i].pos));
             platform_tiles[i]->draw();
         }
     }
-
     void Window::render_items(std::map<position, int> item_list){
         reset_items(item_list);
         for (int i=0; i<item_tiles.size(); i++){
@@ -187,7 +196,6 @@ namespace GUI {
     position Window::grid_to_pixel(position pos) {
         return grid_to_pixel(pos.x, pos.y);
     }
-
     position Window::grid_to_pixel(int x, int y) {
         position pixel_pos;
         pixel_pos.x = WINDOW_LEFT + (x * tile_size);

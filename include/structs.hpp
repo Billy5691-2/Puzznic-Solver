@@ -32,8 +32,6 @@ struct position {
         return (x == rhs.x and y == rhs.y);
     }
 
-    //bool operator<(const position& rhs) const {
-    //    return ((x < rhs.x && y < rhs.y));}
     bool operator<(const position& rhs) const {
         if (x < rhs.x){
             return true;
@@ -42,7 +40,6 @@ struct position {
         } else {
             return false;
         }
-        //return ((x < rhs.x && y < rhs.y));
     }
 };
 
