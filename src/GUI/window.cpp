@@ -54,12 +54,21 @@ namespace GUI {
         m_Window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, 
             SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
         m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_PRESENTVSYNC);
+
+        m_Font = TTF_OpenFont("../assets/fonts/OpenSans-Regular.ttf", 30);
+        m_Txt_Colour = {255, 255, 255};
+
+        if (m_Font == NULL) { 
+            std::cout << "Opening font failed!\n";
+        }
+
         
 
         m_Board = new Board(m_Renderer);
         tile_size = m_Board->getTileSize();
 
-        m_Count = new ItemCounter(m_Renderer, tile_size, item_paths_array);        
+        m_Count = new ItemCounter(m_Renderer, m_Font, m_Txt_Colour,
+            tile_size, item_paths_array);        
         
         reset_board(board_data);
         reset_platform(platform_list);
@@ -83,10 +92,14 @@ namespace GUI {
         SDL_DestroyRenderer(m_Renderer);
         SDL_DestroyWindow(m_Window);
 
+        TTF_CloseFont(m_Font);
+        TTF_Quit();
+
     }
 
     //Initialises values
     void Window::init() {
+        TTF_Init();
         m_Event = new SDL_Event;
         m_Window = NULL;
         m_Renderer = NULL;

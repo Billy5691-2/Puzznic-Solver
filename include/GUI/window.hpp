@@ -36,8 +36,10 @@ namespace GUI {
         std::vector<Tiles*> base_tiles;
         std::vector<Tiles*> platform_tiles;
         std::vector<Tiles*> item_tiles;
-
         std::vector<Tiles*> item_count_tiles;
+
+        TTF_Font* m_Font;
+        SDL_Colour m_Txt_Colour;
 
         void init();
         void drawBoard();

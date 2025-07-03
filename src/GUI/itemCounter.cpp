@@ -1,19 +1,13 @@
 #include "../../include/GUI/itemCounter.hpp"
 
 namespace GUI {
-    ItemCounter::ItemCounter(SDL_Renderer* p_Renderer, int p_tile_size, std::array<const char*, COLOURS> item_paths) {
-        TTF_Init();
+    ItemCounter::ItemCounter(SDL_Renderer* p_Renderer, TTF_Font* p_font, SDL_Colour p_txt_colour,
+        int p_tile_size, std::array<const char*, COLOURS> item_paths) {
         m_Renderer = p_Renderer;
         tile_size = p_tile_size;
-
-        Sans = TTF_OpenFont("../assets/fonts/OpenSans-Regular.ttf", 30);
-        //Sans = TTF_OpenFont("Sans.ttf", 24);
-
-        if (Sans == NULL) { 
-            std::cout << "Opening font failed!\n";
-        }
-
-        White = {255, 255, 255};
+        
+        m_Font = p_font;
+        m_Txt_Colour = p_txt_colour;
 
         for (int i = 0; i < COLOURS; i++) {
             Tiles* temp = new Tiles(m_Renderer, item_paths[i], tile_size);
@@ -23,8 +17,7 @@ namespace GUI {
     }
 
     ItemCounter::~ItemCounter(){
-        TTF_CloseFont(Sans);
-        TTF_Quit();
+        std::cout << "Item Counter Closed";
     }
 
     void ItemCounter::draw_tiles(){
@@ -41,12 +34,12 @@ namespace GUI {
             char const *pchar = temp_str.c_str();
             
 
-            SDL_Surface* surface_message = TTF_RenderText_Solid(Sans, pchar, White);
+            SDL_Surface* surface_message = TTF_RenderText_Solid(m_Font, pchar, m_Txt_Colour);
             SDL_Texture* message = SDL_CreateTextureFromSurface(m_Renderer, surface_message);
             SDL_Rect message_rect;
 
             int w, h;
-            TTF_SizeText(Sans, pchar, &w, &h);
+            TTF_SizeText(m_Font, pchar, &w, &h);
 
             message_rect.x = (WINDOW_LEFT / 4) + tile_size + 5;
             message_rect.y = tile_size + (i * (tile_size + 10)) - 3;
