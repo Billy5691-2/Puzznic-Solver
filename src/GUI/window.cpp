@@ -259,7 +259,11 @@ namespace GUI {
     }
     void Window::reset_items(std::map<position, int> item_list){
         std::map<position, int>::iterator it;
+        //std::cout << "\nItem Draw:\n";
+        //int i = 0;
         for (it = item_list.begin(); it != item_list.end(); it++){
+            //std::cout << "I: " << i << " X: " << it->first.x <<" Y: " << it->first.y << " Col: " << it->second << "\n";
+            //i++;
             const char* file_path;
             switch (it->second) {
                 case RED:

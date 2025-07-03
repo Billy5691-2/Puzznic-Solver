@@ -38,52 +38,60 @@ namespace Puzznic {
 
                 platform temp_plat;
                 temp_plat.pos = temp_pos;
-
                 switch (tile_value) {
                     case 1: //Red
                         temp.item = 1;
-                        item_count[0]++;
+                        item_count[RED]++;
                         item_list[temp_pos] = RED;
+
                         break;
                     case 2: //Blue
                         temp.item = 2;
-                        item_count[1]++;
+                        item_count[BLUE]++;
                         item_list[temp_pos] = BLUE;
+
                         break;
                     case 3: //Green
                         temp.item = 3;
-                        item_count[2]++;
+                        item_count[GREEN]++;
                         item_list[temp_pos] = GREEN;
+
                         break;
                     case 4: //Pink
                         temp.item = 4;
-                        item_count[3]++;
+                        item_count[PINK]++;
                         item_list[temp_pos] = PINK;
+
                         break;
                     case 5: //Purple
                         temp.item = 5;
-                        item_count[4]++;
+                        item_count[PURPLE]++;
                         item_list[temp_pos] = PURPLE;
+
                         break;
                     case 6: //Cyan
                         temp.item = 6;
-                        item_count[5]++;
+                        item_count[CYAN]++;
                         item_list[temp_pos] = CYAN;
+
                         break;
                     case 7: //Brown
                         temp.item = 7;
-                        item_count[5]++;
+                        item_count[BROWN]++;
                         item_list[temp_pos] = BROWN;
+
                         break;
                     case 8: //Orange
                         temp.item = 8;
-                        item_count[6]++;
+                        item_count[ORANGE]++;
                         item_list[temp_pos] = ORANGE;
+
                         break;
                     case 9: // Yellow
                         temp.item = 9;
-                        item_count[7]++;
+                        item_count[YELLOW]++;
                         item_list[temp_pos] = YELLOW;
+
                         break;
                     
                     case 101: //Exterior
@@ -189,9 +197,10 @@ namespace Puzznic {
     }
 
     void BoardState::print_item_list(){
-        std::map<position, int>::iterator it;
-        for (it = item_list.begin(); it!=item_list.end(); it++){
-            std::cout << "X: " << it->first.x << " Y: " << it->first.y << " Col: " << it->second << "\n";
+        std::cout << "\n Item List Size: " << item_list.size() << "\n";
+        std::map<position, int>::iterator it;        
+        for (auto const& x : item_list){
+            std::cout << "X: " << x.first.x << " Y: " << x.first.y << " Col: " << x.second << "\n";
         }
 
     }
