@@ -1,13 +1,12 @@
 #include "../../include/GUI/itemCounter.hpp"
 
 namespace GUI {
-    ItemCounter::ItemCounter(SDL_Renderer* p_Renderer, int tile_size, std::array<const char*, COLOURS> item_paths) {
-        std::cout << "Opening font!\n";
+    ItemCounter::ItemCounter(SDL_Renderer* p_Renderer, int p_tile_size, std::array<const char*, COLOURS> item_paths) {
         TTF_Init();
         m_Renderer = p_Renderer;
-        std::cout << "Opening font 2!\n";
+        tile_size = p_tile_size;
 
-        Sans = TTF_OpenFont("../assets/fonts/OpenSans-Regular.ttf", 24);
+        Sans = TTF_OpenFont("../assets/fonts/OpenSans-Regular.ttf", 30);
         //Sans = TTF_OpenFont("Sans.ttf", 24);
 
         if (Sans == NULL) { 
@@ -36,13 +35,23 @@ namespace GUI {
 
     void ItemCounter::draw_text(std::array<int, COLOURS> item_count){
         for (int i = 0; i < COLOURS; i++) {
-            SDL_Surface* surface_message = TTF_RenderText_Solid(Sans, "Test", White);
+
+            std::string temp_str = std::to_string(item_count[i]);
+            temp_str = "x" + temp_str;
+            char const *pchar = temp_str.c_str();
+            
+
+            SDL_Surface* surface_message = TTF_RenderText_Solid(Sans, pchar, White);
             SDL_Texture* message = SDL_CreateTextureFromSurface(m_Renderer, surface_message);
             SDL_Rect message_rect;
-            message_rect.x = WINDOW_LEFT / 2;
-            message_rect.y = 100 * i;
-            message_rect.w = 100;
-            message_rect.h = 100;
+
+            int w, h;
+            TTF_SizeText(Sans, pchar, &w, &h);
+
+            message_rect.x = (WINDOW_LEFT / 4) + tile_size + 5;
+            message_rect.y = tile_size + (i * (tile_size + 10)) - 3;
+            message_rect.w = w;
+            message_rect.h = h;
             SDL_RenderCopy(m_Renderer, message, NULL, &message_rect);
 
             surfaces[i] = surface_message;

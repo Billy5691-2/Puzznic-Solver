@@ -51,19 +51,15 @@ namespace GUI {
     Window::Window(const char* title, board board_data, std::vector<platform> platform_list) {
         init();
 
-        std::cout << "2\n";
-
         m_Window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, 
             SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
-        std::cout << "3\n";
         m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_PRESENTVSYNC);
         
-        std::cout << "4\n";
 
         m_Board = new Board(m_Renderer);
         tile_size = m_Board->getTileSize();
 
-        //m_Count = new ItemCounter(m_Renderer, tile_size, item_paths_array);        
+        m_Count = new ItemCounter(m_Renderer, tile_size, item_paths_array);        
         
         reset_board(board_data);
         reset_platform(platform_list);
@@ -82,7 +78,7 @@ namespace GUI {
         delete_platforms();
         delete m_Event;
         delete m_Board;
-        //delete m_Count;
+        delete m_Count;
         delete m_Tile;
         SDL_DestroyRenderer(m_Renderer);
         SDL_DestroyWindow(m_Window);
@@ -142,8 +138,8 @@ namespace GUI {
         SDL_SetRenderDrawColor(m_Renderer, 128, 0, 255, 255);
         SDL_RenderClear(m_Renderer);
         m_Board->drawBoard();
-        //m_Count->draw_tiles();
-        //m_Count->draw_text(item_count);
+        m_Count->draw_tiles();
+        m_Count->draw_text(item_count);
 
         render_board();
         render_platforms(platform_list);
@@ -151,7 +147,7 @@ namespace GUI {
 
         SDL_RenderPresent(m_Renderer);
         delete_items();
-        //m_Count->free_text();
+        m_Count->free_text();
     }
 
     void Window::render_board() {

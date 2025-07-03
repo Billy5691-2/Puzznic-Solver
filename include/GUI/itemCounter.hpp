@@ -20,9 +20,10 @@ namespace GUI{
 
         TTF_Font* Sans;
         SDL_Colour White;
+        int tile_size;
 
         public:
-            ItemCounter(SDL_Renderer* p_Renderer, int tile_size, std::array<const char*, COLOURS> item_paths);
+            ItemCounter(SDL_Renderer* p_Renderer, int p_tile_size, std::array<const char*, COLOURS> item_paths);
             ~ItemCounter();
             void draw_tiles();
             void draw_text(std::array<int, COLOURS> item_count);

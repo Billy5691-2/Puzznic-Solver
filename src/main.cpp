@@ -22,7 +22,6 @@ int main(){
     std::map<position, int> item_list = Game.get_item_list();
     std::vector<platform> platform_list = Game.get_platform_list();
 
-    std::cout << "1\n";
     GUI::Window GUI("Puzznic", board_data, platform_list);
 
     while (GUI.isRunning()){
