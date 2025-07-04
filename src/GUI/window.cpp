@@ -74,10 +74,10 @@ namespace GUI {
         reset_board(board_data);
         reset_platform(platform_list);
 
-        //Testing variables
-        m_Tile = new Tiles(m_Renderer, RED_ITEM_PATH, tile_size);
+        highlight_position.x = 0;
+        highlight_position.y = 0;
+
         std::cout << "Constructor success\n";
-        m_Tile->setPosition(100, 100);
 
 
 
@@ -90,7 +90,6 @@ namespace GUI {
         delete m_Board;
         delete m_Count;
         delete m_Controls;
-        delete m_Tile; //
         SDL_DestroyRenderer(m_Renderer);
         SDL_DestroyWindow(m_Window);
 
@@ -106,7 +105,6 @@ namespace GUI {
         m_Window = NULL;
         m_Renderer = NULL;
         m_Running = true;
-        m_Is_Selected = false;
     }
 
     bool Window::isRunning() const {
@@ -129,17 +127,29 @@ namespace GUI {
                             int x, y;
                             SDL_GetMouseState(&x, &y);
                             if (x > WINDOW_LEFT && x < WINDOW_RIGHT_OFFSET) {
+                                x = x - WINDOW_LEFT;
+                                int grid_x, grid_y;
+                                grid_x = x / tile_size;
+                                grid_y = y / tile_size;
+                                std::cout << "X " << grid_x << " Y " << grid_y << "\n";
 
                             } else if (x > WINDOW_RIGHT_OFFSET) {
                                 m_Controls->handle_click(x, y);
                             }
-                            m_Is_Selected = true;
-                            m_Tile->setPosition(x, y);
                     }
 
 
             }
         }
+    }
+
+    void Window::draw_highlight(){
+        SDL_Rect _block;
+        _block.x = (highlight_position.x* tile_size) + WINDOW_LEFT;
+        _block.y = highlight_position.y* tile_size;
+        _block.w = _block.h = tile_size - 1;
+        SDL_SetRenderDrawColor(m_Renderer, 225, 225, 85, 0);
+        SDL_RenderDrawRect(m_Renderer, &_block);
     }
 
     bool Window::update() {
@@ -153,13 +163,6 @@ namespace GUI {
             change = true;
             solve_change = true;
 
-        }
-        if (m_Is_Selected) {
-            int x, y;
-            SDL_GetMouseState(&x, &y);
-            x -= 35;
-            y -= 35;
-            m_Tile->setPosition(x, y);
         }
         return true;
 
@@ -194,6 +197,8 @@ namespace GUI {
         render_board();
         render_platforms(platform_list);
         render_items(item_list);
+
+        draw_highlight();
 
         SDL_RenderPresent(m_Renderer);
         delete_items();

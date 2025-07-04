@@ -26,9 +26,9 @@ namespace GUI {
         SDL_Window* m_Window;
 
         int tile_size;
+        position highlight_position;
 
         bool m_Running = false;
-        bool m_Is_Selected = false;
 
         bool level_change = false;
         bool solve_change = false;
@@ -36,7 +36,6 @@ namespace GUI {
 
         ItemCounter* m_Count;
         Board* m_Board;
-        Tiles* m_Tile;
         Controls* m_Controls;
 
         std::vector<Tiles*> base_tiles;
@@ -63,6 +62,8 @@ namespace GUI {
 
         position grid_to_pixel(position pos);
         position grid_to_pixel(int x, int y);
+
+        void draw_highlight();
 
         public:
             Window(const char* title, board board_data, std::vector<platform> platform_list);
