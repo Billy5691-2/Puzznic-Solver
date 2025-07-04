@@ -1,8 +1,28 @@
 #include "../../include/Game/game.hpp"
+
+/*
+Requirements:
+Update platforms
+Update items from gravity
+Update whether items have been deleted
+Generate list of valid moves for an item
+Generate list of all valid moves
+
+Check generated list of moves against hash to reduce compute
+
+
+Check order of operations:
+Gravity vs destruction
+items on platforms vs destruction
+
+
+*/
+
+
+
 namespace Puzznic {
     Game::Game(std::string level) {
-        BoardState active_board(level);
-        //active_board(level);
+        active_board = new BoardState(level);
     }
 
     Game::Game(BoardState new_board_state) {
@@ -27,9 +47,9 @@ namespace Puzznic {
         return new_board;
     }*/
 
-    board Game::get_board(){ return active_board.get_board(); }
-    std::array<int, COLOURS> Game::get_item_count(){ return active_board.get_item_count(); }
-    std::map<position, int> Game::get_item_list() { return active_board.get_item_list(); }
-    std::vector<platform> Game::get_platform_list() { return active_board.get_platform_list(); }
+    board Game::get_board(){ return active_board->get_board(); }
+    std::array<int, COLOURS> Game::get_item_count(){ return active_board->get_item_count(); }
+    std::map<position, int> Game::get_item_list() { return active_board->get_item_list(); }
+    std::vector<platform> Game::get_platform_list() { return active_board->get_platform_list(); }
 
 }

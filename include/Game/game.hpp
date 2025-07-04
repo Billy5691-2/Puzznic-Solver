@@ -25,7 +25,7 @@ Items: ##
 
 namespace Puzznic {
     class Game {
-        BoardState active_board;
+        BoardState* active_board;
 
         public:
             Game() : Game("../levels/level_1_1_cpp.csv") {}
