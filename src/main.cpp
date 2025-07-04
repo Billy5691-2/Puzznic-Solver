@@ -22,6 +22,12 @@ int main(){
     std::map<position, int> item_list = Game.get_item_list();
     std::vector<platform> platform_list = Game.get_platform_list();
 
+    position temp_move;
+    temp_move.x = 3;
+    temp_move.y = 3;
+    std::vector<position> move_list;
+    move_list.push_back(temp_move);
+
     GUI::Window GUI("Puzznic", board_data, platform_list);
 
     while (GUI.isRunning()){
@@ -40,7 +46,7 @@ int main(){
         item_count = Game.get_item_count();
         platform_list = Game.get_platform_list();
         item_list = Game.get_item_list();
-        GUI.render(item_list, platform_list, item_count);
+        GUI.render(item_list, platform_list, item_count, move_list);
 
     }
 

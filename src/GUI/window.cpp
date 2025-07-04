@@ -29,6 +29,8 @@ const char* DOWN_PLATFORM_PATH = DOWN_PLATFORM;
 const char* RIGHT_PLATFORM_PATH = RIGHT_PLATFORM;
 const char* LEFT_PLATFORM_PATH = LEFT_PLATFORM;
 
+const char* MOVE_MARKER_PATH = MOVE_MARKER;
+
 std::array<const char*, COLOURS> item_paths_array = {
     RED_ITEM_PATH, 
     BLUE_ITEM_PATH, 
@@ -78,9 +80,6 @@ namespace GUI {
         highlight_position.y = 0;
 
         std::cout << "Constructor success\n";
-
-
-
     }
 
     Window::~Window() {
@@ -184,7 +183,7 @@ namespace GUI {
     }
 
     void Window::render(std::map<position, int> item_list, std::vector<platform> platform_list, 
-        std::array<int, COLOURS> item_count) {
+        std::array<int, COLOURS> item_count, std::vector<position> move_list) {
         SDL_SetRenderDrawColor(m_Renderer, 128, 0, 255, 255);
         SDL_RenderClear(m_Renderer);
         m_Board->drawBoard();
@@ -197,11 +196,13 @@ namespace GUI {
         render_board();
         render_platforms(platform_list);
         render_items(item_list);
+        render_moves(move_list);
 
         draw_highlight();
 
         SDL_RenderPresent(m_Renderer);
         delete_items();
+        delete_moves();
         m_Count->free_text();
         m_Controls->free();
     }
@@ -222,7 +223,12 @@ namespace GUI {
         for (int i=0; i<item_tiles.size(); i++){
             item_tiles[i]->draw();
         }
-
+    }
+    void Window::render_moves(std::vector<position> move_list){
+        reset_moves(move_list);
+        for (int i=0; i<move_list.size(); i++){
+            move_tiles[i]->draw();
+        }
     }
 
     position Window::grid_to_pixel(position pos) {
@@ -299,11 +305,7 @@ namespace GUI {
     }
     void Window::reset_items(std::map<position, int> item_list){
         std::map<position, int>::iterator it;
-        //std::cout << "\nItem Draw:\n";
-        //int i = 0;
         for (it = item_list.begin(); it != item_list.end(); it++){
-            //std::cout << "I: " << i << " X: " << it->first.x <<" Y: " << it->first.y << " Col: " << it->second << "\n";
-            //i++;
             const char* file_path;
             switch (it->second) {
                 case RED:
@@ -353,6 +355,13 @@ namespace GUI {
         }
 
     }
+    void Window::reset_moves(std::vector<position> move_list){
+        for (int i=0; i<move_list.size(); i++){
+            Tiles* temp = new Tiles(m_Renderer, MOVE_MARKER_PATH, tile_size);
+            temp->setPosition(grid_to_pixel(move_list[i]));
+            move_tiles.push_back(temp);
+        }
+    }
 
     void Window::reset(board board_data, std::vector<platform> platform_list){
         delete_board();
@@ -379,6 +388,12 @@ namespace GUI {
             delete item_tiles[i];
         }
         item_tiles.clear();
+    }
+    void Window::delete_moves(){
+        for (int i = move_tiles.size()-1; i >= 0; i--){
+            delete move_tiles[i];
+        }
+        move_tiles.clear();
     }
 
 

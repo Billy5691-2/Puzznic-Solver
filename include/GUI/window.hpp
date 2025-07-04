@@ -42,6 +42,8 @@ namespace GUI {
         std::vector<Tiles*> platform_tiles;
         std::vector<Tiles*> item_tiles;
         std::vector<Tiles*> item_count_tiles;
+        
+        std::vector<Tiles*> move_tiles;
 
         TTF_Font* m_Font;
         SDL_Colour m_Txt_Colour;
@@ -52,13 +54,19 @@ namespace GUI {
         void reset_platform(std::vector<platform> platform_list);
         void reset_items(std::map<position, int> item_list);
 
+        void reset_moves(std::vector<position> move_list);
+
         void delete_platforms();
         void delete_board();
         void delete_items();
 
+        void delete_moves();
+
         void render_board();
         void render_platforms(std::vector<platform> platform_list);
         void render_items(std::map<position, int> item_list);
+        
+        void render_moves(std::vector<position> move_list);
 
         position grid_to_pixel(position pos);
         position grid_to_pixel(int x, int y);
@@ -73,7 +81,7 @@ namespace GUI {
             void pollEvent();
             bool update();
             void render(std::map<position, int> item_list, std::vector<platform> platform_list, 
-                std::array<int, COLOURS> item_count);
+                std::array<int, COLOURS> item_count, std::vector<position> move_list);
 
             void reset(board board_data, std::vector<platform> platform_list);
             

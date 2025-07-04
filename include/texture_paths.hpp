@@ -34,3 +34,5 @@
 #define UP_ARROW EXTRA_PATH "Up_Arrow" PNG
 #define DOWN_ARROW EXTRA_PATH "Down_Arrow" PNG
 
+#define MOVE_MARKER EXTRA_PATH "Move_Marker" PNG
+
