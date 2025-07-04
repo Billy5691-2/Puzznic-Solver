@@ -27,12 +27,21 @@ int main(){
     while (GUI.isRunning()){
         GUI.pollEvent();
         board_data = Game.get_board();
-        GUI.update();
+        if (GUI.update()) {
+            if (GUI.change_level_state()){
+                std::string lvl_file = GUI.new_level_file();
+                std::cout << "New Level: " << lvl_file << "\n"; 
+            }
+            if (GUI.start_solver_state()){
+                std::cout << "Start solver\n";
+            }
+        }
 
         item_count = Game.get_item_count();
         platform_list = Game.get_platform_list();
         item_list = Game.get_item_list();
         GUI.render(item_list, platform_list, item_count);
+
     }
 
     close();

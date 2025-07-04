@@ -13,7 +13,7 @@ SDL_Colour inactive_button = {115, 115, 115};
 SDL_Colour pressed_button = {180, 180, 180};
 SDL_Colour highlight_colour = {65, 185, 205};
 
-const int TOP_OFFSET = 10;
+const int GAP = 10;
 
 
 
@@ -27,16 +27,16 @@ namespace GUI {
         tile_size = p_tile_size;
 
         up_arrow_lvl = new Tiles(m_Renderer, UP_ARROW_PATH, tile_size);
-        up_arrow_lvl->setPosition(RIGHT_MID - (tile_size*1.5), 10);
+        up_arrow_lvl->setPosition(RIGHT_MID - (tile_size*1.5), GAP);
 
         up_arrow_stage = new Tiles(m_Renderer, UP_ARROW_PATH, tile_size);
-        up_arrow_stage->setPosition(RIGHT_MID - (tile_size*1.5), 10 + 10 + tile_size);
+        up_arrow_stage->setPosition(RIGHT_MID - (tile_size*1.5), GAP + GAP + tile_size);
 
         down_arrow_lvl = new Tiles(m_Renderer, DOWN_ARROW_PATH, tile_size);
-        down_arrow_lvl->setPosition(RIGHT_MID + (tile_size*0.5), 10);
+        down_arrow_lvl->setPosition(RIGHT_MID + (tile_size*0.5), GAP);
 
         down_arrow_stage = new Tiles(m_Renderer, DOWN_ARROW_PATH, tile_size);
-        down_arrow_stage->setPosition(RIGHT_MID + (tile_size*0.5), 10 + 10 + tile_size);
+        down_arrow_stage->setPosition(RIGHT_MID + (tile_size*0.5), GAP + GAP + tile_size);
         
         int w, h;
         load_surface = TTF_RenderText_Solid(m_Font, "Load", m_Txt_Colour);
@@ -44,7 +44,7 @@ namespace GUI {
         TTF_SizeText(m_Font, "Load", &w, &h);
 
         load_rect.x = RIGHT_MID - (w / 2);
-        load_rect.y = 10 + ((10 + tile_size) * 2);
+        load_rect.y = GAP + ((GAP + tile_size) * 2);
         load_rect.w = w;
         load_rect.h = h;
 
@@ -53,7 +53,7 @@ namespace GUI {
         TTF_SizeText(m_Font, "Solve", &w, &h);
 
         solve_rect.x = RIGHT_MID - (w / 2);
-        solve_rect.y = 10 + ((10 + tile_size) * 3);
+        solve_rect.y = GAP + ((GAP + tile_size) * 3);
         solve_rect.w = w;
         solve_rect.h = h;
 
@@ -65,6 +65,38 @@ namespace GUI {
         SDL_FreeSurface(solve_surface);
         SDL_DestroyTexture(solve_texture);
         std::cout << "Controls destroyed\n";
+    }
+
+    void Controls::handle_click(int x, int y){
+        if (y > GAP && y < GAP + tile_size) {
+            if (x > RIGHT_MID - (tile_size*1.5) && x < RIGHT_MID - (tile_size*0.5)) {
+                //Up arrow level
+                level = bound_check(level, 1);
+            } else if (x > RIGHT_MID + (tile_size*0.5) && x < RIGHT_MID + (tile_size*1.5)){
+                //Down arrow level
+                level = bound_check(level, -1);
+            }
+        } else if (y > GAP + (GAP + tile_size) && y < GAP + tile_size + (GAP + tile_size)) {
+            if (x > RIGHT_MID - (tile_size*1.5) && x < RIGHT_MID - (tile_size*0.5)) {
+                //Up arrow stage
+                stage = bound_check(stage, 1);
+            } else if (x > RIGHT_MID + (tile_size*0.5) && x < RIGHT_MID + (tile_size*1.5)){
+                //Down arrow stage
+                stage = bound_check(stage, -1);
+            }
+        } else if (y > GAP + ((GAP + tile_size) * 2) && 
+        y < GAP + tile_size + ((GAP + tile_size) * 2)) {
+            if (x > RIGHT_MID - (tile_size*1.5) && x < RIGHT_MID + (tile_size*1.5)) {
+                load_pressed = true;
+                //load button
+            }
+        } else if (y > GAP + ((GAP + tile_size) * 3) && 
+        y < GAP + tile_size + ((GAP + tile_size) * 3)) {
+            if (x > RIGHT_MID - (tile_size*1.5) && x < RIGHT_MID + (tile_size*1.5)) {
+                solve_pressed = true;
+                //solve button
+            }
+        }
     }
 
     void Controls::draw_text() {
@@ -81,7 +113,7 @@ namespace GUI {
 
         SDL_Rect level_rect;
         level_rect.x = RIGHT_MID - (w / 2);
-        level_rect.y = 10;
+        level_rect.y = GAP;
         level_rect.w = w;
         level_rect.h = h;
 
@@ -96,7 +128,7 @@ namespace GUI {
 
         SDL_Rect stage_rect;
         stage_rect.x = RIGHT_MID - (w / 2);
-        stage_rect.y = 10 + (tile_size + 10);
+        stage_rect.y = GAP + (tile_size + GAP);
         stage_rect.w = w;
         stage_rect.h = h;
 
@@ -107,7 +139,7 @@ namespace GUI {
     void Controls::draw_load() {
         SDL_Rect _block_load;
         _block_load.x = RIGHT_MID - (tile_size*1.5);
-        _block_load.y = 10 + ((10 + tile_size) * 2);
+        _block_load.y = GAP + ((GAP + tile_size) * 2);
         _block_load.w = tile_size * 3;
         _block_load.h = tile_size;
         if (!load_pressed) {
@@ -124,7 +156,7 @@ namespace GUI {
     void Controls::draw_solve() {
         SDL_Rect _block_solve;
         _block_solve.x = RIGHT_MID - (tile_size*1.5);
-        _block_solve.y = 10 + ((10 + tile_size) * 3);
+        _block_solve.y = GAP + ((GAP + tile_size) * 3);
         _block_solve.w = tile_size * 3;
         _block_solve.h = tile_size;
         if (!solve_pressed) {
@@ -160,15 +192,34 @@ namespace GUI {
         SDL_DestroyTexture(stage_texture);
     }
 
-    bool Controls::change_level() { return load_pressed;}
+    bool Controls::change_level() { return load_pressed; }
 
-    const char* Controls::new_level_file(){
-        std::string stage_name = std::to_string(stage) + "/";
+    bool Controls::start_solver() {
+        if (solve_pressed){
+            solve_pressed = false;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    int Controls::bound_check(int value, int change){
+        int out = value + change;
+        if (out > 9){ return 1; }
+        if (out < 1){ return 9; }
+        return out;
+    }
+
+    std::string Controls::new_level_file(){
+        std::string stage_name = std::to_string(stage);
         std::string level_name = std::to_string(level);
         std::string filename = ("../levels/stage_" + stage_name + "/" + 
             stage_name + "_level_" + level_name + ".csv");
-        const char *output = filename.c_str();
         load_pressed = false;
-        return output;
+        return filename;
+        //const char *output = filename.c_str();
+        //return output;
     }
 }
+
+

@@ -30,6 +30,10 @@ namespace GUI {
         bool m_Running = false;
         bool m_Is_Selected = false;
 
+        bool level_change = false;
+        bool solve_change = false;
+        bool move_change = false;
+
         ItemCounter* m_Count;
         Board* m_Board;
         Tiles* m_Tile;
@@ -66,11 +70,18 @@ namespace GUI {
 
             bool isRunning() const;
             void pollEvent();
-            void update();
+            bool update();
             void render(std::map<position, int> item_list, std::vector<platform> platform_list, 
                 std::array<int, COLOURS> item_count);
 
             void reset(board board_data, std::vector<platform> platform_list);
+            
+            std::string new_level_file();
+            //position item_selected();
 
-    };
+            bool change_level_state();
+            bool start_solver_state();
+            //bool item_selected_state();
+                
+        };
 }

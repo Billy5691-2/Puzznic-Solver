@@ -41,8 +41,6 @@ namespace GUI {
         bool solve_pressed = false;
         bool load_pressed = false;
 
-
-
         void draw_load();
         void draw_solve();
         void draw_text();
@@ -50,6 +48,8 @@ namespace GUI {
 
         void render_buttons();
         void render_text();
+
+        int bound_check(int value, int change);
 
         public:
             Controls(SDL_Renderer* p_Renderer, TTF_Font* p_Font, SDL_Colour p_Txt_Colour,
@@ -59,12 +59,11 @@ namespace GUI {
             void render();
             void free();
             
-            void check_buttons(int x, int y);
+            void handle_click(int x, int y);
 
             bool start_solver();
-            void set_solver_state();
             
             bool change_level();
-            const char* new_level_file();
+            std::string new_level_file();
     };
 }

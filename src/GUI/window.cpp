@@ -131,7 +131,7 @@ namespace GUI {
                             if (x > WINDOW_LEFT && x < WINDOW_RIGHT_OFFSET) {
 
                             } else if (x > WINDOW_RIGHT_OFFSET) {
-
+                                m_Controls->handle_click(x, y);
                             }
                             m_Is_Selected = true;
                             m_Tile->setPosition(x, y);
@@ -142,7 +142,18 @@ namespace GUI {
         }
     }
 
-    void Window::update() {
+    bool Window::update() {
+        bool change = false;
+        if (m_Controls->change_level()) { 
+            change = true; 
+            level_change = true;
+
+        }
+        if (m_Controls->start_solver()){
+            change = true;
+            solve_change = true;
+
+        }
         if (m_Is_Selected) {
             int x, y;
             SDL_GetMouseState(&x, &y);
@@ -150,7 +161,23 @@ namespace GUI {
             y -= 35;
             m_Tile->setPosition(x, y);
         }
+        return true;
 
+    }
+
+    bool Window::change_level_state(){ return level_change; }
+    std::string Window::new_level_file(){
+        level_change = false;
+        return m_Controls->new_level_file();
+    }
+
+    bool Window::start_solver_state(){ 
+        if (solve_change) {
+            solve_change = false;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     void Window::render(std::map<position, int> item_list, std::vector<platform> platform_list, 
