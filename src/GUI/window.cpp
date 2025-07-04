@@ -145,8 +145,6 @@ namespace GUI {
                                 m_Controls->handle_click(x, y);
                             }
                     }
-
-
             }
         }
     }
