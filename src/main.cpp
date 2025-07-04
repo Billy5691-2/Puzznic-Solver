@@ -41,6 +41,10 @@ int main(){
             if (GUI.start_solver_state()){
                 std::cout << "Start solver\n";
             }
+            if (GUI.get_highlight_change()){
+                move potential_move = GUI.get_move();
+                std::cout << "Move Recieved\n";
+            }
         }
 
         item_count = Game.get_item_count();

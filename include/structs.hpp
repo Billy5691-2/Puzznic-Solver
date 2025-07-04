@@ -43,6 +43,11 @@ struct position {
     }
 };
 
+struct move {
+    position original;
+    position updated;
+};
+
 struct tile {
     int wall = 0;
     int item = 0;

@@ -26,7 +26,6 @@ namespace GUI {
         SDL_Window* m_Window;
 
         int tile_size;
-        position highlight_position;
 
         bool m_Running = false;
 
@@ -42,8 +41,10 @@ namespace GUI {
         std::vector<Tiles*> platform_tiles;
         std::vector<Tiles*> item_tiles;
         std::vector<Tiles*> item_count_tiles;
-        
         std::vector<Tiles*> move_tiles;
+
+        bool highlight_change;
+        move move_pair;
 
         TTF_Font* m_Font;
         SDL_Colour m_Txt_Colour;
@@ -86,11 +87,12 @@ namespace GUI {
             void reset(board board_data, std::vector<platform> platform_list);
             
             std::string new_level_file();
-            //position item_selected();
+            move get_move();
 
             bool change_level_state();
             bool start_solver_state();
-            //bool item_selected_state();
+            bool get_highlight_change();
+
                 
         };
 }
