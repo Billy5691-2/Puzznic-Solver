@@ -2,18 +2,20 @@
 
 /*
 Requirements:
-Update platforms
-Update items from gravity
-Update whether items have been deleted
+
 Generate list of valid moves for an item
 Generate list of all valid moves
 
 Check generated list of moves against hash to reduce compute
 
-
 Check order of operations:
 Gravity vs destruction
 items on platforms vs destruction
+
+
+
+Implemented:
+- Check if game is still winnable or has been won
 
 
 */
@@ -23,6 +25,7 @@ items on platforms vs destruction
 namespace Puzznic {
     Game::Game(std::string level) {
         active_board = new BoardState(level);
+        auto current_board = std::make_shared<BoardState>(level);
     }
 
     Game::Game(BoardState new_board_state) {
@@ -31,10 +34,23 @@ namespace Puzznic {
 
     //Game Destructor
     Game::~Game() {
+        delete active_board;
         std::cout << "Close Game 2\n";
     }
 
-    
+    void Game::game_state(){
+        bool won = true;
+        for (const auto& count : active_board->get_item_count()){
+            if (count  == 1){
+                game_lost = true;
+                return;
+            }
+            if (count > 0){
+                won = false;
+            }
+        }
+        game_won = won;
+    }    
 
     /*board Game::copy_board(){
         std::cout << "TBD\n";
@@ -51,5 +67,8 @@ namespace Puzznic {
     std::array<int, COLOURS> Game::get_item_count(){ return active_board->get_item_count(); }
     std::map<position, int> Game::get_item_list() { return active_board->get_item_list(); }
     std::vector<platform> Game::get_platform_list() { return active_board->get_platform_list(); }
+
+    bool Game::get_lose_state(){ return game_lost; }
+    bool Game::get_win_state(){ return game_won; }
 
 }

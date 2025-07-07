@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <array>
 
 enum platform_plane {
     HORIZONTAL,
@@ -25,8 +26,8 @@ enum item_colour {
 };
 
 struct position {
-    int x;
-    int y;
+    int x = 0;
+    int y = 0;
 
     bool operator==(const position& rhs) const {
         return (x == rhs.x and y == rhs.y);
@@ -41,11 +42,25 @@ struct position {
             return false;
         }
     }
+
+    position operator+(const position& rhs) const {
+        position out;
+        out.x = x;
+        out.y = y;
+        out.x += rhs.x;
+        out.y += rhs.y;
+        return out;
+    }
 };
 
 struct move {
     position original;
     position updated;
+};
+
+struct state {
+    bool won;
+    bool lose;
 };
 
 struct tile {
@@ -57,7 +72,8 @@ struct tile {
 
 struct board {
     int size;
-    tile board[20][20];
+    //tile board[20][20];
+    std::array<std::array<tile, 20>, 20> board;
 };
 
 struct platform {

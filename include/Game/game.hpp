@@ -5,6 +5,10 @@
 #include <vector>
 #include <string>
 #include <map>
+
+#include <memory>
+#include <algorithm>
+
 #include "../structs.hpp"
 #include "../constants.hpp"
 #include "boardState.hpp"
@@ -27,12 +31,20 @@ namespace Puzznic {
     class Game {
         BoardState* active_board;
 
+        bool game_won = false;
+        bool game_lost = false;
+
+        void game_state();
+
         public:
             Game() : Game("../levels/level_1_1_cpp.csv") {}
             Game(std::string level);
             Game(BoardState new_board_state);
             ~Game();
             //board copy_board();
+
+            bool get_win_state();
+            bool get_lose_state();
 
             std::array<int, COLOURS> get_item_count();
             board get_board();
