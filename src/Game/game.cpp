@@ -25,7 +25,7 @@ Implemented:
 namespace Puzznic {
     Game::Game(std::string level) {
         active_board = new BoardState(level);
-        auto current_board = std::make_shared<BoardState>(level);
+        std::shared_ptr<BoardState> current_board = std::make_shared<BoardState>(level);
     }
 
     Game::Game(BoardState new_board_state) {

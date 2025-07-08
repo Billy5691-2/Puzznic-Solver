@@ -33,9 +33,7 @@ namespace Puzznic{
         std::vector<platform> hor_plat_list;
         std::vector<platform> vert_plat_list;
         
-        void update_item_count(int colour);
-
-        void game_loop();
+        void game_loop(move move);
         void update_horizontal_platforms();
         void update_vertical_platforms();
         void update_items();
@@ -46,22 +44,21 @@ namespace Puzznic{
 
         bool move_tile(position old_pos, position new_pos);
         bool move_item(position old_pos, position new_pos);
-
-        //bool move_hor_plat(position old_pos, position new_pos);
-        //bool move_vert_plat(position old_pos, position new_pos);
+        void update_item_count(int colour);
 
         void set_board_pos(position pos, tile tile);
 
         public:
             BoardState() : BoardState("../levels/level_1_1_cpp.csv"){}
             BoardState(std::string level);
-            BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, std::map<position, int> temp_item_list, 
-                std::vector<platform> temp_hor_list, std::vector<platform> temp_vert_list); 
+            BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, 
+                std::map<position, int> temp_item_list, 
+                std::vector<platform> temp_hor_list, std::vector<platform> temp_vert_list) : 
+                game_board(temp_game_board), 
+                item_count(temp_item_count), item_list(temp_item_list),
+                hor_plat_list(temp_hor_list), vert_plat_list(vert_plat_list) {}
             ~BoardState();
-            //BoardState copy_state();
-            //std::map<position, int> copy_item_list();
-            //std::map<int, platform> copy_platform_list();
-            //board copy_board();
+            BoardState copy();
 
             tile get_board_pos(position pos); 
             std::map<position, int> get_item_list(); 
@@ -70,7 +67,6 @@ namespace Puzznic{
             int get_board_size(); 
             board get_board(); 
 
-            //void update_item_list(position item, position new_pos);
-            //void remove_item_list(position item);
+
     };
 }

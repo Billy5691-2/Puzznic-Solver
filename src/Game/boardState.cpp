@@ -9,8 +9,8 @@ Update whether items have been deleted
 Generate hash of the board
 
 
-x = vertical
-y = horizontal
+x = vertical, 0 top
+y = horizontal, 0 left
 
 
 */
@@ -169,15 +169,17 @@ namespace Puzznic {
             x++;
 
         }
-        levelData.close();/**/
+        levelData.close();
 
+        /* Deugging
         //print_board();
         //print_item_list();
-
-
+        */
+        
     }
 
-    BoardState::BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, std::map<position, int> temp_item_list, 
+    /*BoardState::BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, 
+        std::map<position, int> temp_item_list, 
                 std::vector<platform> temp_hor_list, std::vector<platform> temp_vert_list){
                     game_board = temp_game_board;
                     item_count = temp_item_count;
@@ -185,17 +187,28 @@ namespace Puzznic {
                     hor_plat_list = temp_hor_list;
                     vert_plat_list = temp_vert_list;
 
-                }
+                }*/
     
     BoardState::~BoardState(){
+        std::cout << "Board destroyed";
 
+    }
+
+    BoardState BoardState::copy(){
+        return BoardState(game_board, item_count, item_list, hor_plat_list, vert_plat_list);
     }
 
     void BoardState::update_item_count(int colour){
         item_count[colour--]--;
         }
     
-    void BoardState::game_loop() {
+    void BoardState::game_loop(move move) {
+        position old_pos = move.original;
+        position new_pos = move.updated;
+
+        if (!(old_pos.x == BOARD_SIZE && old_pos.y == BOARD_SIZE)) {
+            move_item(old_pos, new_pos);
+        }
         update_horizontal_platforms();
         update_vertical_platforms();
         //destroy_items();
