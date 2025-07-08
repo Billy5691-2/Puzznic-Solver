@@ -133,25 +133,25 @@ namespace Puzznic {
                         temp.platform = 1;
                         temp_plat.direction = NEGATIVE;
                         temp_plat.plane = VERTICAL;
-                        platform_list.push_back(temp_plat);
+                        vert_plat_list.push_back(temp_plat);
                         break;
                     case 202: //Down
                         temp.platform = 2;
                         temp_plat.direction = POSITIVE;
                         temp_plat.plane = VERTICAL;
-                        platform_list.push_back(temp_plat);
+                        vert_plat_list.push_back(temp_plat);
                         break;
                     case 203: //Right
                         temp.platform = 3;
                         temp_plat.direction = POSITIVE;
                         temp_plat.plane = HORIZONTAL;
-                        platform_list.push_back(temp_plat);
+                        hor_plat_list.push_back(temp_plat);
                         break;
                     case 204: //Left
                         temp.platform = 4;
                         temp_plat.direction = NEGATIVE;
                         temp_plat.plane = HORIZONTAL;
-                        platform_list.push_back(temp_plat);
+                        hor_plat_list.push_back(temp_plat);
                         break;
 
                     case 999: //Empty
@@ -196,111 +196,181 @@ namespace Puzznic {
         }
     
     void BoardState::game_loop() {
-
+        update_horizontal_platforms();
+        update_vertical_platforms();
+        //destroy_items();
+        update_items();
+        destroy_items();
     }
 
     void BoardState::update_horizontal_platforms(){
         for (auto platform : hor_plat_list){
             position movement;
-                movement.y += platform.direction;
-                switch (platform.direction){
-                    case POSITIVE:
-                        if (!get_board_pos(platform.pos + movement).empty){
-                            movement.y = 0;
-                            platform.direction = NEGATIVE;
-                        }
-                        break;
-                    
-                    case NEGATIVE:
-                        if (!get_board_pos(platform.pos + movement).empty){
-                            movement.y = 0;
-                            platform.direction = POSITIVE;
-                        }
-                        break; 
-                    
-                    default:
-                        std::cout << "Error in update platform::boardstate\n";
+            movement.y += platform.direction;
+            /*
+            switch (platform.direction){
+                case POSITIVE:
+                    if (!get_board_pos(platform.pos + movement).empty){
+                        movement.y = 0;
+                        platform.direction = NEGATIVE;
                     }
-                    
+                    break;
+                
+                case NEGATIVE:
+                    if (!get_board_pos(platform.pos + movement).empty){
+                        movement.y = 0;
+                        platform.direction = POSITIVE;
+                    }
+                    break; 
+                
+                default:
+                    std::cout << "Error in update hor platform::boardstate\n";
+                }*/
+            
+            //Possibly a better method for updating horizontal platforms
+            if (!move_tile(platform.pos, platform.pos + movement)){
+                if (platform.direction == NEGATIVE){
+                    platform.direction = POSITIVE;
+                } else {
+                    platform.direction = NEGATIVE;
+                }
+            } else {
+                platform.pos = platform.pos + movement;
+            }
+            
+            if (movement.y != 0) {
+                position new_pos = platform.pos + movement;
+                move_tile(platform.pos, new_pos);
+                platform.pos = new_pos;
+                
+                position top_pos = platform.pos;
+                bool stack_move = true;
+                while (stack_move) {
+                    top_pos.x--;
+                    if (get_board_pos(top_pos).item){
+                        stack_move = move_tile(top_pos, top_pos+movement);
+                    } else {
+                        stack_move = false;
+                    }
+                }
+            }    
+            
+
         }
     }
     void BoardState::update_vertical_platforms() {
         for (auto platform : vert_plat_list){
             position movement;
-            switch (platform.plane){
-                case HORIZONTAL:
-                    movement.y += platform.direction;
-                    switch (platform.direction){
-                        case POSITIVE:
-                            if (!get_board_pos(platform.pos + movement).empty){
-                                movement.y = 0;
-                                platform.direction = NEGATIVE;
-                            }
-                            break;
-                        
-                        case NEGATIVE:
-                            if (!get_board_pos(platform.pos + movement).empty){
-                                movement.y = 0;
-                                platform.direction = POSITIVE;
-                            }
-                            break; 
-                        
-                        default:
-                            std::cout << "Error in update platform::boardstate\n";
-                    }
+            movement.x += platform.direction;
+            switch (platform.direction) {
+                case POSITIVE:
 
-
-                case VERTICAL:
-                    movement.x += platform.direction;
-                    switch (platform.direction) {
-                        case POSITIVE:
-                            if (!get_board_pos(platform.pos + movement).empty) {
-                                movement.x = 0;
-                                platform.direction = NEGATIVE;
-                            }
-                            break;
-                        
-                        case NEGATIVE:
-                            if (get_board_pos(platform.pos + movement).empty) {
-                                break;
-                            } else if (get_board_pos(platform.pos + movement).item) {
-                                position stack_top = platform.pos + movement;
-                                while (get_board_pos(stack_top).item) {
-                                    stack_top = stack_top + movement;
-                                    if (!get_board_pos(stack_top).empty && !get_board_pos(stack_top).item) {
-                                        movement.x = 0;
-                                        platform.direction = POSITIVE;
-                                        break;
-                                    }
-                                }
+                    if (move_tile(platform.pos, platform.pos + movement)){
+                        position top_pos = platform.pos;
+                        platform.pos = platform.pos + movement;
+                        bool stack = true;
+                        while (stack){
+                            top_pos.x--;
+                            if (get_board_pos(top_pos).item) {
+                                stack = move_item(top_pos, top_pos + movement);
                             } else {
+                                stack = false;
+                            }
+                        }
+                    } else {
+                        platform.direction = NEGATIVE;
+                    }
+                    break;
+                
+                case NEGATIVE:
+                    if (get_board_pos(platform.pos + movement).empty) {
+                        move_tile(platform.pos, platform.pos + movement);
+                        platform.pos = platform.pos + movement;
+                        break;
+
+                    } else if (get_board_pos(platform.pos + movement).item) {
+                        position stack_top = platform.pos + movement;
+                        while (get_board_pos(stack_top).item) {
+                            stack_top = stack_top + movement;
+                            if (!get_board_pos(stack_top).empty && !get_board_pos(stack_top).item) {
                                 movement.x = 0;
                                 platform.direction = POSITIVE;
                                 break;
-                            }                        
-                        default:
-                            std::cout << "Error in update platform::boardstate\n";
-                    }
-                
+                            }
+                        }
+                        if (movement.x != 0) {
+                            bool plat_found = false;
+                            while (!plat_found) {
+                                stack_top.x++;
+                                if (get_board_pos(stack_top).item){
+                                    move_item(stack_top, stack_top + movement);
+                                } else {
+                                    move_tile(stack_top, stack_top + movement);
+                                    platform.pos = platform.pos + movement;
+                                    plat_found = true;
+                                }   
+                            } 
+                        }
+                    } else {
+                        platform.direction = POSITIVE;
+                        break;
+                    }                        
                 default:
                     std::cout << "Error in update platform::boardstate\n";
             }
-
             //Move platform
             //Move items on platform - include falling items
+
+
             
         }
     }
 
     void BoardState::update_items() {
+        std::vector <position> changed_items;
+        position gravity;
+        gravity.x++;
+        for (const auto& [key, value] : item_list) {
+            if (get_board_pos(key + gravity).empty) {
+                changed_items.push_back(key);
+            }
+        }
 
+        for (auto item : changed_items) {
+            move_item(item, item + gravity);
+        }
     }
 
     void BoardState::destroy_items() {
+        std::unordered_set<position> deletion_items;
+        for (const auto& [key, value] : item_list) {
+            for (int i = -1; i <= 1; i += 2) {
+                position vertical = key;
+                position horizontal = key;
+                vertical.x += i;
+                horizontal.y += i;
+                if (get_board_pos(vertical).item == value) {
+                    deletion_items.insert(key);
+                } else if (get_board_pos(horizontal).item == value) {
+                    deletion_items.insert(key);
+                }
+                if (deletion_items.count(key)) {
+                    break;
+                }
+            }
+        }
+
+        for (const auto& key: deletion_items) {
+            update_item_count(item_list[key]);
+            tile air;
+            air.empty = 1;
+            set_board_pos(key, air);
+            item_list.erase(key);
+        }
 
     }
 
-    bool BoardState::move_tile(position old_pos, position new_pos){
+    bool BoardState::move_tile(position old_pos, position new_pos) {
         if (!get_board_pos(new_pos).empty) { return false; }
         else {
             set_board_pos(new_pos, get_board_pos(old_pos));
@@ -311,10 +381,17 @@ namespace Puzznic {
         }
     }
 
-    void BoardState::set_board_pos(position pos, tile tile){
-        game_board.board[pos.x][pos.y] = tile;
+    bool BoardState::move_item(position old_pos, position new_pos) {
+        if (move_tile(old_pos, new_pos)){
+            int item = item_list[old_pos];
+            item_list.erase(old_pos);
+            item_list[new_pos] = item;
+            return true;
+        } else {
+            return false;
+        }
     }
-    
+
 
     int BoardState::get_board_size(){ return game_board.size; }
     tile BoardState::get_board_pos(position pos){ return game_board.board[pos.x][pos.y]; }

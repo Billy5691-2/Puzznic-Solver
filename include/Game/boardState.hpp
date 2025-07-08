@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 #include <map>
+//#include <unordered_map>
+#include <unordered_set>
 #include "../structs.hpp"
 #include "../constants.hpp"
 
@@ -43,6 +45,10 @@ namespace Puzznic{
         void print_item_list();
 
         bool move_tile(position old_pos, position new_pos);
+        bool move_item(position old_pos, position new_pos);
+
+        //bool move_hor_plat(position old_pos, position new_pos);
+        //bool move_vert_plat(position old_pos, position new_pos);
 
         void set_board_pos(position pos, tile tile);
 

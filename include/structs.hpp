@@ -2,6 +2,8 @@
 #include <vector>
 #include <array>
 
+#include <functional>
+
 enum platform_plane {
     HORIZONTAL,
     VERTICAL
@@ -52,6 +54,13 @@ struct position {
         return out;
     }
 };
+
+template <>
+       struct std::hash<position> {
+           size_t operator()(const position& p) const {
+               return std::hash<int>()(p.x) ^ std::hash<int>()(p.y);
+           }
+       };
 
 struct move {
     position original;
