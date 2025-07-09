@@ -26,8 +26,9 @@ Items: ##
 
 namespace Puzznic{
     class BoardState {
-        static int boardSize_;
-        board gameBoard_;
+        int boardSize_;
+        //board gameBoard_;
+        std::array<std::array<tile, 20>, 20> gameBoard_;
         std::array<int, COLOURS> itemCountArr_;
         std::map<position, int> itemMap_;
         std::vector<platform> y_PlatformVec;
@@ -46,12 +47,12 @@ namespace Puzznic{
         bool MoveItem(position oldCoord, position newCoord);
         void UpdateItemCount(int colour);
 
-        void SetBoardCoord(position coord, tile tile);
+        void SetBoardCoord(const position coord, tile tile);
 
         public:
             BoardState() : BoardState("../levels/level_1_1_cpp.csv"){}
             BoardState(std::string level);
-            BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, 
+            BoardState(std::array<std::array<tile, 20>, 20> temp_game_board, std::array<int, COLOURS> temp_item_count, 
                 std::map<position, int> temp_item_list, 
                 std::vector<platform> temp_hor_list, std::vector<platform> temp_vert_list) : 
                 gameBoard_(temp_game_board), 
@@ -60,12 +61,12 @@ namespace Puzznic{
             ~BoardState();
             BoardState copy();
 
-            tile GetBoardPos(position pos); 
-            std::map<position, int> GetItemMap(); 
             std::vector<platform> GetPlatformVecs(); 
-            std::array<int, COLOURS> GetItemCount(); 
-            int GetBoardSize(); 
-            board GetBoard(); 
+            int GetBoardSize() const { return boardSize_; }
+            tile GetBoardPos(position pos) const { return gameBoard_[pos.x][pos.y]; }
+            std::array<int, COLOURS> GetItemCount() const { return itemCountArr_; }
+            std::array<std::array<tile, 20>, 20> GetBoard() const { return gameBoard_; }
+            std::map<position, int> GetItemMap() const { return itemMap_; }
 
 
     };

@@ -24,8 +24,7 @@ Implemented:
 
 namespace Puzznic {
     Game::Game(std::string level) {
-        activeBoard_ = new BoardState(level);
-        std::shared_ptr<BoardState> current_board = std::make_shared<BoardState>(level);
+        activeBoard_ = std::make_shared<BoardState>(level);
     }
 
     Game::Game(BoardState new_board_state) {
@@ -34,7 +33,6 @@ namespace Puzznic {
 
     //Game Destructor
     Game::~Game() {
-        delete activeBoard_;
         std::cout << "Close Game 2\n";
     }
 

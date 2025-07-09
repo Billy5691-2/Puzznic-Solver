@@ -79,11 +79,10 @@ struct tile {
     int empty = 0;
 };
 
-struct board {
+/*struct board {
     int size;
-    //tile board[20][20];
     std::array<std::array<tile, 20>, 20> board;
-};
+};*/
 
 struct platform {
     enum platform_plane plane = HORIZONTAL;

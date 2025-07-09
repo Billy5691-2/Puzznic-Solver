@@ -17,10 +17,14 @@ int main(){
     Puzznic::Game Game(filename);
     
     init();
-    board board_data = Game.GetBoard();
+    //std::array<std::array<tile, 20>, 20> board = Game.GetBoard();
+    //int boardSize = Game.GetBoardSize();
     std::array<int, COLOURS> item_count = Game.GetItemCount();
     std::map<position, int> item_list = Game.getItemList();
     std::vector<platform> platform_list = Game.GetPlatformList();
+    std::array<std::array<tile, 20>, 20> board = Game.GetBoard();
+    int boardSize = Game.GetBoardSize();
+
 
     position temp_move;
     temp_move.x = 3;
@@ -28,11 +32,10 @@ int main(){
     std::vector<position> move_list;
     move_list.push_back(temp_move);
 
-    GUI::Window GUI("Puzznic", board_data, platform_list);
+    GUI::Window GUI("Puzznic", board, platform_list, boardSize);
 
     while (GUI.IsRunning()){
         GUI.PollEvent();
-        board_data = Game.GetBoard();
         if (GUI.Update()) {
             if (GUI.ChangeLevelState()){
                 std::string lvl_file = GUI.GetLvlFilename();

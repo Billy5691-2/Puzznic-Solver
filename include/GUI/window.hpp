@@ -51,7 +51,7 @@ namespace GUI {
 
         void init();
         void DrawBoard();
-        void ResetBoard(board board_data);
+        void ResetBoard(std::array<std::array<tile, kBoardSize>, kBoardSize> board_data);
         void ResetPlatform(std::vector<platform> platform_list);
         void ResetItems(std::map<position, int> item_list);
 
@@ -75,7 +75,8 @@ namespace GUI {
         void DrawHighlight();
 
         public:
-            Window(const char* title, board board_data, std::vector<platform> platform_list);
+            Window(const char* title, std::array<std::array<tile, kBoardSize>, kBoardSize> board_data, 
+                std::vector<platform> platform_list, int boardSize);
             ~Window();
 
             bool IsRunning() const;
@@ -84,7 +85,7 @@ namespace GUI {
             void Render(std::map<position, int> item_list, std::vector<platform> platform_list, 
                 std::array<int, COLOURS> item_count, std::vector<position> move_list);
 
-            void Reset(board board_data, std::vector<platform> platform_list);
+            void Reset(std::array<std::array<tile, kBoardSize>, kBoardSize> board_data, std::vector<platform> platform_list);
             
             std::string GetLvlFilename();
             move GetMove();

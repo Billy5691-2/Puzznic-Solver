@@ -49,7 +49,8 @@ namespace GUI {
     /*
     Constructor for Window class
     */
-    Window::Window(const char* title, board board_data, std::vector<platform> platform_list) {
+    Window::Window(const char* title, std::array<std::array<tile, kBoardSize>, kBoardSize> board, 
+        std::vector<platform> platform_list, int boardSize) {
         init();
 
         m_Window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, 
@@ -73,7 +74,7 @@ namespace GUI {
             
         m_Controls = new Controls(m_Renderer, m_Font_, m_TextColour_, tileSize_);
         
-        ResetBoard(board_data);
+        ResetBoard(board);
         ResetPlatform(platform_list);
 
 
@@ -258,10 +259,10 @@ namespace GUI {
         return pixel_pos;
     }
 
-    void Window::ResetBoard(board board_data){
+    void Window::ResetBoard(std::array<std::array<tile, kBoardSize>, kBoardSize> board_data){
         for(int x = 0; x < kBoardSize; x++) {
             for(int y = 0; y < kBoardSize; y++) {
-                tile tile_type = board_data.board[x][y];
+                tile tile_type = board_data[x][y];
                 const char* file_path;
 
                 if (tile_type.wall){
@@ -380,7 +381,7 @@ namespace GUI {
         }
     }
 
-    void Window::Reset(board board_data, std::vector<platform> platform_list){
+    void Window::Reset(std::array<std::array<tile, kBoardSize>, kBoardSize> board_data, std::vector<platform> platform_list){
         DeleteBoard();
         DeletePlatforms();
 

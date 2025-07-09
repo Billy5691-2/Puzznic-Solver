@@ -33,11 +33,9 @@ namespace Puzznic {
         }
 
         std::getline (levelData, data);
-        //gameBoard_.size = std::stoi(data);
         boardSize_ = std::stoi(data);
 
         std::getline (levelData, data);
-        //gameBoard_.width = std::stoi(data);
         
         int x = 0;
         while (std::getline (levelData, data) && x < kBoardSize) {
@@ -163,7 +161,7 @@ namespace Puzznic {
                         std::cout << "Error in file read";
                         
                 }
-                gameBoard_.board[x][y] = temp;
+                gameBoard_[x][y] = temp;
                 y++;
                 
             }
@@ -173,7 +171,7 @@ namespace Puzznic {
         levelData.close();
 
         /* Deugging
-        //print_board();
+        print_board();
         //print_item_list();
         */
         
@@ -344,9 +342,9 @@ namespace Puzznic {
         std::vector <position> changed_items;
         position gravity;
         gravity.x++;
-        for (const auto& [key, value] : itemMap_) {
-            if (GetBoardPos(key + gravity).empty) {
-                changed_items.push_back(key);
+        for (const auto& x : itemMap_) {
+            if (GetBoardPos(x.first + gravity).empty) {
+                changed_items.push_back(x.first);
             }
         }
 
@@ -357,18 +355,18 @@ namespace Puzznic {
 
     void BoardState::MatchItems() {
         std::unordered_set<position> deletion_items;
-        for (const auto& [key, value] : itemMap_) {
+        for (const auto& x : itemMap_) {
             for (int i = -1; i <= 1; i += 2) {
-                position vertical = key;
-                position horizontal = key;
+                position vertical = x.first;
+                position horizontal = x.first;
                 vertical.x += i;
                 horizontal.y += i;
-                if (GetBoardPos(vertical).item == value) {
-                    deletion_items.insert(key);
-                } else if (GetBoardPos(horizontal).item == value) {
-                    deletion_items.insert(key);
+                if (GetBoardPos(vertical).item == x.second) {
+                    deletion_items.insert(x.first);
+                } else if (GetBoardPos(horizontal).item == x.second) {
+                    deletion_items.insert(x.first);
                 }
-                if (deletion_items.count(key)) {
+                if (deletion_items.count(x.first)) {
                     break;
                 }
             }
@@ -406,12 +404,10 @@ namespace Puzznic {
         }
     }
 
+    void BoardState::SetBoardCoord(const position coord, tile tile) {
+        gameBoard_[coord.x][coord.y] = tile;
+    }
 
-    int BoardState::GetBoardSize(){ return gameBoard_.size; }
-    tile BoardState::GetBoardPos(position pos){ return gameBoard_.board[pos.x][pos.y]; }
-    std::array<int, COLOURS> BoardState::GetItemCount(){ return itemCountArr_; }
-    board BoardState::GetBoard(){ return gameBoard_; }
-    std::map<position, int> BoardState::GetItemMap(){ return itemMap_; }
     std::vector<platform> BoardState::GetPlatformVecs(){ 
         std::vector<platform> output;
         for (auto platform : y_PlatformVec){
@@ -424,9 +420,9 @@ namespace Puzznic {
     }
 
     void BoardState::print_board() {
-        for (int i = 0; i < gameBoard_.size; i++) {
-            for (int j = 0; j < gameBoard_.size; j++) {
-                std::cout << "A" <<gameBoard_.board[i][j].empty << " I"<<gameBoard_.board[i][j].item << " W"<<gameBoard_.board[i][j].wall << " P" << gameBoard_.board[i][j].platform << " ";
+        for (int i = 0; i < boardSize_; i++) {
+            for (int j = 0; j < boardSize_; j++) {
+                std::cout << "A" <<gameBoard_[i][j].empty << " I"<<gameBoard_[i][j].item << " W"<<gameBoard_[i][j].wall << " P" << gameBoard_[i][j].platform << " ";
             }
         std::cout << "\n";
         } 
