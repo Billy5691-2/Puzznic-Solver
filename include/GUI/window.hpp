@@ -8,8 +8,8 @@
 #include <map>
 
 #include "tiles.hpp"
-#include "board.hpp"
-#include "itemCounter.hpp"
+#include "board_background.hpp"
+#include "item_counter.hpp"
 #include "controls.hpp"
 //#include <stdlib.h>
 #include "../structs.hpp"
@@ -25,73 +25,73 @@ namespace GUI {
         SDL_Renderer* m_Renderer;
         SDL_Window* m_Window;
 
-        int tile_size;
+        int tileSize_;
 
         bool m_Running = false;
 
-        bool level_change = false;
-        bool solve_change = false;
-        bool move_change = false;
+        bool levelChange_ = false;
+        bool solveChange_ = false;
+        bool moveChange_ = false;
 
         ItemCounter* m_Count;
-        Board* m_Board;
+        BoardBackground* m_Board;
         Controls* m_Controls;
 
-        std::vector<Tiles*> base_tiles;
-        std::vector<Tiles*> platform_tiles;
-        std::vector<Tiles*> item_tiles;
-        std::vector<Tiles*> item_count_tiles;
-        std::vector<Tiles*> move_tiles;
+        std::vector<Tiles*> baseTilesVec_;
+        std::vector<Tiles*> platformTilesVec_;
+        std::vector<Tiles*> itemTiles_;
+        std::vector<Tiles*> itemCountTiles_;
+        std::vector<Tiles*> moveTiles_;
 
-        bool highlight_change;
-        move move_pair;
+        bool highlightChange_;
+        move movePair_;
 
-        TTF_Font* m_Font;
-        SDL_Colour m_Txt_Colour;
+        TTF_Font* m_Font_;
+        SDL_Colour m_TextColour_;
 
         void init();
-        void drawBoard();
-        void reset_board(board board_data);
-        void reset_platform(std::vector<platform> platform_list);
-        void reset_items(std::map<position, int> item_list);
+        void DrawBoard();
+        void ResetBoard(board board_data);
+        void ResetPlatform(std::vector<platform> platform_list);
+        void ResetItems(std::map<position, int> item_list);
 
-        void reset_moves(std::vector<position> move_list);
+        void ResetMoves(std::vector<position> move_list);
 
-        void delete_platforms();
-        void delete_board();
-        void delete_items();
+        void DeletePlatforms();
+        void DeleteBoard();
+        void DeleteItems();
 
-        void delete_moves();
+        void DeleteMoves();
 
-        void render_board();
-        void render_platforms(std::vector<platform> platform_list);
-        void render_items(std::map<position, int> item_list);
+        void RenderBoard();
+        void RenderPlatforms(std::vector<platform> platform_list);
+        void RenderItems(std::map<position, int> item_list);
         
-        void render_moves(std::vector<position> move_list);
+        void RenderMoves(std::vector<position> move_list);
 
-        position grid_to_pixel(position pos);
-        position grid_to_pixel(int x, int y);
+        position GridToPixel(position pos);
+        position GridToPixel(int x, int y);
 
-        void draw_highlight();
+        void DrawHighlight();
 
         public:
             Window(const char* title, board board_data, std::vector<platform> platform_list);
             ~Window();
 
-            bool isRunning() const;
-            void pollEvent();
-            bool update();
-            void render(std::map<position, int> item_list, std::vector<platform> platform_list, 
+            bool IsRunning() const;
+            void PollEvent();
+            bool Update();
+            void Render(std::map<position, int> item_list, std::vector<platform> platform_list, 
                 std::array<int, COLOURS> item_count, std::vector<position> move_list);
 
-            void reset(board board_data, std::vector<platform> platform_list);
+            void Reset(board board_data, std::vector<platform> platform_list);
             
-            std::string new_level_file();
-            move get_move();
+            std::string GetLvlFilename();
+            move GetMove();
 
-            bool change_level_state();
-            bool start_solver_state();
-            bool get_highlight_change();
+            bool ChangeLevelState();
+            bool StartSolverState();
+            bool GetHightlightChange();
 
                 
         };

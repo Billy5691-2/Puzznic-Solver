@@ -1,6 +1,6 @@
 #pragma once
 
-const int BOARD_SIZE = 20;
+const int kBoardSize = 20;
 
 const int COLOURS = 9;
 

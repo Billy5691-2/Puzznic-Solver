@@ -56,38 +56,38 @@ namespace GUI {
             SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
         m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_PRESENTVSYNC);
 
-        m_Font = TTF_OpenFont("../assets/fonts/OpenSans-Regular.ttf", 30);
-        m_Txt_Colour = {255, 255, 255};
+        m_Font_ = TTF_OpenFont("../assets/fonts/OpenSans-Regular.ttf", 30);
+        m_TextColour_ = {255, 255, 255};
 
-        if (m_Font == NULL) { 
+        if (m_Font_ == NULL) { 
             std::cout << "Opening font failed!\n";
         }
 
         
 
-        m_Board = new Board(m_Renderer);
-        tile_size = m_Board->getTileSize();
+        m_Board = new BoardBackground(m_Renderer);
+        tileSize_ = m_Board->GetTileSize();
 
-        m_Count = new ItemCounter(m_Renderer, m_Font, m_Txt_Colour,
-            tile_size, item_paths_array);
+        m_Count = new ItemCounter(m_Renderer, m_Font_, m_TextColour_,
+            tileSize_, item_paths_array);
             
-        m_Controls = new Controls(m_Renderer, m_Font, m_Txt_Colour, tile_size);
+        m_Controls = new Controls(m_Renderer, m_Font_, m_TextColour_, tileSize_);
         
-        reset_board(board_data);
-        reset_platform(platform_list);
+        ResetBoard(board_data);
+        ResetPlatform(platform_list);
 
 
-        move_pair.original.x = 0;
-        move_pair.original.y = 0;
-        move_pair.updated.x = 0;
-        move_pair.updated.y = 0;
+        movePair_.original.x = 0;
+        movePair_.original.y = 0;
+        movePair_.updated.x = 0;
+        movePair_.updated.y = 0;
 
         std::cout << "Constructor success\n";
     }
 
     Window::~Window() {
-        delete_board();
-        delete_platforms();
+        DeleteBoard();
+        DeletePlatforms();
         delete m_Event;
         delete m_Board;
         delete m_Count;
@@ -95,7 +95,7 @@ namespace GUI {
         SDL_DestroyRenderer(m_Renderer);
         SDL_DestroyWindow(m_Window);
 
-        TTF_CloseFont(m_Font);
+        TTF_CloseFont(m_Font_);
         TTF_Quit();
 
     }
@@ -109,11 +109,11 @@ namespace GUI {
         m_Running = true;
     }
 
-    bool Window::isRunning() const {
+    bool Window::IsRunning() const {
         return m_Running;
     }
 
-    void Window::pollEvent() {
+    void Window::PollEvent() {
         while (SDL_PollEvent(m_Event)) {
             switch (m_Event->type) {
 
@@ -131,136 +131,136 @@ namespace GUI {
                             if (x > WINDOW_LEFT && x < WINDOW_RIGHT_OFFSET) {
                                 x = x - WINDOW_LEFT;
                                 int grid_x, grid_y;
-                                grid_x = x / tile_size;
-                                grid_y = y / tile_size;
+                                grid_x = x / tileSize_;
+                                grid_y = y / tileSize_;
                                 std::cout << "X " << grid_x << " Y " << grid_y << "\n";
-                                highlight_change = true;
-                                move_pair.original.x = move_pair.updated.x;
-                                move_pair.original.y = move_pair.updated.y;
-                                move_pair.updated.x = grid_x;
-                                move_pair.updated.y = grid_y;
+                                highlightChange_ = true;
+                                movePair_.original.x = movePair_.updated.x;
+                                movePair_.original.y = movePair_.updated.y;
+                                movePair_.updated.x = grid_x;
+                                movePair_.updated.y = grid_y;
 
 
                             } else if (x > WINDOW_RIGHT_OFFSET) {
-                                m_Controls->handle_click(x, y);
+                                m_Controls->HandleClick(x, y);
                             }
                     }
             }
         }
     }
 
-    void Window::draw_highlight(){
+    void Window::DrawHighlight(){
         SDL_Rect _block;
-        _block.x = (move_pair.updated.x* tile_size) + WINDOW_LEFT;
-        _block.y = move_pair.updated.y* tile_size;
-        _block.w = _block.h = tile_size - 1;
+        _block.x = (movePair_.updated.x* tileSize_) + WINDOW_LEFT;
+        _block.y = movePair_.updated.y* tileSize_;
+        _block.w = _block.h = tileSize_ - 1;
         SDL_SetRenderDrawColor(m_Renderer, 225, 225, 85, 0);
         SDL_RenderDrawRect(m_Renderer, &_block);
     }
 
-    bool Window::update() {
+    bool Window::Update() {
         bool change = false;
-        if (m_Controls->change_level()) { 
+        if (m_Controls->GetChangeLvl()) { 
             change = true; 
-            level_change = true;
+            levelChange_ = true;
 
         }
-        if (m_Controls->start_solver()){
+        if (m_Controls->GetStartSolver()){
             change = true;
-            solve_change = true;
+            solveChange_ = true;
 
         }
-        if (highlight_change){
+        if (highlightChange_){
             change = true;
         }
         return change;
 
     }
 
-    move Window::get_move(){
-        highlight_change = false;
-        return move_pair;
+    move Window::GetMove(){
+        highlightChange_ = false;
+        return movePair_;
     }
 
-    bool Window::get_highlight_change(){ return highlight_change; }
+    bool Window::GetHightlightChange(){ return highlightChange_; }
 
-    bool Window::change_level_state(){ return level_change; }
-    std::string Window::new_level_file(){
-        level_change = false;
-        return m_Controls->new_level_file();
+    bool Window::ChangeLevelState(){ return levelChange_; }
+    std::string Window::GetLvlFilename(){
+        levelChange_ = false;
+        return m_Controls->GetLvlFilename();
     }
 
-    bool Window::start_solver_state(){ 
-        if (solve_change) {
-            solve_change = false;
+    bool Window::StartSolverState(){ 
+        if (solveChange_) {
+            solveChange_ = false;
             return true;
         } else {
             return false;
         }
     }
 
-    void Window::render(std::map<position, int> item_list, std::vector<platform> platform_list, 
+    void Window::Render(std::map<position, int> item_list, std::vector<platform> platform_list, 
         std::array<int, COLOURS> item_count, std::vector<position> move_list) {
         SDL_SetRenderDrawColor(m_Renderer, 128, 0, 255, 255);
         SDL_RenderClear(m_Renderer);
-        m_Board->drawBoard();
+        m_Board->DrawBackground();
 
-        m_Count->draw_tiles();
-        m_Count->draw_text(item_count);
+        m_Count->DrawTiles();
+        m_Count->DrawText(item_count);
 
-        m_Controls->render();
+        m_Controls->Render();
 
-        render_board();
-        render_platforms(platform_list);
-        render_items(item_list);
-        render_moves(move_list);
+        RenderBoard();
+        RenderPlatforms(platform_list);
+        RenderItems(item_list);
+        RenderMoves(move_list);
 
-        draw_highlight();
+        DrawHighlight();
 
         SDL_RenderPresent(m_Renderer);
-        delete_items();
-        delete_moves();
-        m_Count->free_text();
-        m_Controls->free();
+        DeleteItems();
+        DeleteMoves();
+        m_Count->Free();
+        m_Controls->Free();
     }
 
-    void Window::render_board() {
-        for (int i=0; i<base_tiles.size(); i++){
-            base_tiles[i]->draw();
+    void Window::RenderBoard() {
+        for (int i=0; i<baseTilesVec_.size(); i++){
+            baseTilesVec_[i]->Draw();
         }
     }
-    void Window::render_platforms(std::vector<platform> platform_list) {
-        for (int i=0; i<platform_tiles.size(); i++){
-            platform_tiles[i]->setPosition(grid_to_pixel(platform_list[i].pos));
-            platform_tiles[i]->draw();
+    void Window::RenderPlatforms(std::vector<platform> platform_list) {
+        for (int i=0; i<platformTilesVec_.size(); i++){
+            platformTilesVec_[i]->SetPosition(GridToPixel(platform_list[i].pos));
+            platformTilesVec_[i]->Draw();
         }
     }
-    void Window::render_items(std::map<position, int> item_list){
-        reset_items(item_list);
-        for (int i=0; i<item_tiles.size(); i++){
-            item_tiles[i]->draw();
+    void Window::RenderItems(std::map<position, int> item_list){
+        ResetItems(item_list);
+        for (int i=0; i<itemTiles_.size(); i++){
+            itemTiles_[i]->Draw();
         }
     }
-    void Window::render_moves(std::vector<position> move_list){
-        reset_moves(move_list);
+    void Window::RenderMoves(std::vector<position> move_list){
+        ResetMoves(move_list);
         for (int i=0; i<move_list.size(); i++){
-            move_tiles[i]->draw();
+            moveTiles_[i]->Draw();
         }
     }
 
-    position Window::grid_to_pixel(position pos) {
-        return grid_to_pixel(pos.x, pos.y);
+    position Window::GridToPixel(position pos) {
+        return GridToPixel(pos.x, pos.y);
     }
-    position Window::grid_to_pixel(int x, int y) {
+    position Window::GridToPixel(int x, int y) {
         position pixel_pos;
-        pixel_pos.x = WINDOW_LEFT + (x * tile_size);
-        pixel_pos.y = y * tile_size;
+        pixel_pos.x = WINDOW_LEFT + (x * tileSize_);
+        pixel_pos.y = y * tileSize_;
         return pixel_pos;
     }
 
-    void Window::reset_board(board board_data){
-        for(int x = 0; x < BOARD_SIZE; x++) {
-            for(int y = 0; y < BOARD_SIZE; y++) {
+    void Window::ResetBoard(board board_data){
+        for(int x = 0; x < kBoardSize; x++) {
+            for(int y = 0; y < kBoardSize; y++) {
                 tile tile_type = board_data.board[x][y];
                 const char* file_path;
 
@@ -288,15 +288,15 @@ namespace GUI {
                         std::cout << "Error with wall type assignment\n";
                         break;
                     }
-                    Tiles* temp = new Tiles(m_Renderer, file_path, tile_size);
-                    temp->setPosition(grid_to_pixel(x, y));
-                    base_tiles.push_back(temp);
+                    Tiles* temp = new Tiles(m_Renderer, file_path, tileSize_);
+                    temp->SetPosition(GridToPixel(x, y));
+                    baseTilesVec_.push_back(temp);
                 }
                 
             }
         }
     }
-    void Window::reset_platform(std::vector<platform> platform_list){
+    void Window::ResetPlatform(std::vector<platform> platform_list){
         for (int i=0; i<platform_list.size(); i++){
             const char* file_path;
 
@@ -314,13 +314,13 @@ namespace GUI {
                     break;
             }
 
-            Tiles* temp = new Tiles(m_Renderer, file_path, tile_size);
-            temp->setPosition(grid_to_pixel(platform_list[i].pos));
+            Tiles* temp = new Tiles(m_Renderer, file_path, tileSize_);
+            temp->SetPosition(GridToPixel(platform_list[i].pos));
             //temp->setPosition(platform_list[i].pos.x, platform_list[i].pos.y);
-            platform_tiles.push_back(temp);
+            platformTilesVec_.push_back(temp);
         }
     }
-    void Window::reset_items(std::map<position, int> item_list){
+    void Window::ResetItems(std::map<position, int> item_list){
         std::map<position, int>::iterator it;
         for (it = item_list.begin(); it != item_list.end(); it++){
             const char* file_path;
@@ -365,52 +365,52 @@ namespace GUI {
                     std::cout << "Error in item texture assignment";
                     break;
             }
-            Tiles* temp = new Tiles(m_Renderer, file_path, tile_size);
-            temp->setPosition(grid_to_pixel(it->first));
+            Tiles* temp = new Tiles(m_Renderer, file_path, tileSize_);
+            temp->SetPosition(GridToPixel(it->first));
             //temp->setPosition(it->first.x, it->first.y);
-            item_tiles.push_back(temp);
+            itemTiles_.push_back(temp);
         }
 
     }
-    void Window::reset_moves(std::vector<position> move_list){
+    void Window::ResetMoves(std::vector<position> move_list){
         for (int i=0; i<move_list.size(); i++){
-            Tiles* temp = new Tiles(m_Renderer, MOVE_MARKER_PATH, tile_size);
-            temp->setPosition(grid_to_pixel(move_list[i]));
-            move_tiles.push_back(temp);
+            Tiles* temp = new Tiles(m_Renderer, MOVE_MARKER_PATH, tileSize_);
+            temp->SetPosition(GridToPixel(move_list[i]));
+            moveTiles_.push_back(temp);
         }
     }
 
-    void Window::reset(board board_data, std::vector<platform> platform_list){
-        delete_board();
-        delete_platforms();
+    void Window::Reset(board board_data, std::vector<platform> platform_list){
+        DeleteBoard();
+        DeletePlatforms();
 
-        reset_board(board_data);
-        reset_platform(platform_list);
+        ResetBoard(board_data);
+        ResetPlatform(platform_list);
     }
 
-    void Window::delete_board(){
-        for (int i = base_tiles.size()-1; i >= 0; i--){
-            delete base_tiles[i];
+    void Window::DeleteBoard(){
+        for (int i = baseTilesVec_.size()-1; i >= 0; i--){
+            delete baseTilesVec_[i];
         }
-        base_tiles.clear();
+        baseTilesVec_.clear();
     }
-    void Window::delete_platforms(){
-        for (int i = platform_tiles.size()-1; i >= 0; i--){
-            delete platform_tiles[i];
+    void Window::DeletePlatforms(){
+        for (int i = platformTilesVec_.size()-1; i >= 0; i--){
+            delete platformTilesVec_[i];
         }
-        platform_tiles.clear();
+        platformTilesVec_.clear();
     }
-    void Window::delete_items(){
-        for (int i = item_tiles.size()-1; i >= 0; i--){
-            delete item_tiles[i];
+    void Window::DeleteItems(){
+        for (int i = itemTiles_.size()-1; i >= 0; i--){
+            delete itemTiles_[i];
         }
-        item_tiles.clear();
+        itemTiles_.clear();
     }
-    void Window::delete_moves(){
-        for (int i = move_tiles.size()-1; i >= 0; i--){
-            delete move_tiles[i];
+    void Window::DeleteMoves(){
+        for (int i = moveTiles_.size()-1; i >= 0; i--){
+            delete moveTiles_[i];
         }
-        move_tiles.clear();
+        moveTiles_.clear();
     }
 
 

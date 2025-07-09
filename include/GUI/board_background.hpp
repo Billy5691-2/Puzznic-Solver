@@ -7,15 +7,15 @@
 #include "../constants.hpp"
 
 namespace GUI {
-    class Board{
+    class BoardBackground{
         SDL_Renderer* m_Renderer;
-        int tile_size = 75;
+        int tileSize_ = 75;
         int m_board_size;
 
         public:
-            Board(SDL_Renderer* p_Renderer);
-            void drawBoard();
-            int getTileSize();
+            BoardBackground(SDL_Renderer* p_Renderer);
+            void DrawBackground();
+            int GetTileSize();
         
     };
 } 

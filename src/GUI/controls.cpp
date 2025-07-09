@@ -22,127 +22,127 @@ namespace GUI {
     Controls::Controls(SDL_Renderer* p_Renderer, TTF_Font* p_Font, SDL_Colour p_Txt_Colour,
                 int p_tile_size) {
         m_Renderer = p_Renderer;
-        m_Font = p_Font;
-        m_Txt_Colour = p_Txt_Colour;
-        tile_size = p_tile_size;
+        m_Font_ = p_Font;
+        m_TextColour = p_Txt_Colour;
+        tileSize_ = p_tile_size;
 
-        up_arrow_lvl = new Tiles(m_Renderer, UP_ARROW_PATH, tile_size);
-        up_arrow_lvl->setPosition(RIGHT_MID - (tile_size*1.5), GAP);
+        upArrowLvl_ = new Tiles(m_Renderer, UP_ARROW_PATH, tileSize_);
+        upArrowLvl_->SetPosition(RIGHT_MID - (tileSize_*1.5), GAP);
 
-        up_arrow_stage = new Tiles(m_Renderer, UP_ARROW_PATH, tile_size);
-        up_arrow_stage->setPosition(RIGHT_MID - (tile_size*1.5), GAP + GAP + tile_size);
+        upArrowStage_ = new Tiles(m_Renderer, UP_ARROW_PATH, tileSize_);
+        upArrowStage_->SetPosition(RIGHT_MID - (tileSize_*1.5), GAP + GAP + tileSize_);
 
-        down_arrow_lvl = new Tiles(m_Renderer, DOWN_ARROW_PATH, tile_size);
-        down_arrow_lvl->setPosition(RIGHT_MID + (tile_size*0.5), GAP);
+        downArrowLvl_ = new Tiles(m_Renderer, DOWN_ARROW_PATH, tileSize_);
+        downArrowLvl_->SetPosition(RIGHT_MID + (tileSize_*0.5), GAP);
 
-        down_arrow_stage = new Tiles(m_Renderer, DOWN_ARROW_PATH, tile_size);
-        down_arrow_stage->setPosition(RIGHT_MID + (tile_size*0.5), GAP + GAP + tile_size);
+        downArrowStage_ = new Tiles(m_Renderer, DOWN_ARROW_PATH, tileSize_);
+        downArrowStage_->SetPosition(RIGHT_MID + (tileSize_*0.5), GAP + GAP + tileSize_);
         
         int w, h;
-        load_surface = TTF_RenderText_Solid(m_Font, "Load", m_Txt_Colour);
-        load_texture = SDL_CreateTextureFromSurface(m_Renderer, load_surface);
-        TTF_SizeText(m_Font, "Load", &w, &h);
+        loadTextSurface_ = TTF_RenderText_Solid(m_Font_, "Load", m_TextColour);
+        loadTextTexture_ = SDL_CreateTextureFromSurface(m_Renderer, loadTextSurface_);
+        TTF_SizeText(m_Font_, "Load", &w, &h);
 
-        load_rect.x = RIGHT_MID - (w / 2);
-        load_rect.y = GAP + ((GAP + tile_size) * 2);
-        load_rect.w = w;
-        load_rect.h = h;
+        loadTextRect_.x = RIGHT_MID - (w / 2);
+        loadTextRect_.y = GAP + ((GAP + tileSize_) * 2);
+        loadTextRect_.w = w;
+        loadTextRect_.h = h;
 
-        solve_surface = TTF_RenderText_Solid(m_Font, "Solve", m_Txt_Colour);
-        solve_texture = SDL_CreateTextureFromSurface(m_Renderer, solve_surface);
-        TTF_SizeText(m_Font, "Solve", &w, &h);
+        solveTextSurface_ = TTF_RenderText_Solid(m_Font_, "Solve", m_TextColour);
+        solveTextTexture_ = SDL_CreateTextureFromSurface(m_Renderer, solveTextSurface_);
+        TTF_SizeText(m_Font_, "Solve", &w, &h);
 
-        solve_rect.x = RIGHT_MID - (w / 2);
-        solve_rect.y = GAP + ((GAP + tile_size) * 3);
-        solve_rect.w = w;
-        solve_rect.h = h;
+        solveTextRect_.x = RIGHT_MID - (w / 2);
+        solveTextRect_.y = GAP + ((GAP + tileSize_) * 3);
+        solveTextRect_.w = w;
+        solveTextRect_.h = h;
 
     }
 
     Controls::~Controls(){
-        SDL_FreeSurface(load_surface);
-        SDL_DestroyTexture(load_texture);
-        SDL_FreeSurface(solve_surface);
-        SDL_DestroyTexture(solve_texture);
+        SDL_FreeSurface(loadTextSurface_);
+        SDL_DestroyTexture(loadTextTexture_);
+        SDL_FreeSurface(solveTextSurface_);
+        SDL_DestroyTexture(solveTextTexture_);
         std::cout << "Controls destroyed\n";
     }
 
-    void Controls::handle_click(int x, int y){
-        if (y > GAP && y < GAP + tile_size) {
-            if (x > RIGHT_MID - (tile_size*1.5) && x < RIGHT_MID - (tile_size*0.5)) {
+    void Controls::HandleClick(int x, int y){
+        if (y > GAP && y < GAP + tileSize_) {
+            if (x > RIGHT_MID - (tileSize_*1.5) && x < RIGHT_MID - (tileSize_*0.5)) {
                 //Up arrow level
-                level = bound_check(level, 1);
-            } else if (x > RIGHT_MID + (tile_size*0.5) && x < RIGHT_MID + (tile_size*1.5)){
+                level_ = CheckNumBounds(level_, 1);
+            } else if (x > RIGHT_MID + (tileSize_*0.5) && x < RIGHT_MID + (tileSize_*1.5)){
                 //Down arrow level
-                level = bound_check(level, -1);
+                level_ = CheckNumBounds(level_, -1);
             }
-        } else if (y > GAP + (GAP + tile_size) && y < GAP + tile_size + (GAP + tile_size)) {
-            if (x > RIGHT_MID - (tile_size*1.5) && x < RIGHT_MID - (tile_size*0.5)) {
+        } else if (y > GAP + (GAP + tileSize_) && y < GAP + tileSize_ + (GAP + tileSize_)) {
+            if (x > RIGHT_MID - (tileSize_*1.5) && x < RIGHT_MID - (tileSize_*0.5)) {
                 //Up arrow stage
-                stage = bound_check(stage, 1);
-            } else if (x > RIGHT_MID + (tile_size*0.5) && x < RIGHT_MID + (tile_size*1.5)){
+                stage_ = CheckNumBounds(stage_, 1);
+            } else if (x > RIGHT_MID + (tileSize_*0.5) && x < RIGHT_MID + (tileSize_*1.5)){
                 //Down arrow stage
-                stage = bound_check(stage, -1);
+                stage_ = CheckNumBounds(stage_, -1);
             }
-        } else if (y > GAP + ((GAP + tile_size) * 2) && 
-        y < GAP + tile_size + ((GAP + tile_size) * 2)) {
-            if (x > RIGHT_MID - (tile_size*1.5) && x < RIGHT_MID + (tile_size*1.5)) {
-                load_pressed = true;
+        } else if (y > GAP + ((GAP + tileSize_) * 2) && 
+        y < GAP + tileSize_ + ((GAP + tileSize_) * 2)) {
+            if (x > RIGHT_MID - (tileSize_*1.5) && x < RIGHT_MID + (tileSize_*1.5)) {
+                loadButtonPressed_ = true;
                 //load button
             }
-        } else if (y > GAP + ((GAP + tile_size) * 3) && 
-        y < GAP + tile_size + ((GAP + tile_size) * 3)) {
-            if (x > RIGHT_MID - (tile_size*1.5) && x < RIGHT_MID + (tile_size*1.5)) {
-                solve_pressed = true;
+        } else if (y > GAP + ((GAP + tileSize_) * 3) && 
+        y < GAP + tileSize_ + ((GAP + tileSize_) * 3)) {
+            if (x > RIGHT_MID - (tileSize_*1.5) && x < RIGHT_MID + (tileSize_*1.5)) {
+                solveButtonPressed_ = true;
                 //solve button
             }
         }
     }
 
-    void Controls::draw_text() {
-        SDL_RenderCopy(m_Renderer, load_texture, NULL, &load_rect);
-        SDL_RenderCopy(m_Renderer, solve_texture, NULL, &solve_rect);
+    void Controls::DrawText() {
+        SDL_RenderCopy(m_Renderer, loadTextTexture_, NULL, &loadTextRect_);
+        SDL_RenderCopy(m_Renderer, solveTextTexture_, NULL, &solveTextRect_);
 
-        std::string temp_str = std::to_string(level);
+        std::string temp_str = std::to_string(level_);
         char const *level_char = temp_str.c_str();
 
         int w, h;
-        level_surface = TTF_RenderText_Solid(m_Font, level_char, m_Txt_Colour);
-        level_texture = SDL_CreateTextureFromSurface(m_Renderer, level_surface);
-        TTF_SizeText(m_Font, level_char, &w, &h);
+        levelTextSurface_ = TTF_RenderText_Solid(m_Font_, level_char, m_TextColour);
+        levelTextTexture_ = SDL_CreateTextureFromSurface(m_Renderer, levelTextSurface_);
+        TTF_SizeText(m_Font_, level_char, &w, &h);
 
-        SDL_Rect level_rect;
-        level_rect.x = RIGHT_MID - (w / 2);
-        level_rect.y = GAP;
-        level_rect.w = w;
-        level_rect.h = h;
+        SDL_Rect levelTextRect_;
+        levelTextRect_.x = RIGHT_MID - (w / 2);
+        levelTextRect_.y = GAP;
+        levelTextRect_.w = w;
+        levelTextRect_.h = h;
 
-        SDL_RenderCopy(m_Renderer, level_texture, NULL, &level_rect);
+        SDL_RenderCopy(m_Renderer, levelTextTexture_, NULL, &levelTextRect_);
         
-        temp_str = std::to_string(stage);
+        temp_str = std::to_string(stage_);
         char const *stage_char = temp_str.c_str();
 
-        stage_surface = TTF_RenderText_Solid(m_Font, stage_char, m_Txt_Colour);
-        stage_texture = SDL_CreateTextureFromSurface(m_Renderer, stage_surface);
-        TTF_SizeText(m_Font, stage_char, &w, &h);
+        stageTextSurface_ = TTF_RenderText_Solid(m_Font_, stage_char, m_TextColour);
+        stageTextTexture_ = SDL_CreateTextureFromSurface(m_Renderer, stageTextSurface_);
+        TTF_SizeText(m_Font_, stage_char, &w, &h);
 
-        SDL_Rect stage_rect;
-        stage_rect.x = RIGHT_MID - (w / 2);
-        stage_rect.y = GAP + (tile_size + GAP);
-        stage_rect.w = w;
-        stage_rect.h = h;
+        SDL_Rect stageTextRect_;
+        stageTextRect_.x = RIGHT_MID - (w / 2);
+        stageTextRect_.y = GAP + (tileSize_ + GAP);
+        stageTextRect_.w = w;
+        stageTextRect_.h = h;
 
-        SDL_RenderCopy(m_Renderer, stage_texture, NULL, &stage_rect);
+        SDL_RenderCopy(m_Renderer, stageTextTexture_, NULL, &stageTextRect_);
 
     }
 
-    void Controls::draw_load() {
+    void Controls::DrawLoadButton() {
         SDL_Rect _block_load;
-        _block_load.x = RIGHT_MID - (tile_size*1.5);
-        _block_load.y = GAP + ((GAP + tile_size) * 2);
-        _block_load.w = tile_size * 3;
-        _block_load.h = tile_size;
-        if (!load_pressed) {
+        _block_load.x = RIGHT_MID - (tileSize_*1.5);
+        _block_load.y = GAP + ((GAP + tileSize_) * 2);
+        _block_load.w = tileSize_ * 3;
+        _block_load.h = tileSize_;
+        if (!loadButtonPressed_) {
             SDL_SetRenderDrawColor(m_Renderer, 0, 200, 200, 200);
         } else {
             SDL_SetRenderDrawColor(m_Renderer, 0, 115, 115, 115);
@@ -153,13 +153,13 @@ namespace GUI {
         SDL_RenderDrawRect(m_Renderer, &_block_load);
     }
 
-    void Controls::draw_solve() {
+    void Controls::DrawSolveButton() {
         SDL_Rect _block_solve;
-        _block_solve.x = RIGHT_MID - (tile_size*1.5);
-        _block_solve.y = GAP + ((GAP + tile_size) * 3);
-        _block_solve.w = tile_size * 3;
-        _block_solve.h = tile_size;
-        if (!solve_pressed) {
+        _block_solve.x = RIGHT_MID - (tileSize_*1.5);
+        _block_solve.y = GAP + ((GAP + tileSize_) * 3);
+        _block_solve.w = tileSize_ * 3;
+        _block_solve.h = tileSize_;
+        if (!solveButtonPressed_) {
             SDL_SetRenderDrawColor(m_Renderer, 0, 200, 200, 200);
         } else {
             SDL_SetRenderDrawColor(m_Renderer, 0, 115, 115, 115);
@@ -170,55 +170,53 @@ namespace GUI {
         SDL_RenderDrawRect(m_Renderer, &_block_solve);
     }
     
-    void Controls::draw_controls() {
-        up_arrow_lvl->draw();
-        down_arrow_lvl->draw();
-        up_arrow_stage->draw();
-        down_arrow_stage->draw();
+    void Controls::DrawControls() {
+        upArrowLvl_->Draw();
+        downArrowLvl_->Draw();
+        upArrowStage_->Draw();
+        downArrowStage_->Draw();
     }
 
-    void Controls::render() {
-        draw_load();
-        draw_solve();
-        draw_text();
-        draw_controls();
+    void Controls::Render() {
+        DrawLoadButton();
+        DrawSolveButton();
+        DrawText();
+        DrawControls();
 
     }
     
-    void Controls::free() {
-        SDL_FreeSurface(level_surface);
-        SDL_DestroyTexture(level_texture);
-        SDL_FreeSurface(stage_surface);
-        SDL_DestroyTexture(stage_texture);
+    void Controls::Free() {
+        SDL_FreeSurface(levelTextSurface_);
+        SDL_DestroyTexture(levelTextTexture_);
+        SDL_FreeSurface(stageTextSurface_);
+        SDL_DestroyTexture(stageTextTexture_);
     }
 
-    bool Controls::change_level() { return load_pressed; }
+    bool Controls::GetChangeLvl() { return loadButtonPressed_; }
 
-    bool Controls::start_solver() {
-        if (solve_pressed){
-            solve_pressed = false;
+    bool Controls::GetStartSolver() {
+        if (solveButtonPressed_){
+            solveButtonPressed_ = false;
             return true;
         } else {
             return false;
         }
     }
 
-    int Controls::bound_check(int value, int change){
+    int Controls::CheckNumBounds(int value, int change){
         int out = value + change;
         if (out > 9){ return 1; }
         if (out < 1){ return 9; }
         return out;
     }
 
-    std::string Controls::new_level_file(){
-        std::string stage_name = std::to_string(stage);
-        std::string level_name = std::to_string(level);
+    std::string Controls::GetLvlFilename(){
+        std::string stage_name = std::to_string(stage_);
+        std::string level_name = std::to_string(level_);
         std::string filename = ("../levels/stage_" + stage_name + "/" + 
             stage_name + "_level_" + level_name + ".csv");
-        load_pressed = false;
+        loadButtonPressed_ = false;
         return filename;
-        //const char *output = filename.c_str();
-        //return output;
     }
 }
 

@@ -14,21 +14,21 @@
 namespace GUI{
     class ItemCounter{
         SDL_Renderer* m_Renderer;
-        std::array<Tiles*, COLOURS> item_count_tiles;
-        std::array<SDL_Surface*, COLOURS> surfaces;
-        std::array<SDL_Texture*, COLOURS> messages;
+        std::array<Tiles*, COLOURS> itemCountTilesArr_;
+        std::array<SDL_Surface*, COLOURS> surfacesArr_;
+        std::array<SDL_Texture*, COLOURS> texturesArr_;
 
-        TTF_Font* m_Font;
-        SDL_Colour m_Txt_Colour;
+        TTF_Font* m_Font_;
+        SDL_Colour m_TextColour;
 
-        int tile_size;
+        int tileSize_;
 
         public:
             ItemCounter(SDL_Renderer* p_Renderer, TTF_Font* p_font, SDL_Colour p_txt_colour,
                 int p_tile_size, std::array<const char*, COLOURS> item_paths);
             ~ItemCounter();
-            void draw_tiles();
-            void draw_text(std::array<int, COLOURS> item_count);
-            void free_text();
+            void DrawTiles();
+            void DrawText(std::array<int, COLOURS> item_count);
+            void Free();
     };
 }

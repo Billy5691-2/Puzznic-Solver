@@ -11,59 +11,59 @@
 namespace GUI {
     class Controls{
         SDL_Renderer* m_Renderer;
-        TTF_Font* m_Font;
-        SDL_Colour m_Txt_Colour;
+        TTF_Font* m_Font_;
+        SDL_Colour m_TextColour;
 
-        Tiles* up_arrow_lvl;
-        Tiles* down_arrow_lvl;
-        Tiles* up_arrow_stage;
-        Tiles* down_arrow_stage;
+        Tiles* upArrowLvl_;
+        Tiles* downArrowLvl_;
+        Tiles* upArrowStage_;
+        Tiles* downArrowStage_;
 
-        SDL_Surface* load_surface;
-        SDL_Texture* load_texture;
-        SDL_Rect load_rect;
+        SDL_Surface* loadTextSurface_;
+        SDL_Texture* loadTextTexture_;
+        SDL_Rect loadTextRect_;
 
-        SDL_Surface* solve_surface;
-        SDL_Texture* solve_texture;
-        SDL_Rect solve_rect;
+        SDL_Surface* solveTextSurface_;
+        SDL_Texture* solveTextTexture_;
+        SDL_Rect solveTextRect_;
 
-        SDL_Surface* level_surface;
-        SDL_Texture* level_texture;
+        SDL_Surface* levelTextSurface_;
+        SDL_Texture* levelTextTexture_;
 
-        SDL_Surface* stage_surface;
-        SDL_Texture* stage_texture;
+        SDL_Surface* stageTextSurface_;
+        SDL_Texture* stageTextTexture_;
 
-        int tile_size;
+        int tileSize_;
 
-        int stage = 1;
-        int level = 1;
+        int stage_ = 1;
+        int level_ = 1;
 
-        bool solve_pressed = false;
-        bool load_pressed = false;
+        bool solveButtonPressed_ = false;
+        bool loadButtonPressed_ = false;
 
-        void draw_load();
-        void draw_solve();
-        void draw_text();
-        void draw_controls();
+        void DrawLoadButton();
+        void DrawSolveButton();
+        void DrawText();
+        void DrawControls();
 
-        void render_buttons();
-        void render_text();
+        void RenderButtons();
+        void RenderText();
 
-        int bound_check(int value, int change);
+        int CheckNumBounds(int value, int change);
 
         public:
             Controls(SDL_Renderer* p_Renderer, TTF_Font* p_Font, SDL_Colour p_Txt_Colour,
                 int p_tile_size);
             ~Controls();
 
-            void render();
-            void free();
+            void Render();
+            void Free();
             
-            void handle_click(int x, int y);
+            void HandleClick(int x, int y);
 
-            bool start_solver();
+            bool GetStartSolver();
             
-            bool change_level();
-            std::string new_level_file();
+            bool GetChangeLvl();
+            std::string GetLvlFilename();
     };
 }

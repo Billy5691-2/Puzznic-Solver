@@ -1,4 +1,4 @@
-#include "../../include/GUI/textureManager.hpp"
+#include "../../include/GUI/texture_manager.hpp"
 
 namespace GUI{
     /*

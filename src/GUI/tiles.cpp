@@ -26,17 +26,17 @@ namespace GUI{
     }
     
     //Set the position of a tile in the board
-    void Tiles::setPosition(int p_X, int p_Y){
+    void Tiles::SetPosition(int p_X, int p_Y){
         m_TileProperty->x = p_X;
         m_TileProperty->y = p_Y;
     }
 
-    void Tiles::setPosition(position pos){
-        setPosition(pos.x, pos.y);
+    void Tiles::SetPosition(position pixel){
+        SetPosition(pixel.x, pixel.y);
     }
 
     //Renders a tile's texture on the board
-    void Tiles::draw(){
+    void Tiles::Draw(){
         TextureManager::Render(m_Renderer, m_TileTexture, m_TileProperty);
         SDL_RenderCopy(m_Renderer, m_TileTexture, NULL, m_TileProperty);
     }

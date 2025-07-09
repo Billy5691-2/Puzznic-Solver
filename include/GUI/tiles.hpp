@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include "textureManager.hpp"
+#include "texture_manager.hpp"
 #include "../structs.hpp"
 
 namespace  GUI {
@@ -13,9 +13,9 @@ namespace  GUI {
         public:
             Tiles(SDL_Renderer* p_Renderer, const char* p_FilePath, int p_TileSize);
             ~Tiles();
-            void setPosition(int p_X, int p_Y);
-            void setPosition(position pos);
-            void draw();
+            void SetPosition(int p_X, int p_Y);
+            void SetPosition(position pixel);
+            void Draw();
 
     };
 }

@@ -26,27 +26,27 @@ Items: ##
 
 namespace Puzznic{
     class BoardState {
-        board game_board;
-        std::array<int, COLOURS> item_count;
-        std::map<position, int> item_list;
-        //std::vector<platform> platform_list;
-        std::vector<platform> hor_plat_list;
-        std::vector<platform> vert_plat_list;
+        static int boardSize_;
+        board gameBoard_;
+        std::array<int, COLOURS> itemCountArr_;
+        std::map<position, int> itemMap_;
+        std::vector<platform> y_PlatformVec;
+        std::vector<platform> x_PlatformVec;
         
-        void game_loop(move move);
-        void update_horizontal_platforms();
-        void update_vertical_platforms();
-        void update_items();
-        void destroy_items();
+        void GameLoop(move move);
+        void UpdateY_Platforms();
+        void UpdateX_Platforms();
+        void UpdateItems();
+        void MatchItems();
 
         void print_board();
         void print_item_list();
 
-        bool move_tile(position old_pos, position new_pos);
-        bool move_item(position old_pos, position new_pos);
-        void update_item_count(int colour);
+        bool MoveTile(position oldCoord, position newCoord);
+        bool MoveItem(position oldCoord, position newCoord);
+        void UpdateItemCount(int colour);
 
-        void set_board_pos(position pos, tile tile);
+        void SetBoardCoord(position coord, tile tile);
 
         public:
             BoardState() : BoardState("../levels/level_1_1_cpp.csv"){}
@@ -54,18 +54,18 @@ namespace Puzznic{
             BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, 
                 std::map<position, int> temp_item_list, 
                 std::vector<platform> temp_hor_list, std::vector<platform> temp_vert_list) : 
-                game_board(temp_game_board), 
-                item_count(temp_item_count), item_list(temp_item_list),
-                hor_plat_list(temp_hor_list), vert_plat_list(vert_plat_list) {}
+                gameBoard_(temp_game_board), 
+                itemCountArr_(temp_item_count), itemMap_(temp_item_list),
+                y_PlatformVec(temp_hor_list), x_PlatformVec(x_PlatformVec) {}
             ~BoardState();
             BoardState copy();
 
-            tile get_board_pos(position pos); 
-            std::map<position, int> get_item_list(); 
-            std::vector<platform> get_platform_list(); 
-            std::array<int, COLOURS> get_item_count(); 
-            int get_board_size(); 
-            board get_board(); 
+            tile GetBoardPos(position pos); 
+            std::map<position, int> GetItemMap(); 
+            std::vector<platform> GetPlatformVecs(); 
+            std::array<int, COLOURS> GetItemCount(); 
+            int GetBoardSize(); 
+            board GetBoard(); 
 
 
     };

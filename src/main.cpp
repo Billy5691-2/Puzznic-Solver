@@ -17,10 +17,10 @@ int main(){
     Puzznic::Game Game(filename);
     
     init();
-    board board_data = Game.get_board();
-    std::array<int, COLOURS> item_count = Game.get_item_count();
-    std::map<position, int> item_list = Game.get_item_list();
-    std::vector<platform> platform_list = Game.get_platform_list();
+    board board_data = Game.GetBoard();
+    std::array<int, COLOURS> item_count = Game.GetItemCount();
+    std::map<position, int> item_list = Game.getItemList();
+    std::vector<platform> platform_list = Game.GetPlatformList();
 
     position temp_move;
     temp_move.x = 3;
@@ -30,27 +30,27 @@ int main(){
 
     GUI::Window GUI("Puzznic", board_data, platform_list);
 
-    while (GUI.isRunning()){
-        GUI.pollEvent();
-        board_data = Game.get_board();
-        if (GUI.update()) {
-            if (GUI.change_level_state()){
-                std::string lvl_file = GUI.new_level_file();
+    while (GUI.IsRunning()){
+        GUI.PollEvent();
+        board_data = Game.GetBoard();
+        if (GUI.Update()) {
+            if (GUI.ChangeLevelState()){
+                std::string lvl_file = GUI.GetLvlFilename();
                 std::cout << "New Level: " << lvl_file << "\n"; 
             }
-            if (GUI.start_solver_state()){
+            if (GUI.StartSolverState()){
                 std::cout << "Start solver\n";
             }
-            if (GUI.get_highlight_change()){
-                move potential_move = GUI.get_move();
+            if (GUI.GetHightlightChange()){
+                move potential_move = GUI.GetMove();
                 std::cout << "Move Recieved\n";
             }
         }
 
-        item_count = Game.get_item_count();
-        platform_list = Game.get_platform_list();
-        item_list = Game.get_item_list();
-        GUI.render(item_list, platform_list, item_count, move_list);
+        item_count = Game.GetItemCount();
+        platform_list = Game.GetPlatformList();
+        item_list = Game.getItemList();
+        GUI.Render(item_list, platform_list, item_count, move_list);
 
     }
 

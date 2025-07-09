@@ -24,7 +24,7 @@ Implemented:
 
 namespace Puzznic {
     Game::Game(std::string level) {
-        active_board = new BoardState(level);
+        activeBoard_ = new BoardState(level);
         std::shared_ptr<BoardState> current_board = std::make_shared<BoardState>(level);
     }
 
@@ -34,22 +34,22 @@ namespace Puzznic {
 
     //Game Destructor
     Game::~Game() {
-        delete active_board;
+        delete activeBoard_;
         std::cout << "Close Game 2\n";
     }
 
     void Game::game_state(){
         bool won = true;
-        for (const auto& count : active_board->get_item_count()){
+        for (const auto& count : activeBoard_->GetItemCount()){
             if (count  == 1){
-                game_lost = true;
+                gameLost_ = true;
                 return;
             }
             if (count > 0){
                 won = false;
             }
         }
-        game_won = won;
+        gameWon_ = won;
     }    
 
     /*board Game::copy_board(){
@@ -59,16 +59,7 @@ namespace Puzznic {
         new_board.size = game_board.size;
         //new_board.height = game_board.height;
         //new_board.width = game_board.width;
-        std::copy(&game_board.board[0][0], &game_board.board[0][0]+BOARD_SIZE*BOARD_SIZE, &new_board.board[0][0]);
+        std::copy(&game_board.board[0][0], &game_board.board[0][0]+kBoardSize*kBoardSize, &new_board.board[0][0]);
         return new_board;
     }*/
-
-    board Game::get_board(){ return active_board->get_board(); }
-    std::array<int, COLOURS> Game::get_item_count(){ return active_board->get_item_count(); }
-    std::map<position, int> Game::get_item_list() { return active_board->get_item_list(); }
-    std::vector<platform> Game::get_platform_list() { return active_board->get_platform_list(); }
-
-    bool Game::get_lose_state(){ return game_lost; }
-    bool Game::get_win_state(){ return game_won; }
-
 }

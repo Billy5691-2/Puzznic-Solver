@@ -21,7 +21,7 @@ y = horizontal, 0 left
 
 namespace Puzznic {
     BoardState::BoardState(std::string level){
-        item_count.fill(0);
+        itemCountArr_.fill(0);
 
         std::string data;
 
@@ -33,19 +33,20 @@ namespace Puzznic {
         }
 
         std::getline (levelData, data);
-        game_board.size = std::stoi(data);
+        //gameBoard_.size = std::stoi(data);
+        boardSize_ = std::stoi(data);
 
         std::getline (levelData, data);
-        //game_board.width = std::stoi(data);
+        //gameBoard_.width = std::stoi(data);
         
         int x = 0;
-        while (std::getline (levelData, data) && x < BOARD_SIZE) {
+        while (std::getline (levelData, data) && x < kBoardSize) {
 
             int y = 0;
             std::stringstream ss(data);
             std::string cell;
             while (std::getline (ss, cell, ',')) {
-                if (y >= BOARD_SIZE){
+                if (y >= kBoardSize){
                     std::cout << "y out of bounds in read file";
                 }
 
@@ -60,56 +61,56 @@ namespace Puzznic {
                 switch (tile_value) {
                     case 1: //Red
                         temp.item = 1;
-                        item_count[RED]++;
-                        item_list[temp_pos] = RED;
+                        itemCountArr_[RED]++;
+                        itemMap_[temp_pos] = RED;
 
                         break;
                     case 2: //Blue
                         temp.item = 2;
-                        item_count[BLUE]++;
-                        item_list[temp_pos] = BLUE;
+                        itemCountArr_[BLUE]++;
+                        itemMap_[temp_pos] = BLUE;
 
                         break;
                     case 3: //Green
                         temp.item = 3;
-                        item_count[GREEN]++;
-                        item_list[temp_pos] = GREEN;
+                        itemCountArr_[GREEN]++;
+                        itemMap_[temp_pos] = GREEN;
 
                         break;
                     case 4: //Pink
                         temp.item = 4;
-                        item_count[PINK]++;
-                        item_list[temp_pos] = PINK;
+                        itemCountArr_[PINK]++;
+                        itemMap_[temp_pos] = PINK;
 
                         break;
                     case 5: //Purple
                         temp.item = 5;
-                        item_count[PURPLE]++;
-                        item_list[temp_pos] = PURPLE;
+                        itemCountArr_[PURPLE]++;
+                        itemMap_[temp_pos] = PURPLE;
 
                         break;
                     case 6: //Cyan
                         temp.item = 6;
-                        item_count[CYAN]++;
-                        item_list[temp_pos] = CYAN;
+                        itemCountArr_[CYAN]++;
+                        itemMap_[temp_pos] = CYAN;
 
                         break;
                     case 7: //Brown
                         temp.item = 7;
-                        item_count[BROWN]++;
-                        item_list[temp_pos] = BROWN;
+                        itemCountArr_[BROWN]++;
+                        itemMap_[temp_pos] = BROWN;
 
                         break;
                     case 8: //Orange
                         temp.item = 8;
-                        item_count[ORANGE]++;
-                        item_list[temp_pos] = ORANGE;
+                        itemCountArr_[ORANGE]++;
+                        itemMap_[temp_pos] = ORANGE;
 
                         break;
                     case 9: // Yellow
                         temp.item = 9;
-                        item_count[YELLOW]++;
-                        item_list[temp_pos] = YELLOW;
+                        itemCountArr_[YELLOW]++;
+                        itemMap_[temp_pos] = YELLOW;
 
                         break;
                     
@@ -133,25 +134,25 @@ namespace Puzznic {
                         temp.platform = 1;
                         temp_plat.direction = NEGATIVE;
                         temp_plat.plane = VERTICAL;
-                        vert_plat_list.push_back(temp_plat);
+                        x_PlatformVec.push_back(temp_plat);
                         break;
                     case 202: //Down
                         temp.platform = 2;
                         temp_plat.direction = POSITIVE;
                         temp_plat.plane = VERTICAL;
-                        vert_plat_list.push_back(temp_plat);
+                        x_PlatformVec.push_back(temp_plat);
                         break;
                     case 203: //Right
                         temp.platform = 3;
                         temp_plat.direction = POSITIVE;
                         temp_plat.plane = HORIZONTAL;
-                        hor_plat_list.push_back(temp_plat);
+                        y_PlatformVec.push_back(temp_plat);
                         break;
                     case 204: //Left
                         temp.platform = 4;
                         temp_plat.direction = NEGATIVE;
                         temp_plat.plane = HORIZONTAL;
-                        hor_plat_list.push_back(temp_plat);
+                        y_PlatformVec.push_back(temp_plat);
                         break;
 
                     case 999: //Empty
@@ -162,7 +163,7 @@ namespace Puzznic {
                         std::cout << "Error in file read";
                         
                 }
-                game_board.board[x][y] = temp;
+                gameBoard_.board[x][y] = temp;
                 y++;
                 
             }
@@ -181,11 +182,11 @@ namespace Puzznic {
     /*BoardState::BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, 
         std::map<position, int> temp_item_list, 
                 std::vector<platform> temp_hor_list, std::vector<platform> temp_vert_list){
-                    game_board = temp_game_board;
-                    item_count = temp_item_count;
+                    gameBoard_ = temp_game_board;
+                    itemCountArr_ = temp_item_count;
                     item_list = temp_item_list;
-                    hor_plat_list = temp_hor_list;
-                    vert_plat_list = temp_vert_list;
+                    y_PlatformVec = temp_hor_list;
+                    x_PlatformVec = temp_vert_list;
 
                 }*/
     
@@ -195,42 +196,42 @@ namespace Puzznic {
     }
 
     BoardState BoardState::copy(){
-        return BoardState(game_board, item_count, item_list, hor_plat_list, vert_plat_list);
+        return BoardState(gameBoard_, itemCountArr_, itemMap_, y_PlatformVec, x_PlatformVec);
     }
 
-    void BoardState::update_item_count(int colour){
-        item_count[colour--]--;
+    void BoardState::UpdateItemCount(int colour){
+        itemCountArr_[colour--]--;
         }
     
-    void BoardState::game_loop(move move) {
+    void BoardState::GameLoop(move move) {
         position old_pos = move.original;
         position new_pos = move.updated;
 
-        if (!(old_pos.x == BOARD_SIZE && old_pos.y == BOARD_SIZE)) {
-            move_item(old_pos, new_pos);
+        if (!(old_pos.x == kBoardSize && old_pos.y == kBoardSize)) {
+            MoveItem(old_pos, new_pos);
         }
-        update_horizontal_platforms();
-        update_vertical_platforms();
-        //destroy_items();
-        update_items();
-        destroy_items();
+        UpdateY_Platforms();
+        UpdateX_Platforms();
+        //MatchItems();
+        UpdateItems();
+        MatchItems();
     }
 
-    void BoardState::update_horizontal_platforms(){
-        for (auto platform : hor_plat_list){
+    void BoardState::UpdateY_Platforms(){
+        for (auto platform : y_PlatformVec){
             position movement;
             movement.y += platform.direction;
             /*
             switch (platform.direction){
                 case POSITIVE:
-                    if (!get_board_pos(platform.pos + movement).empty){
+                    if (!GetBoardPos(platform.pos + movement).empty){
                         movement.y = 0;
                         platform.direction = NEGATIVE;
                     }
                     break;
                 
                 case NEGATIVE:
-                    if (!get_board_pos(platform.pos + movement).empty){
+                    if (!GetBoardPos(platform.pos + movement).empty){
                         movement.y = 0;
                         platform.direction = POSITIVE;
                     }
@@ -241,7 +242,7 @@ namespace Puzznic {
                 }*/
             
             //Possibly a better method for updating horizontal platforms
-            if (!move_tile(platform.pos, platform.pos + movement)){
+            if (!MoveTile(platform.pos, platform.pos + movement)){
                 if (platform.direction == NEGATIVE){
                     platform.direction = POSITIVE;
                 } else {
@@ -253,15 +254,15 @@ namespace Puzznic {
             
             if (movement.y != 0) {
                 position new_pos = platform.pos + movement;
-                move_tile(platform.pos, new_pos);
+                MoveTile(platform.pos, new_pos);
                 platform.pos = new_pos;
                 
                 position top_pos = platform.pos;
                 bool stack_move = true;
                 while (stack_move) {
                     top_pos.x--;
-                    if (get_board_pos(top_pos).item){
-                        stack_move = move_tile(top_pos, top_pos+movement);
+                    if (GetBoardPos(top_pos).item){
+                        stack_move = MoveTile(top_pos, top_pos+movement);
                     } else {
                         stack_move = false;
                     }
@@ -271,21 +272,21 @@ namespace Puzznic {
 
         }
     }
-    void BoardState::update_vertical_platforms() {
-        for (auto platform : vert_plat_list){
+    void BoardState::UpdateX_Platforms() {
+        for (auto platform : x_PlatformVec){
             position movement;
             movement.x += platform.direction;
             switch (platform.direction) {
                 case POSITIVE:
 
-                    if (move_tile(platform.pos, platform.pos + movement)){
+                    if (MoveTile(platform.pos, platform.pos + movement)){
                         position top_pos = platform.pos;
                         platform.pos = platform.pos + movement;
                         bool stack = true;
                         while (stack){
                             top_pos.x--;
-                            if (get_board_pos(top_pos).item) {
-                                stack = move_item(top_pos, top_pos + movement);
+                            if (GetBoardPos(top_pos).item) {
+                                stack = MoveItem(top_pos, top_pos + movement);
                             } else {
                                 stack = false;
                             }
@@ -296,16 +297,16 @@ namespace Puzznic {
                     break;
                 
                 case NEGATIVE:
-                    if (get_board_pos(platform.pos + movement).empty) {
-                        move_tile(platform.pos, platform.pos + movement);
+                    if (GetBoardPos(platform.pos + movement).empty) {
+                        MoveTile(platform.pos, platform.pos + movement);
                         platform.pos = platform.pos + movement;
                         break;
 
-                    } else if (get_board_pos(platform.pos + movement).item) {
+                    } else if (GetBoardPos(platform.pos + movement).item) {
                         position stack_top = platform.pos + movement;
-                        while (get_board_pos(stack_top).item) {
+                        while (GetBoardPos(stack_top).item) {
                             stack_top = stack_top + movement;
-                            if (!get_board_pos(stack_top).empty && !get_board_pos(stack_top).item) {
+                            if (!GetBoardPos(stack_top).empty && !GetBoardPos(stack_top).item) {
                                 movement.x = 0;
                                 platform.direction = POSITIVE;
                                 break;
@@ -315,10 +316,10 @@ namespace Puzznic {
                             bool plat_found = false;
                             while (!plat_found) {
                                 stack_top.x++;
-                                if (get_board_pos(stack_top).item){
-                                    move_item(stack_top, stack_top + movement);
+                                if (GetBoardPos(stack_top).item){
+                                    MoveItem(stack_top, stack_top + movement);
                                 } else {
-                                    move_tile(stack_top, stack_top + movement);
+                                    MoveTile(stack_top, stack_top + movement);
                                     platform.pos = platform.pos + movement;
                                     plat_found = true;
                                 }   
@@ -339,32 +340,32 @@ namespace Puzznic {
         }
     }
 
-    void BoardState::update_items() {
+    void BoardState::UpdateItems() {
         std::vector <position> changed_items;
         position gravity;
         gravity.x++;
-        for (const auto& [key, value] : item_list) {
-            if (get_board_pos(key + gravity).empty) {
+        for (const auto& [key, value] : itemMap_) {
+            if (GetBoardPos(key + gravity).empty) {
                 changed_items.push_back(key);
             }
         }
 
         for (auto item : changed_items) {
-            move_item(item, item + gravity);
+            MoveItem(item, item + gravity);
         }
     }
 
-    void BoardState::destroy_items() {
+    void BoardState::MatchItems() {
         std::unordered_set<position> deletion_items;
-        for (const auto& [key, value] : item_list) {
+        for (const auto& [key, value] : itemMap_) {
             for (int i = -1; i <= 1; i += 2) {
                 position vertical = key;
                 position horizontal = key;
                 vertical.x += i;
                 horizontal.y += i;
-                if (get_board_pos(vertical).item == value) {
+                if (GetBoardPos(vertical).item == value) {
                     deletion_items.insert(key);
-                } else if (get_board_pos(horizontal).item == value) {
+                } else if (GetBoardPos(horizontal).item == value) {
                     deletion_items.insert(key);
                 }
                 if (deletion_items.count(key)) {
@@ -374,31 +375,31 @@ namespace Puzznic {
         }
 
         for (const auto& key: deletion_items) {
-            update_item_count(item_list[key]);
+            UpdateItemCount(itemMap_[key]);
             tile air;
             air.empty = 1;
-            set_board_pos(key, air);
-            item_list.erase(key);
+            SetBoardCoord(key, air);
+            itemMap_.erase(key);
         }
 
     }
 
-    bool BoardState::move_tile(position old_pos, position new_pos) {
-        if (!get_board_pos(new_pos).empty) { return false; }
+    bool BoardState::MoveTile(position old_pos, position new_pos) {
+        if (!GetBoardPos(new_pos).empty) { return false; }
         else {
-            set_board_pos(new_pos, get_board_pos(old_pos));
+            SetBoardCoord(new_pos, GetBoardPos(old_pos));
             tile air;
             air.empty = 1;
-            set_board_pos(old_pos, air);
+            SetBoardCoord(old_pos, air);
             return true;
         }
     }
 
-    bool BoardState::move_item(position old_pos, position new_pos) {
-        if (move_tile(old_pos, new_pos)){
-            int item = item_list[old_pos];
-            item_list.erase(old_pos);
-            item_list[new_pos] = item;
+    bool BoardState::MoveItem(position old_pos, position new_pos) {
+        if (MoveTile(old_pos, new_pos)){
+            int item = itemMap_[old_pos];
+            itemMap_.erase(old_pos);
+            itemMap_[new_pos] = item;
             return true;
         } else {
             return false;
@@ -406,35 +407,35 @@ namespace Puzznic {
     }
 
 
-    int BoardState::get_board_size(){ return game_board.size; }
-    tile BoardState::get_board_pos(position pos){ return game_board.board[pos.x][pos.y]; }
-    std::array<int, COLOURS> BoardState::get_item_count(){ return item_count; }
-    board BoardState::get_board(){ return game_board; }
-    std::map<position, int> BoardState::get_item_list(){ return item_list; }
-    std::vector<platform> BoardState::get_platform_list(){ 
+    int BoardState::GetBoardSize(){ return gameBoard_.size; }
+    tile BoardState::GetBoardPos(position pos){ return gameBoard_.board[pos.x][pos.y]; }
+    std::array<int, COLOURS> BoardState::GetItemCount(){ return itemCountArr_; }
+    board BoardState::GetBoard(){ return gameBoard_; }
+    std::map<position, int> BoardState::GetItemMap(){ return itemMap_; }
+    std::vector<platform> BoardState::GetPlatformVecs(){ 
         std::vector<platform> output;
-        for (auto platform : hor_plat_list){
+        for (auto platform : y_PlatformVec){
             output.push_back(platform);
         }
-        for (auto platform : vert_plat_list){
+        for (auto platform : x_PlatformVec){
             output.push_back(platform);
         }
         return output;
     }
 
     void BoardState::print_board() {
-        for (int i = 0; i < game_board.size; i++) {
-            for (int j = 0; j < game_board.size; j++) {
-                std::cout << "A" <<game_board.board[i][j].empty << " I"<<game_board.board[i][j].item << " W"<<game_board.board[i][j].wall << " P" << game_board.board[i][j].platform << " ";
+        for (int i = 0; i < gameBoard_.size; i++) {
+            for (int j = 0; j < gameBoard_.size; j++) {
+                std::cout << "A" <<gameBoard_.board[i][j].empty << " I"<<gameBoard_.board[i][j].item << " W"<<gameBoard_.board[i][j].wall << " P" << gameBoard_.board[i][j].platform << " ";
             }
         std::cout << "\n";
         } 
     }
 
     void BoardState::print_item_list(){
-        std::cout << "\n Item List Size: " << item_list.size() << "\n";
+        std::cout << "\n Item List Size: " << itemMap_.size() << "\n";
         std::map<position, int>::iterator it;        
-        for (auto const& x : item_list){
+        for (auto const& x : itemMap_){
             std::cout << "X: " << x.first.x << " Y: " << x.first.y << " Col: " << x.second << "\n";
         }
 
