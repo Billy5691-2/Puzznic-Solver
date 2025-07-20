@@ -1,6 +1,4 @@
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <stdlib.h>
 #include <vector>
 #include <string>
@@ -27,17 +25,27 @@ Items: ##
 
 */
 
+/*
+Requirements:
+
+Generate list of valid moves for an item
+Generate list of all valid moves
+
+Check generated list of moves against hash to reduce compute
+
+Check order of operations:
+Gravity vs destruction
+items on platforms vs destruction
+
+
+
+*/
+
 namespace Puzznic {
     class Game {
         std::shared_ptr<BoardState> activeBoard_;
-        std::vector<move> movesToHere_;
 
         //static std::unordered_set<BoardState*>
-
-        bool gameWon_ = false;
-        bool gameLost_ = false;
-
-        void game_state();
 
         public:
             Game() : Game("../levels/level_1_1_cpp.csv") {}
@@ -46,17 +54,17 @@ namespace Puzznic {
             ~Game();
             //board copy_board();
 
-            void MakeMove(move move);
-            void MakeMove(std::vector<move> moves);
+            void MakeMove(Move move);
+            void MakeMove(std::vector<Move> moves);
 
-            std::array<std::array<tile, 20>, 20> GetBoard(){ return activeBoard_->GetBoard(); }
-            std::array<int, COLOURS> GetItemCount(){ return activeBoard_->GetItemCount(); }
-            std::map<position, int> getItemList() { return activeBoard_->GetItemMap(); }
-            std::vector<platform> GetPlatformList() { return activeBoard_->GetPlatformVecs(); }
-            int GetBoardSize() { return activeBoard_->GetBoardSize(); }
+            const BoardArr& GetBoard() const { return activeBoard_->GetBoard(); }
+            const std::array<int, COLOURS>& GetItemCount() const { return activeBoard_->GetItemCount(); }
+            const std::map<Coord, int>& getItemList() const { return activeBoard_->GetItemMap(); }
+            const std::vector<Platform>& GetPlatformList() const { return activeBoard_->GetPlatformVecs(); }
+            const int GetBoardSize() const { return activeBoard_->GetBoardSize(); }
 
-            bool GetWinState(){ return gameLost_; }
-            bool GetLoseState(){ return gameWon_; }
+            const bool GetWinState() const { return activeBoard_->GetWinState(); }
+            const bool GetLoseState() const { return activeBoard_->GetLoseState(); }
 
     };
 }

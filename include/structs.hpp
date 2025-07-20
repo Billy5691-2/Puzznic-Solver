@@ -4,17 +4,19 @@
 
 #include <functional>
 
-enum platform_plane {
+using BoardArr = std::array<std::array<Tile, kBoardSize>, kBoardSize>;
+
+enum PlatformPlane {
     HORIZONTAL,
     VERTICAL
 };
 
-enum platform_direction {
+enum PlatformDirection {
     POSITIVE = 1,
     NEGATIVE = -1
 };
 
-enum item_colour {
+enum ItemColour {
     RED,
     BLUE,
     GREEN,
@@ -27,15 +29,15 @@ enum item_colour {
     
 };
 
-struct position {
+struct Coord {
     int x = 0;
     int y = 0;
 
-    bool operator==(const position& rhs) const {
+    bool operator==(const Coord& rhs) const {
         return (x == rhs.x and y == rhs.y);
     }
 
-    bool operator<(const position& rhs) const {
+    bool operator<(const Coord& rhs) const {
         if (x < rhs.x){
             return true;
         } else if (x == rhs.x && y < rhs.y){
@@ -45,8 +47,8 @@ struct position {
         }
     }
 
-    position operator+(const position& rhs) const {
-        position out;
+    Coord operator+(const Coord& rhs) const {
+        Coord out;
         out.x = x;
         out.y = y;
         out.x += rhs.x;
@@ -56,36 +58,51 @@ struct position {
 };
 
 template <>
-       struct std::hash<position> {
-           size_t operator()(const position& p) const {
+       struct std::hash<Coord> {
+           size_t operator()(const Coord& p) const {
                return std::hash<int>()(p.x) ^ std::hash<int>()(p.y);
            }
        };
 
-struct move {
-    position original;
-    position updated;
+struct Move {
+    Coord original;
+    Coord updated;
 };
 
-struct state {
-    bool won;
-    bool lose;
-};
-
-struct tile {
+struct Tile {
     int wall = 0;
     int item = 0;
     int platform = 0;
     int empty = 0;
 };
 
-/*struct board {
-    int size;
-    std::array<std::array<tile, 20>, 20> board;
-};*/
 
-struct platform {
-    enum platform_plane plane = HORIZONTAL;
-    enum platform_direction direction = POSITIVE;
-    position pos;
+struct Platform {
+    enum PlatformPlane plane = HORIZONTAL;
+    enum PlatformDirection direction = POSITIVE;
+    Coord pos;
+};
+
+struct Item {
+    int colour;
+    Coord position;
+    bool deleted = false;
+};
+
+struct BoardHasher {
+    size_t operator()(const BoardArr& board) const {
+        size_t hash = 0;
+        std::hash<int> hasher;
+
+        for (const auto& row : board) {
+            for (const auto& col : row) {
+                hash ^= hasher(col.empty) + 0x9e3779b9 + (hash << 6) + (hash >> 2); 
+                hash ^= hasher(col.item) + 0x9e3779b9 + (hash << 6) + (hash >> 2); 
+                hash ^= hasher(col.platform) + 0x9e3779b9 + (hash << 6) + (hash >> 2); 
+                hash ^= hasher(col.wall) + 0x9e3779b9 + (hash << 6) + (hash >> 2); 
+            }
+        }
+
+        return hash;
+    }
 };

@@ -28,7 +28,7 @@ namespace GUI{
                 int p_tile_size, std::array<const char*, COLOURS> item_paths);
             ~ItemCounter();
             void DrawTiles();
-            void DrawText(std::array<int, COLOURS> item_count);
+            void DrawText(const std::array<int, COLOURS>& item_count);
             void Free();
     };
 }

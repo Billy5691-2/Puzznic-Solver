@@ -44,18 +44,18 @@ namespace GUI {
         std::vector<Tiles*> moveTiles_;
 
         bool highlightChange_;
-        move movePair_;
+        Move movePair_;
 
         TTF_Font* m_Font_;
         SDL_Colour m_TextColour_;
 
         void init();
         void DrawBoard();
-        void ResetBoard(std::array<std::array<tile, kBoardSize>, kBoardSize> board_data);
-        void ResetPlatform(std::vector<platform> platform_list);
-        void ResetItems(std::map<position, int> item_list);
+        void ResetBoard(const BoardArr& board_data);
+        void ResetPlatform(const std::vector<Platform>& platform_list);
+        void ResetItems(const std::map<Coord, int>& item_list);
 
-        void ResetMoves(std::vector<position> move_list);
+        void ResetMoves(const std::vector<Coord>& move_list);
 
         void DeletePlatforms();
         void DeleteBoard();
@@ -64,31 +64,31 @@ namespace GUI {
         void DeleteMoves();
 
         void RenderBoard();
-        void RenderPlatforms(std::vector<platform> platform_list);
-        void RenderItems(std::map<position, int> item_list);
+        void RenderPlatforms(const std::vector<Platform>& platform_list);
+        void RenderItems(const std::map<Coord, int>& item_list);
         
-        void RenderMoves(std::vector<position> move_list);
+        void RenderMoves(const std::vector<Coord>& move_list);
 
-        position GridToPixel(position pos);
-        position GridToPixel(int x, int y);
+        Coord GridToPixel(Coord pos);
+        Coord GridToPixel(int x, int y);
 
         void DrawHighlight();
 
         public:
-            Window(const char* title, std::array<std::array<tile, kBoardSize>, kBoardSize> board_data, 
-                std::vector<platform> platform_list, int boardSize);
+            Window(const char* title, const BoardArr& board_data, 
+                const std::vector<Platform>& platform_list, int boardSize);
             ~Window();
 
             bool IsRunning() const;
             void PollEvent();
             bool Update();
-            void Render(std::map<position, int> item_list, std::vector<platform> platform_list, 
-                std::array<int, COLOURS> item_count, std::vector<position> move_list);
+            void Render(const std::map<Coord, int>& item_list, const std::vector<Platform>& platform_list, 
+                const std::array<int, COLOURS>& item_count, const std::vector<Coord>& move_list);
 
-            void Reset(std::array<std::array<tile, kBoardSize>, kBoardSize> board_data, std::vector<platform> platform_list);
+            void Reset(const BoardArr& board_data, const std::vector<Platform>& platform_list);
             
             std::string GetLvlFilename();
-            move GetMove();
+            Move GetMove();
 
             bool ChangeLevelState();
             bool StartSolverState();

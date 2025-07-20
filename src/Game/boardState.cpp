@@ -49,12 +49,12 @@ namespace Puzznic {
                 }
 
                 int tile_value = std::stoi(cell);
-                tile temp; 
-                position temp_pos;
+                Tile temp; 
+                Coord temp_pos;
                 temp_pos.x = x;
                 temp_pos.y = y;
 
-                platform temp_plat;
+                Platform temp_plat;
                 temp_plat.pos = temp_pos;
                 switch (tile_value) {
                     case 1: //Red
@@ -178,8 +178,8 @@ namespace Puzznic {
     }
 
     /*BoardState::BoardState(board temp_game_board, std::array<int, COLOURS> temp_item_count, 
-        std::map<position, int> temp_item_list, 
-                std::vector<platform> temp_hor_list, std::vector<platform> temp_vert_list){
+        std::map<Coord, int> temp_item_list, 
+                std::vector<Platform> temp_hor_list, std::vector<Platform> temp_vert_list){
                     gameBoard_ = temp_game_board;
                     itemCountArr_ = temp_item_count;
                     item_list = temp_item_list;
@@ -201,9 +201,11 @@ namespace Puzznic {
         itemCountArr_[colour--]--;
         }
     
-    void BoardState::GameLoop(move move) {
-        position old_pos = move.original;
-        position new_pos = move.updated;
+    bool BoardState::GameLoop(Move move) {
+        Coord old_pos = move.original;
+        Coord new_pos = move.updated;
+
+        movesToHere_.push_back(move);
 
         if (!(old_pos.x == kBoardSize && old_pos.y == kBoardSize)) {
             MoveItem(old_pos, new_pos);
@@ -213,11 +215,12 @@ namespace Puzznic {
         //MatchItems();
         UpdateItems();
         MatchItems();
+        return GameFinished();
     }
 
     void BoardState::UpdateY_Platforms(){
         for (auto platform : y_PlatformVec){
-            position movement;
+            Coord movement;
             movement.y += platform.direction;
             /*
             switch (platform.direction){
@@ -251,11 +254,11 @@ namespace Puzznic {
             }
             
             if (movement.y != 0) {
-                position new_pos = platform.pos + movement;
+                Coord new_pos = platform.pos + movement;
                 MoveTile(platform.pos, new_pos);
                 platform.pos = new_pos;
                 
-                position top_pos = platform.pos;
+                Coord top_pos = platform.pos;
                 bool stack_move = true;
                 while (stack_move) {
                     top_pos.x--;
@@ -272,13 +275,13 @@ namespace Puzznic {
     }
     void BoardState::UpdateX_Platforms() {
         for (auto platform : x_PlatformVec){
-            position movement;
+            Coord movement;
             movement.x += platform.direction;
             switch (platform.direction) {
                 case POSITIVE:
 
                     if (MoveTile(platform.pos, platform.pos + movement)){
-                        position top_pos = platform.pos;
+                        Coord top_pos = platform.pos;
                         platform.pos = platform.pos + movement;
                         bool stack = true;
                         while (stack){
@@ -301,7 +304,7 @@ namespace Puzznic {
                         break;
 
                     } else if (GetBoardPos(platform.pos + movement).item) {
-                        position stack_top = platform.pos + movement;
+                        Coord stack_top = platform.pos + movement;
                         while (GetBoardPos(stack_top).item) {
                             stack_top = stack_top + movement;
                             if (!GetBoardPos(stack_top).empty && !GetBoardPos(stack_top).item) {
@@ -339,8 +342,8 @@ namespace Puzznic {
     }
 
     void BoardState::UpdateItems() {
-        std::vector <position> changed_items;
-        position gravity;
+        std::vector <Coord> changed_items;
+        Coord gravity;
         gravity.x++;
         for (const auto& x : itemMap_) {
             if (GetBoardPos(x.first + gravity).empty) {
@@ -354,11 +357,11 @@ namespace Puzznic {
     }
 
     void BoardState::MatchItems() {
-        std::unordered_set<position> deletion_items;
+        std::unordered_set<Coord> deletion_items;
         for (const auto& x : itemMap_) {
             for (int i = -1; i <= 1; i += 2) {
-                position vertical = x.first;
-                position horizontal = x.first;
+                Coord vertical = x.first;
+                Coord horizontal = x.first;
                 vertical.x += i;
                 horizontal.y += i;
                 if (GetBoardPos(vertical).item == x.second) {
@@ -374,7 +377,7 @@ namespace Puzznic {
 
         for (const auto& key: deletion_items) {
             UpdateItemCount(itemMap_[key]);
-            tile air;
+            Tile air;
             air.empty = 1;
             SetBoardCoord(key, air);
             itemMap_.erase(key);
@@ -382,18 +385,34 @@ namespace Puzznic {
 
     }
 
-    bool BoardState::MoveTile(position old_pos, position new_pos) {
+    bool BoardState::GameFinished(){
+        bool won = true;
+        for (const auto& count : itemCountArr_){
+            if (count  == 1){
+                gameLost_ = true;
+                return true;
+            }
+            if (count > 0){
+                won = false;
+            }
+        }
+        gameWon_ = won;
+        if (won){ return true;}
+        return false;
+    }   
+
+    bool BoardState::MoveTile(Coord old_pos, Coord new_pos) {
         if (!GetBoardPos(new_pos).empty) { return false; }
         else {
             SetBoardCoord(new_pos, GetBoardPos(old_pos));
-            tile air;
+            Tile air;
             air.empty = 1;
             SetBoardCoord(old_pos, air);
             return true;
         }
     }
 
-    bool BoardState::MoveItem(position old_pos, position new_pos) {
+    bool BoardState::MoveItem(Coord old_pos, Coord new_pos) {
         if (MoveTile(old_pos, new_pos)){
             int item = itemMap_[old_pos];
             itemMap_.erase(old_pos);
@@ -404,12 +423,12 @@ namespace Puzznic {
         }
     }
 
-    void BoardState::SetBoardCoord(const position coord, tile tile) {
+    void BoardState::SetBoardCoord(const Coord coord, Tile tile) {
         gameBoard_[coord.x][coord.y] = tile;
     }
 
-    std::vector<platform> BoardState::GetPlatformVecs(){ 
-        std::vector<platform> output;
+    const std::vector<Platform>& BoardState::GetPlatformVecs(){ 
+        std::vector<Platform> output;
         for (auto platform : y_PlatformVec){
             output.push_back(platform);
         }
@@ -419,7 +438,7 @@ namespace Puzznic {
         return output;
     }
 
-    void BoardState::print_board() {
+    void BoardState::print_board() const {
         for (int i = 0; i < boardSize_; i++) {
             for (int j = 0; j < boardSize_; j++) {
                 std::cout << "A" <<gameBoard_[i][j].empty << " I"<<gameBoard_[i][j].item << " W"<<gameBoard_[i][j].wall << " P" << gameBoard_[i][j].platform << " ";
@@ -428,9 +447,9 @@ namespace Puzznic {
         } 
     }
 
-    void BoardState::print_item_list(){
+    void BoardState::print_item_list() const {
         std::cout << "\n Item List Size: " << itemMap_.size() << "\n";
-        std::map<position, int>::iterator it;        
+        std::map<Coord, int>::iterator it;        
         for (auto const& x : itemMap_){
             std::cout << "X: " << x.first.x << " Y: " << x.first.y << " Col: " << x.second << "\n";
         }

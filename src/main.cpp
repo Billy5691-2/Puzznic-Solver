@@ -13,23 +13,24 @@ inline void close() {
     IMG_Quit();
 }
 
+
 int main(){
     Puzznic::Game Game(filename);
     
     init();
-    //std::array<std::array<tile, 20>, 20> board = Game.GetBoard();
+    //std::array<std::array<Tile, 20>, 20> board = Game.GetBoard();
     //int boardSize = Game.GetBoardSize();
     std::array<int, COLOURS> item_count = Game.GetItemCount();
-    std::map<position, int> item_list = Game.getItemList();
-    std::vector<platform> platform_list = Game.GetPlatformList();
-    std::array<std::array<tile, 20>, 20> board = Game.GetBoard();
+    std::map<Coord, int> item_list = Game.getItemList();
+    std::vector<Platform> platform_list = Game.GetPlatformList();
+    BoardArr board = Game.GetBoard();
     int boardSize = Game.GetBoardSize();
 
 
-    position temp_move;
+    Coord temp_move;
     temp_move.x = 3;
     temp_move.y = 3;
-    std::vector<position> move_list;
+    std::vector<Coord> move_list;
     move_list.push_back(temp_move);
 
     GUI::Window GUI("Puzznic", board, platform_list, boardSize);
@@ -45,7 +46,7 @@ int main(){
                 std::cout << "Start solver\n";
             }
             if (GUI.GetHightlightChange()){
-                move potential_move = GUI.GetMove();
+                Move potential_move = GUI.GetMove();
                 std::cout << "Move Recieved\n";
             }
         }

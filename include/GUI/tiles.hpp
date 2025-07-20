@@ -14,7 +14,7 @@ namespace  GUI {
             Tiles(SDL_Renderer* p_Renderer, const char* p_FilePath, int p_TileSize);
             ~Tiles();
             void SetPosition(int p_X, int p_Y);
-            void SetPosition(position pixel);
+            void SetPosition(Coord pixel);
             void Draw();
 
     };

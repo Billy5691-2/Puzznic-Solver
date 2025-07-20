@@ -14,14 +14,10 @@ items on platforms vs destruction
 
 
 
-Implemented:
-- Check if game is still winnable or has been won
-
-
 */
 
 
-
+/*
 namespace Puzznic {
     Game::Game(std::string level) {
         activeBoard_ = std::make_shared<BoardState>(level);
@@ -35,21 +31,7 @@ namespace Puzznic {
     Game::~Game() {
         std::cout << "Close Game 2\n";
     }
-
-    void Game::game_state(){
-        bool won = true;
-        for (const auto& count : activeBoard_->GetItemCount()){
-            if (count  == 1){
-                gameLost_ = true;
-                return;
-            }
-            if (count > 0){
-                won = false;
-            }
-        }
-        gameWon_ = won;
-    }    
-
+  
     /*board Game::copy_board(){
         std::cout << "TBD\n";
         
@@ -59,5 +41,6 @@ namespace Puzznic {
         //new_board.width = game_board.width;
         std::copy(&game_board.board[0][0], &game_board.board[0][0]+kBoardSize*kBoardSize, &new_board.board[0][0]);
         return new_board;
-    }*/
+    }
 }
+*/

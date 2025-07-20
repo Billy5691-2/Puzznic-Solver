@@ -27,46 +27,55 @@ Items: ##
 namespace Puzznic{
     class BoardState {
         int boardSize_;
-        //board gameBoard_;
-        std::array<std::array<tile, 20>, 20> gameBoard_;
+        BoardArr gameBoard_;
         std::array<int, COLOURS> itemCountArr_;
-        std::map<position, int> itemMap_;
-        std::vector<platform> y_PlatformVec;
-        std::vector<platform> x_PlatformVec;
+        std::map<Coord, int> itemMap_;
+        std::vector<Platform> y_PlatformVec;
+        std::vector<Platform> x_PlatformVec;
+        std::vector<Move> movesToHere_;
+        bool gameWon_ = false;
+        bool gameLost_ = false;
         
-        void GameLoop(move move);
+        bool GameLoop(Move move);
         void UpdateY_Platforms();
         void UpdateX_Platforms();
         void UpdateItems();
         void MatchItems();
+        bool GameFinished();
 
-        void print_board();
-        void print_item_list();
+        void print_board() const;
+        void print_item_list() const;
 
-        bool MoveTile(position oldCoord, position newCoord);
-        bool MoveItem(position oldCoord, position newCoord);
+        bool MoveTile(Coord oldCoord, Coord newCoord);
+        bool MoveItem(Coord oldCoord, Coord newCoord);
         void UpdateItemCount(int colour);
 
-        void SetBoardCoord(const position coord, tile tile);
+        void SetBoardCoord(const Coord coord, Tile tile);
 
         public:
             BoardState() : BoardState("../levels/level_1_1_cpp.csv"){}
             BoardState(std::string level);
-            BoardState(std::array<std::array<tile, 20>, 20> temp_game_board, std::array<int, COLOURS> temp_item_count, 
-                std::map<position, int> temp_item_list, 
-                std::vector<platform> temp_hor_list, std::vector<platform> temp_vert_list) : 
+            BoardState(BoardArr temp_game_board, std::array<int, COLOURS> temp_item_count, 
+                std::map<Coord, int> temp_item_list, 
+                std::vector<Platform> temp_hor_list, std::vector<Platform> temp_vert_list) : 
                 gameBoard_(temp_game_board), 
                 itemCountArr_(temp_item_count), itemMap_(temp_item_list),
                 y_PlatformVec(temp_hor_list), x_PlatformVec(x_PlatformVec) {}
             ~BoardState();
             BoardState copy();
 
-            std::vector<platform> GetPlatformVecs(); 
-            int GetBoardSize() const { return boardSize_; }
-            tile GetBoardPos(position pos) const { return gameBoard_[pos.x][pos.y]; }
-            std::array<int, COLOURS> GetItemCount() const { return itemCountArr_; }
-            std::array<std::array<tile, 20>, 20> GetBoard() const { return gameBoard_; }
-            std::map<position, int> GetItemMap() const { return itemMap_; }
+            void MakeMove(const Move& move);
+            void MakeMove(const std::vector<Move>&);
+
+            const std::vector<Platform>& GetPlatformVecs(); 
+            const int GetBoardSize() const { return boardSize_; }
+            const Tile& GetBoardPos(Coord pos) const { return gameBoard_[pos.x][pos.y]; }
+            const std::array<int, COLOURS>& GetItemCount() const { return itemCountArr_; }
+            const BoardArr& GetBoard() const { return gameBoard_; }
+            const std::map<Coord, int>& GetItemMap() const { return itemMap_; }
+            const bool GetWinState() { return gameWon_; }
+            const bool GetLoseState() { return gameLost_; }
+            const std::vector<Move>& MoveVec() { return movesToHere_; }
 
 
     };

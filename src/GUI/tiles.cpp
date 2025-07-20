@@ -31,7 +31,7 @@ namespace GUI{
         m_TileProperty->y = p_Y;
     }
 
-    void Tiles::SetPosition(position pixel){
+    void Tiles::SetPosition(Coord pixel){
         SetPosition(pixel.x, pixel.y);
     }
 

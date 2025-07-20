@@ -49,8 +49,8 @@ namespace GUI {
     /*
     Constructor for Window class
     */
-    Window::Window(const char* title, std::array<std::array<tile, kBoardSize>, kBoardSize> board, 
-        std::vector<platform> platform_list, int boardSize) {
+    Window::Window(const char* title, const BoardArr& board, 
+        const std::vector<Platform>& platform_list, int boardSize) {
         init();
 
         m_Window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, 
@@ -178,7 +178,7 @@ namespace GUI {
 
     }
 
-    move Window::GetMove(){
+    Move Window::GetMove(){
         highlightChange_ = false;
         return movePair_;
     }
@@ -200,8 +200,8 @@ namespace GUI {
         }
     }
 
-    void Window::Render(std::map<position, int> item_list, std::vector<platform> platform_list, 
-        std::array<int, COLOURS> item_count, std::vector<position> move_list) {
+    void Window::Render(const std::map<Coord, int>& item_list, const std::vector<Platform>& platform_list, 
+        const std::array<int, COLOURS>& item_count, const std::vector<Coord>& move_list) {
         SDL_SetRenderDrawColor(m_Renderer, 128, 0, 255, 255);
         SDL_RenderClear(m_Renderer);
         m_Board->DrawBackground();
@@ -230,39 +230,39 @@ namespace GUI {
             baseTilesVec_[i]->Draw();
         }
     }
-    void Window::RenderPlatforms(std::vector<platform> platform_list) {
+    void Window::RenderPlatforms(const std::vector<Platform>& platform_list) {
         for (int i=0; i<platformTilesVec_.size(); i++){
             platformTilesVec_[i]->SetPosition(GridToPixel(platform_list[i].pos));
             platformTilesVec_[i]->Draw();
         }
     }
-    void Window::RenderItems(std::map<position, int> item_list){
+    void Window::RenderItems(const std::map<Coord, int>& item_list){
         ResetItems(item_list);
         for (int i=0; i<itemTiles_.size(); i++){
             itemTiles_[i]->Draw();
         }
     }
-    void Window::RenderMoves(std::vector<position> move_list){
+    void Window::RenderMoves(const std::vector<Coord>& move_list){
         ResetMoves(move_list);
         for (int i=0; i<move_list.size(); i++){
             moveTiles_[i]->Draw();
         }
     }
 
-    position Window::GridToPixel(position pos) {
+    Coord Window::GridToPixel(Coord pos) {
         return GridToPixel(pos.x, pos.y);
     }
-    position Window::GridToPixel(int x, int y) {
-        position pixel_pos;
+    Coord Window::GridToPixel(int x, int y) {
+        Coord pixel_pos;
         pixel_pos.x = WINDOW_LEFT + (x * tileSize_);
         pixel_pos.y = y * tileSize_;
         return pixel_pos;
     }
 
-    void Window::ResetBoard(std::array<std::array<tile, kBoardSize>, kBoardSize> board_data){
+    void Window::ResetBoard(const BoardArr& board_data){
         for(int x = 0; x < kBoardSize; x++) {
             for(int y = 0; y < kBoardSize; y++) {
-                tile tile_type = board_data[x][y];
+                Tile tile_type = board_data[x][y];
                 const char* file_path;
 
                 if (tile_type.wall){
@@ -297,7 +297,7 @@ namespace GUI {
             }
         }
     }
-    void Window::ResetPlatform(std::vector<platform> platform_list){
+    void Window::ResetPlatform(const std::vector<Platform>& platform_list){
         for (int i=0; i<platform_list.size(); i++){
             const char* file_path;
 
@@ -321,9 +321,8 @@ namespace GUI {
             platformTilesVec_.push_back(temp);
         }
     }
-    void Window::ResetItems(std::map<position, int> item_list){
-        std::map<position, int>::iterator it;
-        for (it = item_list.begin(); it != item_list.end(); it++){
+    void Window::ResetItems(const std::map<Coord, int>& item_list){
+        for (auto it = item_list.begin(); it != item_list.end(); it++){
             const char* file_path;
             switch (it->second) {
                 case RED:
@@ -373,7 +372,7 @@ namespace GUI {
         }
 
     }
-    void Window::ResetMoves(std::vector<position> move_list){
+    void Window::ResetMoves(const std::vector<Coord>& move_list){
         for (int i=0; i<move_list.size(); i++){
             Tiles* temp = new Tiles(m_Renderer, MOVE_MARKER_PATH, tileSize_);
             temp->SetPosition(GridToPixel(move_list[i]));
@@ -381,7 +380,7 @@ namespace GUI {
         }
     }
 
-    void Window::Reset(std::array<std::array<tile, kBoardSize>, kBoardSize> board_data, std::vector<platform> platform_list){
+    void Window::Reset(const BoardArr& board_data, const std::vector<Platform>& platform_list){
         DeleteBoard();
         DeletePlatforms();
 
