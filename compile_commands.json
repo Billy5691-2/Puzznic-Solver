@@ -1,0 +1,77 @@
+[
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/main.dir/main.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/main.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/main.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/board_background.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/board_background.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/board_background.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/board_buttons.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/board_buttons.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/board_buttons.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/board.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/board.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/board.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/buttons.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/buttons.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/buttons.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/controls.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/controls.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/controls.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/game_window.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/game_window.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/game_window.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/gui_data.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/gui_data.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/gui_data.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/item_counter.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/item_counter.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/item_counter.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/rectangle.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/rectangle.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/rectangle.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/text.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/text.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/text.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/texture_manager.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/texture_manager.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/texture_manager.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/tile_highlight.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/tile_highlight.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/tile_highlight.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/gui",
+  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/PRIVATE -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/include   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_gui.dir/tile_manager.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/tile_manager.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/gui/tile_manager.cc"
+},
+{
+  "directory": "/home/billy5691/CPP_Projects/Puzznic-Solver/build/src/game",
+  "command": "/usr/bin/g++   -I/home/billy5691/CPP_Projects/Puzznic-Solver/src/common   -pthread -Werror -Wall -g   -std=gnu++17 -o CMakeFiles/PuzznicSolver_game.dir/game.cc.o -c /home/billy5691/CPP_Projects/Puzznic-Solver/src/game/game.cc",
+  "file": "/home/billy5691/CPP_Projects/Puzznic-Solver/src/game/game.cc"
+}
+]

@@ -1,0 +1,25 @@
+Checks: "\
+  bugprone-*,\
+  cppcoreguidelines-*,\
+  google-*,\
+  performance-*,\
+  modernize-deprecated-headers,\
+  -cppcoreguidelines-pro-type-vararg,\
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,\
+  -cppcoreguidelines-pro-type-reinterpret-cast,\
+  -cppcoreguidelines-owning-memory,\
+  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,\
+  -cppcoreguidelines-macro-usage,\
+  -cppcoreguidelines-no-malloc,\
+  -cppcoreguidelines-avoid-c-arrays, \
+  -cppcoreguidelines-avoid-magic-numbers, \
+  -cppcoreguidelines-pro-type-union-access, \
+  -cppcoreguidelines-pro-bounds-constant-array-index, \
+  -clang-diagnostic-c++17-extensions, \
+  -google-build-explicit-make-pair, \
+  -bugprone-easily-swappable-parameters, \
+  -google-runtime-references"
+
+HeaderFilterRegex: ".*hpp$"
+
+WarningsAsErrors: "*"
