@@ -8,7 +8,7 @@
             "-fdiagnostics-color=always",
             "-g",
             //"${workspaceFolder}/src/main.cpp",
-            "${workspaceFolder}/src/**.cpp", "${workspaceFolder}/src/Game/**.cpp", "${workspaceFolder}/src/GUI/**.cpp", "${workspaceFolder}/src/Solver/**.cpp",
+            "${workspaceFolder}/src/**.cc", "${workspaceFolder}/src/game/**.cc", "${workspaceFolder}/src/gui/**.cc",// "${workspaceFolder}/src/solver/**.cc",
             "-lSDL2", "-lSDL2_image", "-lSDL2_mixer", "-lSDL2_ttf",
             //"${fileDirname}\\**.h",
             "-o",

@@ -1,1 +1,10 @@
+# VS Code settings
+.vscode/
+
+# Build artefacts
 bin/
+build/
+
+# Clang artefacts
+.clangd
+compile_commands.
