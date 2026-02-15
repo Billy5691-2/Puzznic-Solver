@@ -1,11 +1,13 @@
 #ifndef C6A9CF15_6A14_43F5_8974_823768ACEA79
 #define C6A9CF15_6A14_43F5_8974_823768ACEA79
 #include <algorithm>
+#include <array>
 #include <cstdlib>
 #include <iostream>
 #include <map>
 #include <memory>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include "../../common/constants.hpp"
@@ -49,15 +51,22 @@ Future idea - Make each math increase time units by 1 per block destroyed. It ma
 #define DETECT_LEDGES     true // At board init, detect ledges to find strategic positions - requires presentAllMoves = fal
 #define MULTI_THREAD      false // Multithread move search
 
-struct ItemMove_t {
-    int itemId = -1;
-    Coord_t finalPosition;
-};
-
-using MoveChain_u = std::vector<Coord_t>;
-using AllMoves_u = std::vector<std::map<Coord_t, MoveChain_u>>;
-
 namespace Puzznic {
+
+    constexpr Coord_t LEFT_POS = {0, -1};
+    constexpr Coord_t RIGHT_POS = {0, 1};
+    constexpr Coord_t UP_POS = {1, 0};
+    constexpr Coord_t DOWN_POS = {-1, 0};
+    constexpr std::array<Coord_t, 4> ALL_DIRECTIONS = {LEFT_POS, RIGHT_POS, UP_POS, DOWN_POS};
+
+    struct ItemMove_t {
+        int itemId = -1;
+        Coord_t finalPosition;
+    };
+
+    using MoveChain_u = std::vector<Coord_t>;
+    using AllMoves_u = std::vector<std::map<Coord_t, MoveChain_u>>;
+
     class Game {
         Board_t board_;
 
@@ -80,6 +89,7 @@ namespace Puzznic {
         void Wait();
 
         bool IsTileEmpty(const Coord_t& pos);
+        void CountItems();
 
         void MakeMove(const Move_t&);
         void FindValidMoves();

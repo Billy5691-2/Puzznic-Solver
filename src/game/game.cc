@@ -1,19 +1,19 @@
 #include <bits/c++config.h>
 #include <cassert>
+#include <cstddef>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <sstream>
+#include <string>
+#include <vector>
 
 #include "constants.hpp"
 #include "enums.hpp"
 #include "include/game.hpp"
 #include "structs.hpp"
-
-#include <cstdlib>
-#include <map>
-#include <string>
-#include <vector>
 
 // Requirements:
 
@@ -201,6 +201,75 @@ Puzznic::Game::Game(const std::string& level) : availableMoves_(std::make_shared
     levelData.close();
     board_.items.shrink_to_fit();
     board_.platforms.shrink_to_fit();
+}
+
+bool Puzznic::Game::IsTileEmpty(const Coord_t& pos) {
+    if (board_.walls[pos.x][pos.y] != WALL_NONE) {
+        return false;
+    }
+    for (const auto& item : board_.items) {
+        if (item.position == pos) {
+            return false;
+        }
+    }
+    for (const auto& platform : board_.platforms) {
+        if (platform.pos == pos) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void Puzznic::Game::UpdateMatches() {
+    std::vector<std::size_t> matchedItems;
+    matchedItems.reserve(board_.items.size());
+
+    // Find all matched items and add them to a vector
+    for (std::size_t index = 0; index < board_.items.size(); ++index) {
+        for (std::size_t otherIndex = index + 1; otherIndex < board_.items.size(); ++otherIndex) {
+            if (board_.items[index].type == board_.items[otherIndex].type && !board_.items[index].deleted &&
+                !board_.items[otherIndex].deleted) {
+                const Coord_t& pos = board_.items[index].position;
+                const Coord_t& comparisonPos = board_.items[otherIndex].position;
+                for (const auto& direction : ALL_DIRECTIONS) {
+                    if (pos + direction == comparisonPos) {
+                        matchedItems.push_back(index);
+                        matchedItems.push_back(otherIndex);
+                    }
+                }
+            }
+        }
+    }
+    for (const auto& index : matchedItems) {
+        board_.items[index].deleted = true;
+        board_.items[index].position = {-1, -1};
+    }
+}
+
+void Puzznic::Game::CountItems() {
+    itemsCount_.fill(0);
+    for (const auto& item : board_.items) {
+        ++itemsCount_[item.type];
+    }
+}
+
+void Puzznic::Game::UpdateGameState() {
+    CountItems();
+    bool itemsRemaining = false;
+    for (const auto& count : itemsCount_) {
+        if (count) {
+            itemsRemaining = true;
+        }
+        if (count == 1) { // Single items cannot be matched
+            playState_ = LOST;
+            return;
+        }
+    }
+    if (itemsRemaining) {
+        playState_ = PLAYING;
+    } else {
+        playState_ = WON;
+    }
 }
 
 // ################################ External Getters
