@@ -29,6 +29,12 @@ struct Coord_t {
         out.y += rhs.y;
         return out;
     }
+
+    Coord_t& operator+=(const Coord_t& rhs) {
+        this->x += rhs.x;
+        this->y += rhs.y;
+        return *this;
+    }
 };
 
 template <>

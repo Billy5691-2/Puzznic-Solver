@@ -89,6 +89,7 @@ namespace Puzznic {
         void Wait();
 
         bool IsTileEmpty(const Coord_t& pos);
+        bool IsAdjacent(const Coord_t& posOne, const Coord_t& posTwo);
         void CountItems();
 
         void MakeMove(const Move_t&);

@@ -220,24 +220,33 @@ bool Puzznic::Game::IsTileEmpty(const Coord_t& pos) {
     return true;
 }
 
+bool inline Puzznic::Game::IsAdjacent(const Coord_t& posOne, const Coord_t& posTwo) {
+    return abs(posOne.x - posTwo.x) + abs(posOne.y - posTwo.y) == 1;
+}
+
 void Puzznic::Game::UpdateMatches() {
     std::vector<std::size_t> matchedItems;
     matchedItems.reserve(board_.items.size());
 
     // Find all matched items and add them to a vector
     for (std::size_t index = 0; index < board_.items.size(); ++index) {
+        if (IsTileEmpty(board_.items[index].position + DOWN_POS)) {
+            // Items do not match if they are falling
+            continue;
+        }
         for (std::size_t otherIndex = index + 1; otherIndex < board_.items.size(); ++otherIndex) {
-            if (board_.items[index].type == board_.items[otherIndex].type && !board_.items[index].deleted &&
-                !board_.items[otherIndex].deleted) {
-                const Coord_t& pos = board_.items[index].position;
-                const Coord_t& comparisonPos = board_.items[otherIndex].position;
-                for (const auto& direction : ALL_DIRECTIONS) {
-                    if (pos + direction == comparisonPos) {
-                        matchedItems.push_back(index);
-                        matchedItems.push_back(otherIndex);
-                    }
-                }
+            const Item_t& comparisonItem = board_.items[otherIndex];
+            const Item_t& item = board_.items[index];
+            if (IsTileEmpty(comparisonItem.position + DOWN_POS) ||
+                !IsAdjacent(item.position, comparisonItem.position) || item.type != comparisonItem.type) {
+                // Items do not match if:
+                // - One or both are falling
+                // - They are not matching colours
+                // - They are not adjacent
+                continue;
             }
+            matchedItems.push_back(index);
+            matchedItems.push_back(otherIndex);
         }
     }
     for (const auto& index : matchedItems) {
@@ -269,6 +278,14 @@ void Puzznic::Game::UpdateGameState() {
         playState_ = PLAYING;
     } else {
         playState_ = WON;
+    }
+}
+
+void Puzznic::Game::UpdateGravity() {
+    for (auto& item : board_.items) {
+        if (IsTileEmpty(item.position + DOWN_POS)) {
+            item.position += DOWN_POS;
+        }
     }
 }
 
