@@ -4,6 +4,7 @@
 #include "constants.hpp"
 #include "enums.hpp"
 #include "include/board_background.hpp"
+#include "include/board_buttons.hpp"
 #include "include/gui_data.hpp"
 #include "include/texture_manager.hpp"
 #include "include/tile_highlight.hpp"
@@ -25,7 +26,7 @@ GUI::Board::Board(const std::shared_ptr<RenderData_t>& renderData)
         for (int y = 0; y < BOARD_SIZE; ++y) {
             if (wallData[x][y] != WALL_NONE) {
                 wallTiles_[i] = TileManager(renderData_, wallData[x][y]);
-                wallTiles_[i].SetPosition(ConvertCoordToPixel({x, y}));
+                wallTiles_[i].SetPosition(BoardButtons::ConvertToPixel({x, y}));
                 ++i;
             }
         }
@@ -35,7 +36,7 @@ GUI::Board::Board(const std::shared_ptr<RenderData_t>& renderData)
     itemTiles_.resize(items.size());
     for (std::size_t i = 0; i < items.size(); ++i) {
         itemTiles_[i].texture = TileManager(renderData_, items[i].type);
-        itemTiles_[i].texture.SetPosition(ConvertCoordToPixel(items[i].position));
+        itemTiles_[i].texture.SetPosition(BoardButtons::ConvertToPixel(items[i].position));
     }
 
     const std::vector<Platform_t>& platforms = renderData_->data->GetPlatforms();
@@ -49,7 +50,7 @@ GUI::Board::Board(const std::shared_ptr<RenderData_t>& renderData)
             platformTiles_[i].textures[RIGHT] = TileManager(renderData_, RIGHT);
         }
         platformTiles_[i].currentDirection = platforms[i].direction;
-        platformTiles_[i].position = ConvertCoordToPixel(platforms[i].pos);
+        platformTiles_[i].position = BoardButtons::ConvertToPixel(platforms[i].pos);
     }
 }
 
@@ -58,14 +59,14 @@ void GUI::Board::UpdatePlatforms() {
     const std::vector<Platform_t>& platforms = renderData_->data->GetPlatforms();
     for (std::size_t i = 0; i < platforms.size(); ++i) {
         platformTiles_[i].currentDirection = platforms[i].direction;
-        platformTiles_[i].position = ConvertCoordToPixel(platforms[i].pos);
+        platformTiles_[i].position = BoardButtons::ConvertToPixel(platforms[i].pos);
     }
 }
 
 void GUI::Board::UpdateItems() {
     const std::vector<Item_t>& items = renderData_->data->GetItems();
     for (std::size_t i = 0; i < items.size(); ++i) {
-        itemTiles_[i].texture.SetPosition(ConvertCoordToPixel(items[i].position));
+        itemTiles_[i].texture.SetPosition(BoardButtons::ConvertToPixel(items[i].position));
         itemTiles_[i].destroyed = items[i].deleted;
     }
 }
@@ -96,7 +97,7 @@ void GUI::Board::DrawItems() {
 void GUI::Board::DrawMoves() {
     const std::vector<Coord_t>& moves = renderData_->data->GetMoves();
     for (const auto& move : moves) {
-        moveTexture_.SetPosition(move);
+        moveTexture_.SetPosition(BoardButtons::ConvertToPixel(move));
         moveTexture_.Draw();
     }
 }
@@ -110,11 +111,4 @@ void GUI::Board::Draw() {
     DrawItems();
     DrawMoves();
     tileHighlight_.Draw();
-}
-
-Coord_t GUI::Board::ConvertCoordToPixel(const Coord_t& boardPos) {
-    Coord_t pixelCoord = {0, 0};
-    pixelCoord.x = (boardPos.x * TILE_SIZE) + WINDOW_LEFT;
-    pixelCoord.y = (boardPos.y * TILE_SIZE);
-    return pixelCoord;
 }

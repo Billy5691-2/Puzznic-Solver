@@ -41,8 +41,6 @@ namespace GUI {
         void DrawItems();
         void DrawMoves();
 
-        Coord_t ConvertCoordToPixel(const Coord_t& boardPos);
-
         public:
         Board();
         explicit Board(const std::shared_ptr<RenderData_t>& renderData);
